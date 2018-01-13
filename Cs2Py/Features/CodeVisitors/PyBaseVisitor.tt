@@ -1,0 +1,106 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+using Cs2Py.Source;
+
+namespace Cs2Py.CodeVisitors
+{
+    public class PyBaseVisitor<T>
+    {
+	    // public LangParseContext context = new LangParseContext();
+        public bool ThrowNotImplementedException = true;
+
+        public virtual T Visit(PySourceBase node)
+        {
+			if (node == null)
+				return VisitNull();
+            switch (node.Kind)
+            {
+            <#
+            foreach(var j in GetDirectives()) {
+               
+            #>    case PySourceItems.<#=j#>:
+                    return Visit<#=j#>(node as <#=j#>);
+            <#
+            }
+            #>    default: throw new NotSupportedException(node.Kind.ToString() + "," + node.GetType().Name);
+            }
+        }
+
+		protected virtual T VisitNull()
+        {
+            if (ThrowNotImplementedException)
+                throw new NotImplementedException(string.Format("Method {0} is not supported", "VisitNull"));
+            return default(T);
+        }
+
+            <#
+            foreach(var j in GetDirectives()) {                 
+            #>
+
+        protected virtual T Visit<#=j#>(<#=j#> node)
+        {
+            if (ThrowNotImplementedException)
+                throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}", "Visit<#=j#>", this.GetType().FullName));
+            return default(T);
+        }
+<#
+            }
+            #>
+		public static PySourceItems GetKind(PySourceBase x) {
+			if (x == null) throw new ArgumentNullException();           
+<# foreach(var j in GetDirectives())  { #>
+			if (x.GetType() == typeof(<#=j#>)) return PySourceItems.<#=j#>;
+<# } #>
+            throw new NotSupportedException(x.GetType().FullName);
+		}
+    }
+	public enum PySourceItems
+	{
+		<#
+			foreach(var j in GetDirectives()) 
+				Write(j+",\r\n");               
+         #>
+	}
+}
+<#+
+string[] GetDirectives() {
+
+    var x = new string[] {
+	    "PyAssignVariableStatement",
+		"PyIncrementDecrementExpression",
+		"PyBinaryOperatorExpression",
+		"PyDefinedConstExpression",
+		"PyMethodCallExpression",
+		"PyMethodInvokeValue",
+		"PyConditionalExpression",
+		"PyParenthesizedExpression",
+		"PyVariableExpression",
+		"PyPropertyAccessExpression",
+		"PyUnaryOperatorExpression",
+		"PyConstValue",
+		"PyArrayAccessExpression",
+		"PyAssignExpression",
+		"PyArrayCreateExpression",
+		"PyClassFieldAccessExpression",
+		"PyInstanceFieldAccessExpression",
+		"PyElementAccessExpression",
+		"PyCodeBlock",
+		"PyBreakStatement",
+		"PyForStatement",
+		"PyIfStatement",
+		"PyReturnStatement",
+		"PyContinueStatement",
+		"PyExpressionStatement",
+		"PySwitchStatement",
+		"PyWhileStatement",
+		"PyForEachStatement"
+    };
+	return x;
+   
+}
+#>
