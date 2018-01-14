@@ -7,7 +7,6 @@ namespace Cs2Py.Emit
     {
         public PySourceCodeWriter()
         {
-            code.AppendLine("<?php");
             IntentString = "";
         }
 
@@ -38,14 +37,11 @@ namespace Cs2Py.Emit
         {
             var txt = a(code.ToString());
             code    = new StringBuilder(txt);
-
         }
 
-        public string GetCode(bool pure = false)
+        public string GetCode()
         {
-            if (pure)
-                return code.ToString();
-            return code + "?>";
+            return code.ToString();
         }
 
         public void IncIndent()
@@ -69,6 +65,16 @@ namespace Cs2Py.Emit
         {
             return GetCode();
         }
+        // Private Methods 
+
+        public void Write(string x)
+        {
+            if (SkipIndent)
+                code.Append(x);
+            else
+                code.Append(IntentString + x);
+            SkipIndent = false;
+        }
 
         public void WriteF(string x, params object[] p)
         {
@@ -90,27 +96,10 @@ namespace Cs2Py.Emit
         {
             IntentString = new string(' ', intent * 4);
         }
-        // Private Methods 
-
-        public void Write(string x)
-        {
-            if (SkipIndent)
-                code.Append(x);
-            else
-                code.Append(IntentString + x);
-            SkipIndent = false;
-        }
-
-        protected StringBuilder code = new StringBuilder();
-        int                     intent;
-        public bool             SkipIndent;
 
         public int Intent
         {
-            get
-            {
-                return intent;
-            }
+            get => intent;
             set
             {
                 if (intent == value) return;
@@ -124,5 +113,9 @@ namespace Cs2Py.Emit
         public string IntentString { get; set; }
 
         public int Length => code.Length;
+
+        protected StringBuilder code = new StringBuilder();
+        private   int           intent;
+        public    bool          SkipIndent;
     }
 }

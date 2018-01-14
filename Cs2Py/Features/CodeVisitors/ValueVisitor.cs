@@ -758,9 +758,28 @@ namespace Cs2Py.CodeVisitors
             return new TypeValue(dot);
         }
 
-        protected override IValue VisitSimpleAssignmentExpression(BinaryExpressionSyntax node)
+        protected override IValue VisitSimpleAssignmentExpression(AssignmentExpressionSyntax node)
         {
-            return internalVisit_AssignWithPrefix(node, ""); // +++ 
+            if (node == null) throw new ArgumentNullException(nameof(node));
+            {
+                 
+                var symbolInfo = ModelExtensions.GetSymbolInfo(_state.Context.RoslynModel, node);
+                // var typex = GetResultTypeForBinaryExpression(symbolInfo);
+                //TypeInfo ti = ModelExtensions.GetTypeInfo(state.Context.RoslynModel, node);
+
+                //TypeInfo eti = ModelExtensions.GetTypeInfo(state.Context.RoslynModel, node.Expression);
+                var eti2 = _state.Context.RoslynModel.GetTypeInfo2(node);
+
+                if (!eti2.Conversion1.HasValue || !eti2.Conversion1.Value.IsIdentity)
+                    throw new NotSupportedException();
+                //if (symbolInfo.Symbol.IsImplicitlyDeclared)
+                //    throw new Exception();
+                var l = Visit(node.Left);
+                var r = Visit(node.Right);
+                var a = new CsharpAssignExpression(l, r, string.Empty);
+                return Simplify(a);
+            }
+             
         }
 
         protected override IValue VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
@@ -1030,6 +1049,8 @@ namespace Cs2Py.CodeVisitors
 
         private IValue internalVisit_AssignWithPrefix(BinaryExpressionSyntax node, string _operator)
         {
+            if (node == null) 
+                throw new ArgumentNullException(nameof(node));
             var symbolInfo = ModelExtensions.GetSymbolInfo(_state.Context.RoslynModel, node);
             // var typex = GetResultTypeForBinaryExpression(symbolInfo);
             //TypeInfo ti = ModelExtensions.GetTypeInfo(state.Context.RoslynModel, node);

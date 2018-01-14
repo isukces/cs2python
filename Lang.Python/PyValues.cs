@@ -123,10 +123,18 @@ namespace Lang.Python
             var type = value.GetType();
             if (type.IsEnum)
                 return _SingleEnumValueToPyCode(value);
-            if (value is bool) return PyCodeValue.FromBool((bool)value);
-            if (value is string) return PyCodeValue.FromString(value as string);
-            if (value is int) return PyCodeValue.FromInt((int)value);
-            if (value is double) return PyCodeValue.FromDouble((double)value);
+            switch (value)
+            {
+                case bool boolValue:
+                    return PyCodeValue.FromBool(boolValue);
+                case string stringValue:
+                    return PyCodeValue.FromString(stringValue);
+                case int intValue:
+                    return PyCodeValue.FromInt(intValue);
+                case double doubleValue:
+                    return PyCodeValue.FromDouble(doubleValue);
+            }
+
             throw new NotSupportedException();
         }
 
@@ -224,8 +232,7 @@ namespace Lang.Python
                     var _rv              = fi.GetCustomAttributes(true).OfType<RenderValueAttribute>().FirstOrDefault();
                     if (_rv != null)
                     {
-                        string str;
-                        if (TryGetPyStringValue(_rv.Name, out str))
+                        if (TryGetPyStringValue(_rv.Name, out var str))
                             return PyCodeValue.FromString(str);
                         if (!_rv.Name.StartsWith("$"))
                             return new PyCodeValue(_rv.Name, _rv.Name, PyCodeValue.Kinds.DefinedConst);

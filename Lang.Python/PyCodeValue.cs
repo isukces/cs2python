@@ -21,7 +21,7 @@ namespace Lang.Python
 
         public static PyCodeValue FromInt(int v, bool octal = false)
         {
-            var txt = octal ? PyValues.Dec2Oct(v) : v.ToString();
+            var txt = octal ? PyValues.Dec2Oct(v) : v.ToString(CultureInfo.InvariantCulture);
             return new PyCodeValue(txt, v, octal ? Kinds.OctalInt : Kinds.Int);
         }
 
@@ -37,7 +37,7 @@ namespace Lang.Python
             switch (Kind)
             {
                 case Kinds.StringConstant:
-                    if (PyValues.TryGetPyStringValue(_PyValue, out txt))
+                    if (PyValues.TryGetPyStringValue(_pyValue, out txt))
                         return true;
                     throw new NotSupportedException();
                 case Kinds.Bool:
@@ -48,7 +48,7 @@ namespace Lang.Python
                     txt = ((int)SourceValue).ToString();
                     return true;
                 case Kinds.Double:
-                    txt = _PyValue;
+                    txt = _pyValue;
                     return true;
                 case Kinds.DefinedConst:
                     txt = "";
@@ -77,24 +77,24 @@ namespace Lang.Python
       
         /// <summary>
         /// Tworzy instancję obiektu
-        /// <param name="PyValue">Value on Py side</param>
+        /// <param name="pyValue">Value on Py side</param>
         /// <param name="kind"></param>
         /// </summary>
-        public PyCodeValue(string PyValue, Kinds kind)
+        public PyCodeValue(string pyValue, Kinds kind)
         {
-            PyValue = PyValue;
+            PyValue = pyValue;
             Kind     = kind;
         }
 
         /// <summary>
         /// Tworzy instancję obiektu
-        /// <param name="PyValue">Value on Py side</param>
+        /// <param name="pyValue">Value on Py side</param>
         /// <param name="sourceValue"></param>
         /// <param name="kind"></param>
         /// </summary>
-        public PyCodeValue(string PyValue, object sourceValue, Kinds kind)
+        public PyCodeValue(string pyValue, object sourceValue, Kinds kind)
         {
-            PyValue    = PyValue;
+            PyValue    = pyValue;
             SourceValue = sourceValue;
             Kind        = kind;
         }
@@ -107,7 +107,7 @@ namespace Lang.Python
         /// <returns>Tekstowa reprezentacja obiektu</returns>
         public override string ToString()
         {
-            return string.Format("{0}", _PyValue);
+            return string.Format("{0}", _pyValue);
         }
 
         /// <summary>
@@ -115,10 +115,10 @@ namespace Lang.Python
         /// </summary>
         public string PyValue
         {
-            get => _PyValue;
-            set => _PyValue = (value ?? String.Empty).Trim();
+            get => _pyValue;
+            set => _pyValue = (value ?? String.Empty).Trim();
         }
-        private string _PyValue = string.Empty;
+        private string _pyValue = string.Empty;
         /// <summary>
         /// 
         /// </summary>

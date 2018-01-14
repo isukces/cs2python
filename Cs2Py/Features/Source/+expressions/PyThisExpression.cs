@@ -7,7 +7,7 @@ namespace Cs2Py.Source
     {
         public override string GetPyCode(PyEmitStyle style)
         {
-            return "$this";
+            return "self";
         }
 
         public override IEnumerable<ICodeRequest> GetCodeRequests()

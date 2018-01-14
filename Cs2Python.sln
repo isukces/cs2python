@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cs2Py", "Cs2Py\Cs2Py.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lang.Python", "Lang.Python\Lang.Python.csproj", "{25DF4EF8-BC83-4785-9F40-1391F529637F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lang.Python.Tests", "Lang.Python.Tests\Lang.Python.Tests.csproj", "{8A17D8E8-C345-4B0E-8C70-60AB507E5983}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{25DF4EF8-BC83-4785-9F40-1391F529637F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25DF4EF8-BC83-4785-9F40-1391F529637F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25DF4EF8-BC83-4785-9F40-1391F529637F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A17D8E8-C345-4B0E-8C70-60AB507E5983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A17D8E8-C345-4B0E-8C70-60AB507E5983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A17D8E8-C345-4B0E-8C70-60AB507E5983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A17D8E8-C345-4B0E-8C70-60AB507E5983}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

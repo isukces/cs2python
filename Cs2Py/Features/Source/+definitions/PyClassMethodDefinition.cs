@@ -32,7 +32,7 @@ namespace Cs2Py.Source
             var ii = 0;
             foreach (var group in groups)
             {
-                if (group.Where(i => i.IsArgument).Any())
+                if (group.Any(i => i.IsArgument))
                     continue;
                 if (!group.First().VariableName.Contains("@"))
                     continue;
@@ -59,6 +59,10 @@ namespace Cs2Py.Source
             return PySourceCodeEmiter.GetAccessModifiers(this);
         }
 
+        protected override PyMethodKind GetPyMethodKind()
+        {
+            return IsStatic ? PyMethodKind.ClassStatic : PyMethodKind.ClassInstance;
+        }
 
         /// <summary>
         /// </summary>

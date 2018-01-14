@@ -14,7 +14,7 @@ namespace Cs2Py.Source
         /// </summary>
         public PyConstValue(object value)
         {
-            Value = value;
+            Value = value;           
         }
 
         /// <summary>

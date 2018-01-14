@@ -50,13 +50,13 @@ namespace Cs2Py.Source
                 var e = "";
                 if (!_baseTypeName.IsEmpty)
                     e = " extends " + _baseTypeName.NameForEmit(style);
-                writer.OpenLnF("class {0}{1} {{", Name.ShortName, e);
+                writer.OpenLnF("class {0}{1}:", Name.ShortName, e);
                 style.CurrentClass = Name; // do not move this before "class XXX" is emited
                 for (var orderGroup = 0; orderGroup < 3; orderGroup++)
                     foreach (var field in Fields.Where(_ => FieldOrderGroup(_) == orderGroup))
                         field.Emit(emiter, writer, style);
                 foreach (var me in Methods) me.Emit(emiter, writer, style);
-                writer.CloseLn("}");
+                writer.CloseLn("");
             }
             finally
             {

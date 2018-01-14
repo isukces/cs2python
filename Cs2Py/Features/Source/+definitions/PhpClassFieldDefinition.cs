@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cs2Py.CSharp;
 using Cs2Py.Emit;
 
@@ -11,12 +12,25 @@ namespace Cs2Py.Source
 
         public void Emit(PySourceCodeEmiter emiter, PySourceCodeWriter writer, PyEmitStyle style)
         {
+            /*
             if (IsConst)
             {
                 //  const CONSTANT = 'constant value';
                 writer.WriteLnF("const {0} = {1};", Name, ConstValue.GetPyCode(style));
                 return;
             }
+            */
+
+
+            if (ConstValue != null)
+            {
+                if (!IsStatic)
+                    throw new Exception(
+                        "Only static fields with initialization are allowed. Move instance field initialization to constructior.");
+                writer.WriteLn(Name + " = " + ConstValue.GetPyCode(style));
+            }
+
+            /*
 
             var a = string.Format("{0}{1} ${2}",
                 Visibility.ToString().ToLower(),
@@ -26,6 +40,7 @@ namespace Cs2Py.Source
             if (ConstValue != null)
                 a += " = " + ConstValue.GetPyCode(style);
             writer.WriteLn(a + ";");
+            */
         }
 
         public IEnumerable<ICodeRequest> GetCodeRequests()
@@ -39,12 +54,7 @@ namespace Cs2Py.Source
         public string Name
         {
             get => _name;
-            set
-            {
-                value = (value ?? string.Empty).Trim();
-                value = PyVariableExpression.AddDollar(value, false);
-                _name = value;
-            }
+            set => _name = (value ?? string.Empty).Trim();
         }
 
         /// <summary>

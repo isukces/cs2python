@@ -92,7 +92,7 @@ namespace Cs2Py.Compilation
             var nsManager          = new PyModuleNamespaceManager();
             style.CurrentNamespace = null;
             if (!string.IsNullOrEmpty(_topComments))
-                writer.WriteLn("/*\r\n" + _topComments.Trim() + "\r\n*/");
+                writer.WriteLn("'''\r\n" + _topComments.Trim() + "\r\n'''");
             var module = this;
             {
                 // var noBracketStyle = PyEmitStyle.xClone(style, ShowBracketsEnum.Never);
@@ -257,6 +257,6 @@ namespace Cs2Py.Compilation
         public List<KeyValuePair<string, IPyValue>> DefinedConsts { get; } =
             new List<KeyValuePair<string, IPyValue>>();
 
-        private string _topComments = "Generated with CS2Py";
+        private string _topComments = "Generated with cs2py";
     }
 }

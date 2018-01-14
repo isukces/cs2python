@@ -287,7 +287,7 @@ namespace Cs2Py.CodeVisitors
                 case SyntaxKind.DivideExpression:
                     return VisitDivideExpression(node as BinaryExpressionSyntax);
                 case SyntaxKind.SimpleAssignmentExpression:
-                    return VisitSimpleAssignmentExpression(node as BinaryExpressionSyntax);
+                    return VisitSimpleAssignmentExpression(node as AssignmentExpressionSyntax);
                 case SyntaxKind.AddExpression:
                     return VisitAddExpression(node as BinaryExpressionSyntax);
                 case SyntaxKind.FalseLiteralExpression:
@@ -1472,7 +1472,7 @@ namespace Cs2Py.CodeVisitors
             return default(T);
         }
 
-        protected virtual T VisitSimpleAssignmentExpression(BinaryExpressionSyntax node)
+        protected virtual T VisitSimpleAssignmentExpression(AssignmentExpressionSyntax node)
         {
             if (throwNotImplementedException)
                 throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}",

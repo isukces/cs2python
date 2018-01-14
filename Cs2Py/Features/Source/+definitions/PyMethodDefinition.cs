@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cs2Py.Emit;
 
@@ -20,9 +21,25 @@ namespace Cs2Py.Source
         {
             // public function addFunction($function, $namespace = '') 
             var accessModifiers = GetAccessModifiers();
-            var param           =
-                Arguments == null ? "" : string.Join(", ", Arguments.Select(u => u.GetPyCode(style)));
-            code.OpenLnF("{0} function {1}({2}) {{", accessModifiers, Name, param);
+            var argumentsCode   = Arguments.Select(u => u.GetPyCode(style)).ToList();
+            var mk              = GetPyMethodKind();
+            switch (mk)
+            {
+                case PyMethodKind.ClassStatic:
+                    code.WriteLn("@staticmethod");
+                    argumentsCode.Insert(0, "cls");
+                    break;
+                case PyMethodKind.OutOfClass:
+                    break;
+                case PyMethodKind.ClassInstance:
+                    argumentsCode.Insert(0, "self");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            var param = Arguments == null ? "" : string.Join(", ", argumentsCode);
+            code.OpenLnF("def {1}({2}):", accessModifiers, Name, param);
             {
                 var g = GetGlobals();
                 if (!string.IsNullOrEmpty(g))
@@ -35,7 +52,7 @@ namespace Cs2Py.Source
                 statement.Emit(emiter, code, g);
             }
 
-            code.CloseLn("}");
+            code.CloseLn("");
         }
 
         public IEnumerable<ICodeRequest> GetCodeRequests()
@@ -56,9 +73,14 @@ namespace Cs2Py.Source
             var aa = GetCodeRequests()
                 .OfType<GlobalVariableRequest>()
                 .Where(i => !string.IsNullOrEmpty(i.VariableName))
-                .Select(i => PyVariableExpression.AddDollar(i.VariableName)).Distinct();
+                .Select(i => i.VariableName).Distinct();
             var globals = string.Join(", ", aa);
             return globals;
+        }
+
+        protected virtual PyMethodKind GetPyMethodKind()
+        {
+            return PyMethodKind.OutOfClass;
         }
 
 
@@ -85,5 +107,12 @@ namespace Cs2Py.Source
         public bool IsAnonymous => string.IsNullOrEmpty(_name);
 
         private string _name = string.Empty;
+    }
+
+    public enum PyMethodKind
+    {
+        OutOfClass,
+        ClassInstance,
+        ClassStatic
     }
 }

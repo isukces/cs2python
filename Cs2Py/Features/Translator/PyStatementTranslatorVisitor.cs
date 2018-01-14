@@ -126,12 +126,12 @@ namespace Cs2Py.Translator
             var s = new List<IPyStatement>();
             foreach (var i in src.Declaration.Declarators)
             {
-                /// to jest przypadek z c# 'int x;', dla Py można to pominąć
+                // to jest przypadek z c# 'int x;', dla Py można to pominąć
                 if (i.Value == null)
                     continue;
                 if (i.Value is UnknownIdentifierValue)
                     throw new NotImplementedException();
-                var l  = new PyVariableExpression(PyVariableExpression.AddDollar(i.Name), PyVariableKind.Local);
+                var l  = new PyVariableExpression(i.Name, PyVariableKind.Local);
                 var r  = TransValue(i.Value);
                 var tt = new PyAssignExpression(l, r);
                 s.Add(new PyExpressionStatement(tt));
@@ -227,7 +227,7 @@ namespace Cs2Py.Translator
             var s = new List<IPyStatement>();
             foreach (var i in src.Declarators)
             {
-                var l  = new PyVariableExpression(PyVariableExpression.AddDollar(i.Name), PyVariableKind.Local);
+                var l  = new PyVariableExpression(i.Name, PyVariableKind.Local);
                 var r  = TransValue(i.Value);
                 var tt = new PyAssignExpression(l, r);
                 s.Add(new PyExpressionStatement(tt));

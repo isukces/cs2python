@@ -19,7 +19,7 @@ namespace Cs2Py
             Console.Write("C# to Py");
             Console.ResetColor();
             Console.WriteLine(" compiler ver. {0}", typeof(Program).Assembly.GetName().Version);
-            Console.WriteLine(" Lang.Py ver. {0}", typeof(RequiredTranslatorAttribute).Assembly.GetName().Version);
+            Console.WriteLine(" Lang.Python ver. {0}", typeof(RequiredTranslatorAttribute).Assembly.GetName().Version);
 
             try
             {

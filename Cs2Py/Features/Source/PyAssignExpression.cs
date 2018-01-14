@@ -30,7 +30,7 @@ namespace Cs2Py.Source
             {
                 var e = left as PyPropertyAccessExpression;
                 var a = e.MakeSetValueExpression(right);
-                if (a is PyAssignExpression && (a as PyAssignExpression).Left is PyPropertyAccessExpression)
+                if ((a as PyAssignExpression)?.Left is PyPropertyAccessExpression)
                     if (EqualCode(a, this))
                         return this;
                 return a;
@@ -70,12 +70,12 @@ namespace Cs2Py.Source
         /// <summary>
         /// 
         /// </summary>
-        public IPyValue Left { get; set; }
+        public IPyValue Left { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public IPyValue Right { get; set; }
+        public IPyValue Right { get; private set; }
 
         /// <summary>
         /// 
@@ -83,7 +83,7 @@ namespace Cs2Py.Source
         public string OptionalOperator
         {
             get => _optionalOperator;
-            set => _optionalOperator = (value ?? string.Empty).Trim();
+            private set => _optionalOperator = (value ?? string.Empty).Trim();
         }
         private string _optionalOperator = string.Empty;
     }

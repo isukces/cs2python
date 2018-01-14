@@ -62,7 +62,10 @@ namespace Cs2Py.CodeVisitors
             return @new;
         }
 
-
+        protected override IPyValue VisitPyThisExpression(PyThisExpression node)
+        {
+            return node;
+        }
 
         protected override IPyValue VisitPyBinaryOperatorExpression(PyBinaryOperatorExpression node)
         {

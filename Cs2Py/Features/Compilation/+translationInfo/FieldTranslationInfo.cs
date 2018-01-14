@@ -19,11 +19,15 @@ namespace Cs2Py.Compilation
             if (fieldInfo.IsLiteral)
                 fti.Destination = FieldTranslationDestionations.ClassConst;
             {
-                fti.ScriptName          = fieldInfo.Name;
+                fti.ScriptName = fieldInfo.Name;
+                if (!fieldInfo.IsPublic)
+                    fti.ScriptName = "_" + fieldInfo.Name;
+                if (fieldInfo.IsPrivate)
+                    fti.ScriptName      = "__" + fieldInfo.Name;
                 var scriptNameAttribute = fieldInfo.GetCustomAttribute<ScriptNameAttribute>();
                 if (scriptNameAttribute != null)
                 {
-                    fti.ScriptName             = scriptNameAttribute.Name;
+                    fti.ScriptName            = scriptNameAttribute.Name;
                     fti.IsScriptNamePyEncoded = scriptNameAttribute.Kind == ScriptNameAttribute.Kinds.IntIndex;
                 }
             }

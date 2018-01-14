@@ -32,7 +32,7 @@ namespace Cs2Py.Source
 
         public override string GetPyCode(PyEmitStyle style)
         {
-            return string.Format("{0}->{1}", TargetObject.GetPyCode(style), FieldName);
+            return string.Format("{0}.{1}", TargetObject.GetPyCode(style), FieldName);
         }
 
         public override string ToString()
@@ -43,7 +43,7 @@ namespace Cs2Py.Source
         /// <summary>
         ///     Własność jest tylko do odczytu.
         /// </summary>
-        public string FieldName { get; } = string.Empty;
+        public string FieldName { get; }
 
         /// <summary>
         ///     Własność jest tylko do odczytu.

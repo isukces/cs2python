@@ -70,6 +70,8 @@ namespace Cs2Py.CodeVisitors
                     return VisitPyWhileStatement(node as PyWhileStatement);
                 case PySourceItems.PyForEachStatement:
                     return VisitPyForEachStatement(node as PyForEachStatement);
+                case PySourceItems.PyThisExpression:
+                    return VisitPyThisExpression(node as PyThisExpression);
                 default: throw new NotSupportedException(node.Kind.ToString() + "," + node.GetType().Name);
             }
         }
@@ -277,6 +279,13 @@ namespace Cs2Py.CodeVisitors
                 throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}", "VisitPyForEachStatement", this.GetType().FullName));
             return default(T);
         }
+
+        protected virtual T VisitPyThisExpression(PyThisExpression node)
+        {
+            if (ThrowNotImplementedException)
+                throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}", "VisitPyThisExpression", this.GetType().FullName));
+            return default(T);
+        }
 		public static PySourceItems GetKind(PySourceBase x) {
 			if (x == null) throw new ArgumentNullException();           
 			if (x.GetType() == typeof(PyAssignVariableStatement)) return PySourceItems.PyAssignVariableStatement;
@@ -307,6 +316,7 @@ namespace Cs2Py.CodeVisitors
 			if (x.GetType() == typeof(PySwitchStatement)) return PySourceItems.PySwitchStatement;
 			if (x.GetType() == typeof(PyWhileStatement)) return PySourceItems.PyWhileStatement;
 			if (x.GetType() == typeof(PyForEachStatement)) return PySourceItems.PyForEachStatement;
+			if (x.GetType() == typeof(PyThisExpression)) return PySourceItems.PyThisExpression;
             throw new NotSupportedException(x.GetType().FullName);
 		}
     }
@@ -340,5 +350,6 @@ PyExpressionStatement,
 PySwitchStatement,
 PyWhileStatement,
 PyForEachStatement,
+PyThisExpression,
 	}
 }

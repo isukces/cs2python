@@ -11,7 +11,7 @@ namespace Cs2Py.Source
             s      = s ?? new PyEmitStyle();
             var eq = s.Compression == EmitStyleCompression.Beauty ? " = " : "=";
             var d  = DefaultValue != null ? eq + DefaultValue.GetPyCode(s) : "";
-            return string.Format("${0}{1}", _name, d);
+            return string.Format("{0}{1}", _name, d);
         }
 
         public override string ToString()

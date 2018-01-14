@@ -98,7 +98,8 @@ string[] GetDirectives() {
 		"PyExpressionStatement",
 		"PySwitchStatement",
 		"PyWhileStatement",
-		"PyForEachStatement"
+		"PyForEachStatement",
+		"PyThisExpression"
     };
 	return x;
    

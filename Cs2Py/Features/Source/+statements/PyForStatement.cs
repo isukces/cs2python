@@ -34,7 +34,7 @@ namespace Cs2Py.Source
                 var writer = new PySourceCodeWriter();
                 writer.Clear();
                 item.Emit(emiter, writer, xStyle);
-                list.Add(writer.GetCode(true).Trim());
+                list.Add(writer.GetCode().Trim());
             }
 
             return string.Join(", ", list);

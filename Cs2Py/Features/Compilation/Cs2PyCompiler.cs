@@ -157,8 +157,7 @@ namespace Cs2Py.Compilation
                     if (!definedConstName.StartsWith("\\"))
                         definedConstName = "\\" + definedConstName;
 
-                    string path;
-                    if (!referencedPyLibsLocations.TryGetValue(x.AssemblyName, out path))
+                    if (!referencedPyLibsLocations.TryGetValue(x.AssemblyName, out var path))
                         continue;
                     path                                     = Path.Combine(path, x.RootPath);
                     var relativePath                         = PathUtil.MakeRelativePath(path, realOutputDir);
@@ -190,10 +189,9 @@ namespace Cs2Py.Compilation
             ProjectCompilation = ProjectCompilation.WithReferences(_cSharpProject.MetadataReferences);
             foreach (var i in ProjectCompilation.References)
                 Console.WriteLine("   linked with {0}", i.Display);
-            EmitResult result;
 
-            var tmp          = sandbox.EmitCompiledAssembly(ProjectCompilation, out result, dllFilename);
-            CompiledAssembly = tmp != null ? tmp.WrappedAssembly : null;
+            var tmp          = sandbox.EmitCompiledAssembly(ProjectCompilation, out var result, dllFilename);
+            CompiledAssembly = tmp?.WrappedAssembly;
             return result;
         }
 

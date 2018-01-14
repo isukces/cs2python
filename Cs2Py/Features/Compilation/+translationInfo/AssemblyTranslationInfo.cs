@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Cs2Py.Source;
 using Lang.Python;
 
 namespace Cs2Py.Compilation
@@ -60,6 +61,7 @@ namespace Cs2Py.Compilation
 
         private static IPyValue GetDefaultIncludePath(AssemblyTranslationInfo ati, TranslationInfo translationInfo)
         {
+            return new PyConstValue("---FAKE---");
 #if PHP
             var pathElements = new List<IPyValue>();
 

@@ -64,7 +64,7 @@ namespace Cs2Py.Source
             if (style.AsIncrementor)
                 writer.Write(code);
             else
-                writer.WriteLn(code + ";");
+                writer.WriteLn(code);
         }
 
         public override IEnumerable<ICodeRequest> GetCodeRequests()

@@ -17,21 +17,15 @@ namespace Cs2Py.Source
         }
         // Public Methods 
 
-        public static string AddDollar(string x, bool condition = true)
-        {
-            if (condition)
-                return x.StartsWith("$") ? x : "$" + x;
-            return x.StartsWith("$") ? x.TrimStart('$') : x;
-        }
-
+       
         public static PyVariableExpression MakeGlobal(string name)
         {
-            return new PyVariableExpression(AddDollar(name), PyVariableKind.Global);
+            return new PyVariableExpression(name, PyVariableKind.Global);
         }
 
         public static PyVariableExpression MakeLocal(string name, bool isFunctionArgument)
         {
-            return new PyVariableExpression(AddDollar(name),
+            return new PyVariableExpression(name,
                 isFunctionArgument ? PyVariableKind.LocalArgument : PyVariableKind.Local);
         }
 

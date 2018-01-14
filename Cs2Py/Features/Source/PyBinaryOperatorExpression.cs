@@ -50,15 +50,15 @@ namespace Cs2Py.Source
         /// Tworzy instancję obiektu
         /// <param name="left"></param>
         /// <param name="right"></param>
-        /// <param name="Operator"></param>
+        /// <param name="operator_"></param>
         /// </summary>
-        public PyBinaryOperatorExpression(string Operator, IPyValue left, IPyValue right)
+        public PyBinaryOperatorExpression(string operator_, IPyValue left, IPyValue right)
         {
-            if (Left == null) throw new ArgumentNullException(nameof(left));
-            if (Right == null) throw new ArgumentNullException(nameof(right));
+            if (left == null) throw new ArgumentNullException(nameof(left));
+            if (right == null) throw new ArgumentNullException(nameof(right));
             Left          = left;
             Right         = right;
-            this.Operator = Operator;
+            Operator = operator_;
         }
 
         /// <summary>

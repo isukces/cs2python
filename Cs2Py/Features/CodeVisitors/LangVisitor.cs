@@ -88,7 +88,7 @@ namespace Cs2Py.CodeVisitors
             throw new Exception("Why am I here???");
             return node.Arguments.Select(i => Visit(i) as FunctionArgument).ToArray();
         }
-        protected override object VisitSimpleAssignmentExpression(BinaryExpressionSyntax node)
+        protected override object VisitSimpleAssignmentExpression(AssignmentExpressionSyntax node)
         {
             Console.WriteLine("aa");
             return base.VisitSimpleAssignmentExpression(node);

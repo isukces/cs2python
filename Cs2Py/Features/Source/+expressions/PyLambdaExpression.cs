@@ -33,7 +33,7 @@ namespace Cs2Py.Source
             var wde         = new PySourceCodeWriter();
             wde.Clear();
             MethodDefinition.Emit(e, wde, s);
-            var code = wde.GetCode(true).Trim();
+            var code = wde.GetCode().Trim();
             return code;
         }
 
