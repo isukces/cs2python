@@ -12,7 +12,30 @@ namespace Cs2Py.NodeTranlators
             return src.Arguments.Select(a => ctx.TranslateValue(a.MyValue)).ToArray();
         }
 
-        
+        private static string ConvertToDirect1(string name)
+        {
+            name = name.ToLower();
+            if (
+                name == "sin" || name == "cos" || name == "tan"
+                || name == "asin" || name == "acos" || name == "atan"
+                || name == "sinh" || name == "cosh" || name == "tanh"
+                || name == "asinh" || name == "acosh" || name == "atanh"
+                || name == "exp" || name == "floor" || name == "log10")
+                return name;
+            if (name == "ceiling") return "ceil";
+            return null;
+        }
+
+        private static string ConvertToDirect2(string name)
+        {
+            name = name.ToLower();
+            if (name == "pow" || name == "log")
+                return name;
+
+            return null;
+        }
+
+
         private static IPyValue SingleArg(IExternalTranslationContext ctx, CsharpMethodCallExpression src)
         {
             if (src.Arguments.Length != 1)
@@ -44,17 +67,19 @@ namespace Cs2Py.NodeTranlators
                 if (src.Arguments.Length == 1)
                 {
                     var name = ConvertToDirect1(src.MethodInfo.Name);
-                    if (name!=null)
-                        return SingleArgumentMathFunction(src.MethodInfo.Name.ToLower(), ctx, src);
-                } else if (src.Arguments.Length == 2)
+                    if (name != null)
+                        return SingleArgumentMathFunction(name, ctx, src);
+                }
+                else if (src.Arguments.Length == 2)
                 {
-                    var name = ConvertToDirect1(src.MethodInfo.Name);
+                    var name = ConvertToDirect2(src.MethodInfo.Name);
                     if (name != null)
                     {
                         var moduleExpression = new PyModuleExpression(PyModules.Math, name);
                         return new PyMethodCallExpression(moduleExpression, name, Args(ctx, src));
                     }
                 }
+
                 var fn = src.MethodInfo.ToString();
                 /*
                 switch (fn)
@@ -66,7 +91,8 @@ namespace Cs2Py.NodeTranlators
                 }
 */
                 throw new NotImplementedException($"{nameof(SystemMathNodeTranslator)}->{fn}");
-            }             
+            }
+
             if (src.MethodInfo.DeclaringType == typeof(double))
             {
                 var fn = src.MethodInfo.ToString();
@@ -78,32 +104,6 @@ namespace Cs2Py.NodeTranlators
                         return SingleArgumentMathFunction("isinf", ctx, src);
                 }
             }
-
-            return null;
-        }
-
-        private static string ConvertToDirect1(string name)
-        {
-            name = name.ToLower();
-            if (
-                name == "sin" || name == "cos" || name == "tan"
-                || name == "asin" || name == "acos" || name == "atan"
-                || name == "sinh" || name == "cosh" || name == "tanh"
-                || name == "asinh" || name == "acosh" || name == "atanh"
-                || name == "exp")
-                return name;
-            if (name =="ceiling") return "ceil";
-
-            return null;
-        }
-        
-        private static string ConvertToDirect2(string name)
-        {
-            name = name.ToLower();
-            if (  name=="pow")
-                return name;
-       
-
             return null;
         }
     }
