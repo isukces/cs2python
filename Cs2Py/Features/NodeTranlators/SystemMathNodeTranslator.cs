@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Cs2Py.CSharp;
 using Cs2Py.Source;
 
@@ -6,6 +7,12 @@ namespace Cs2Py.NodeTranlators
 {
     public class SystemMathNodeTranslator : IPyNodeTranslator<CsharpMethodCallExpression>
     {
+        private static IPyValue[] Args(IExternalTranslationContext ctx, CsharpMethodCallExpression src)
+        {
+            return src.Arguments.Select(a => ctx.TranslateValue(a.MyValue)).ToArray();
+        }
+
+        
         private static IPyValue SingleArg(IExternalTranslationContext ctx, CsharpMethodCallExpression src)
         {
             if (src.Arguments.Length != 1)
@@ -34,7 +41,22 @@ namespace Cs2Py.NodeTranlators
             if (src.MethodInfo.DeclaringType == typeof(Math))
             {
                 // https://docs.python.org/3/library/math.html
+                if (src.Arguments.Length == 1)
+                {
+                    var name = ConvertToDirect1(src.MethodInfo.Name);
+                    if (name!=null)
+                        return SingleArgumentMathFunction(src.MethodInfo.Name.ToLower(), ctx, src);
+                } else if (src.Arguments.Length == 2)
+                {
+                    var name = ConvertToDirect1(src.MethodInfo.Name);
+                    if (name != null)
+                    {
+                        var moduleExpression = new PyModuleExpression(PyModules.Math, name);
+                        return new PyMethodCallExpression(moduleExpression, name, Args(ctx, src));
+                    }
+                }
                 var fn = src.MethodInfo.ToString();
+                /*
                 switch (fn)
                 {
                     case "Double Sin(Double)":
@@ -42,7 +64,7 @@ namespace Cs2Py.NodeTranlators
                     case "Double Tan(Double)":
                         return SingleArgumentMathFunction(src.MethodInfo.Name.ToLower(), ctx, src);
                 }
-
+*/
                 throw new NotImplementedException($"{nameof(SystemMathNodeTranslator)}->{fn}");
             }             
             if (src.MethodInfo.DeclaringType == typeof(double))
@@ -60,6 +82,29 @@ namespace Cs2Py.NodeTranlators
             return null;
         }
 
- 
+        private static string ConvertToDirect1(string name)
+        {
+            name = name.ToLower();
+            if (
+                name == "sin" || name == "cos" || name == "tan"
+                || name == "asin" || name == "acos" || name == "atan"
+                || name == "sinh" || name == "cosh" || name == "tanh"
+                || name == "asinh" || name == "acosh" || name == "atanh"
+                || name == "exp")
+                return name;
+            if (name =="ceiling") return "ceil";
+
+            return null;
+        }
+        
+        private static string ConvertToDirect2(string name)
+        {
+            name = name.ToLower();
+            if (  name=="pow")
+                return name;
+       
+
+            return null;
+        }
     }
 }
