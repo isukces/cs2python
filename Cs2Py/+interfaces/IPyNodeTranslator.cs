@@ -5,7 +5,7 @@ namespace Cs2Py
     public interface IPyNodeTranslator<T> where T : IValue
     {
 
-        IPyValue TranslateToPhp(IExternalTranslationContext ctx, T src);
+        IPyValue TranslateToPython(IExternalTranslationContext ctx, T src);
         int       GetPriority();
     }
 }

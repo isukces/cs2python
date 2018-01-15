@@ -8,32 +8,18 @@ namespace Lang.Python
         /// <summary>
         ///     Tworzy instancję obiektu
         ///     <param name="moduleShortName">Module short name i.e "hello-page" or "mynamespace/hello-class"</param>
-        ///     <param name="includePathPrefix"></param>
         /// </summary>
-        public ModuleAttribute(string moduleShortName, params string[] includePathPrefix)
-        {
-            ModuleShortName   = moduleShortName;
-            IncludePathPrefix = includePathPrefix;
-        }
-
-
-        /// <summary>
-        ///     Tworzy instancję obiektu
-        ///     <param name="moduleShortName">Module short name i.e "hello-page" or "mynamespace/hello-class"</param>
-        /// </summary>
-        public ModuleAttribute(string moduleShortName)
+        public ModuleAttribute(string moduleShortName, bool isExternal)
         {
             ModuleShortName = moduleShortName;
+            IsExternal      = isExternal;
         }
 
         /// <summary>
         ///     Module short name i.e "hello-page" or "mynamespace/hello-class"; własność jest tylko do odczytu.
         /// </summary>
-        public string ModuleShortName { get; } = string.Empty;
+        public string ModuleShortName { get; }
 
-        /// <summary>
-        ///     Własność jest tylko do odczytu.
-        /// </summary>
-        public string[] IncludePathPrefix { get; }
+        public bool IsExternal { get; }
     }
 }

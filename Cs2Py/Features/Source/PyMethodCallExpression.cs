@@ -6,11 +6,11 @@ using Lang.Python;
 
 namespace Cs2Py.Source
 {
-    public  class PyMethodCallExpression : PyValueBase
+    public class PyMethodCallExpression : PyValueBase
     {
         /// <summary>
-        /// Tworzy instancję obiektu
-        /// <param name="name"></param>
+        ///     Tworzy instancję obiektu
+        ///     <param name="name"></param>
         /// </summary>
         public PyMethodCallExpression(string name, params IPyValue[] args)
         {
@@ -19,8 +19,8 @@ namespace Cs2Py.Source
         }
 
         /// <summary>
-        /// Tworzy instancję obiektu
-        /// <param name="name"></param>
+        ///     Tworzy instancję obiektu
+        ///     <param name="name"></param>
         /// </summary>
         public PyMethodCallExpression(IPyValue targetObject, string name, params IPyValue[] args)
         {
@@ -29,20 +29,25 @@ namespace Cs2Py.Source
             TargetObject = targetObject;
         }
 
+
+        /// <summary>
+        ///     Tworzy instancję obiektu
+        ///     <param name="name"></param>
+        /// </summary>
+        public PyMethodCallExpression(string name)
+        {
+            Name = name;
+        }
+
         // Public Methods 
 
 
-        public static PyMethodCallExpression MakeConstructor(string constructedClassName, MethodTranslationInfo translationInfo, params IPyValue[] args)
+        public static PyMethodCallExpression MakeConstructor(string constructedClassName,
+            MethodTranslationInfo                                   translationInfo, params IPyValue[] args)
         {
             var methodCallExpression = new PyMethodCallExpression(ConstructorMethodName, args);
             methodCallExpression.SetClassName((PyQualifiedName)constructedClassName, translationInfo);
             return methodCallExpression;
-        }
-
-        public void SetClassName(PyQualifiedName className, MethodTranslationInfo translationInfo)
-        {
-            _className      = className.MakeAbsolute();
-            TranslationInfo = translationInfo;
         }
 
         // Public Methods 
@@ -52,12 +57,9 @@ namespace Cs2Py.Source
             var requests = PyStatementBase.GetCodeRequests(Arguments.Select(i => i.Expression)).ToList();
             if (!_className.IsEmpty && !DontIncludeClass && _className.EmitName != PyQualifiedName.ClassnameSelf)
                 requests.Add(new ClassCodeRequest(_className));
+            if (TargetObject != null)
+                requests.AddRange(TargetObject.GetCodeRequests());
             return requests;
-        }
-
-        public override string ToString()
-        {
-            return GetPyCode(new PyEmitStyle());
         }
 
         public override string GetPyCode(PyEmitStyle style)
@@ -70,21 +72,35 @@ namespace Cs2Py.Source
                 var a = string.Format("new {0}({1})", _className.NameForEmit(style), arguments);
                 return a;
             }
+
             var name = _name;
             if (!_className.IsEmpty)
+            {
                 name = _className.NameForEmit(style) + "::" + name;
+            }
             else if (TargetObject != null)
             {
                 var to = TargetObject;
-                if (TargetObject is PyMethodCallExpression && (TargetObject as PyMethodCallExpression).IsConstructorCall)
+                if (TargetObject is PyMethodCallExpression &&
+                    (TargetObject as PyMethodCallExpression).IsConstructorCall)
                     to = new PyParenthesizedExpression(to);
-                name   = to.GetPyCode(style) + "->" + name;
+                name   = to.GetPyCode(style) + "." + name;
             }
+
             var code = string.Format(name == "echo" ? "{0} {1}" : "{0}({1})", name, arguments);
             return code;
         }
 
-        public const string ConstructorMethodName = "*";
+        public void SetClassName(PyQualifiedName className, MethodTranslationInfo translationInfo)
+        {
+            _className      = className.MakeAbsolute();
+            TranslationInfo = translationInfo;
+        }
+
+        public override string ToString()
+        {
+            return GetPyCode(new PyEmitStyle());
+        }
 
         public MethodCallStyles CallType
         {
@@ -95,55 +111,46 @@ namespace Cs2Py.Source
                 return _className.IsEmpty ? MethodCallStyles.Procedural : MethodCallStyles.Static;
             }
         }
-    
-     
+
         /// <summary>
-        /// Tworzy instancję obiektu
-        /// <param name="name"></param>
-        /// </summary>
-        public PyMethodCallExpression(string name)
-        {
-            Name = name;
-        }
- 
-        /// <summary>
-        /// 
         /// </summary>
         public string Name
         {
             get => _name;
-            set => _name = (value ?? string.Empty).Trim();
+            private set => _name = (value ?? string.Empty).Trim();
         }
-        private string _name = string.Empty;
+
         /// <summary>
-        /// 
         /// </summary>
         public List<PyMethodInvokeValue> Arguments { get; set; } = new List<PyMethodInvokeValue>();
 
         /// <summary>
-        /// Własność jest tylko do odczytu.
+        ///     Własność jest tylko do odczytu.
         /// </summary>
         public bool IsConstructorCall => _name == ConstructorMethodName;
 
         /// <summary>
-        /// 
         /// </summary>
         public IPyValue TargetObject { get; set; }
 
         /// <summary>
-        /// Nazwa klasy dla konstruktora lub metody statycznej; własność jest tylko do odczytu.
+        ///     Nazwa klasy dla konstruktora lub metody statycznej; własność jest tylko do odczytu.
         /// </summary>
         public PyQualifiedName ClassName => _className;
 
-        private PyQualifiedName _className;
         /// <summary>
-        /// indicates that method is from standard Py class or other framework i.e. Wordpress
+        ///     indicates that method is from standard Py class or other framework i.e. Wordpress
         /// </summary>
         public bool DontIncludeClass { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
-        public MethodTranslationInfo TranslationInfo { get; set; }
+        public MethodTranslationInfo TranslationInfo { get; private set; }
+
+        private string _name = string.Empty;
+
+        private PyQualifiedName _className;
+
+        public const string ConstructorMethodName = "*";
     }
 }

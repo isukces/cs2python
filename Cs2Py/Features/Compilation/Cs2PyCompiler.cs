@@ -389,25 +389,20 @@ namespace Cs2Py.Compilation
 
             if (_verboseToConsole)
                 Console.WriteLine("Create Py output files");
-
-            #region Tworzenie plików Py
-
             {
-                // var emitContext = new EmitContext();
+                // Tworzenie plików Py
                 var emitStyle = new PyEmitStyle();
 
                 translationInfo.CurrentAssembly = CompiledAssembly; // dla pewności
-                foreach (var module in translator.Modules.Where(i => i.Name.Library == libName && !i.IsEmpty))
+                foreach (var module in translator.Modules/*.Where(i => i.Name.Library == libName && !i.IsEmpty) */)
                 {
-                    var fileName = module.Name.MakeEmitPath(ecBaseDir, 1);
+                    var fileName = module.ModuleName.MakeEmitPath(ecBaseDir, 1);
                     foreach (var modProcessor in translationInfo.ModuleProcessors)
                         modProcessor.BeforeEmit(module, translationInfo);
                     var emiter = new PySourceCodeEmiter();
                     module.Emit(emiter, emitStyle, fileName);
                 }
             }
-
-            #endregion
         }
 
         /// <summary>

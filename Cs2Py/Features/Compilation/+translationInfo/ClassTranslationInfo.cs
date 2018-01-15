@@ -132,10 +132,8 @@ namespace Cs2Py.Compilation
                 : _info.GetOrMakeTranslationInfo(Type.DeclaringType);
             var ats          = Type.GetCustomAttributes(false);
             _ignoreNamespace = ats.OfType<IgnoreNamespaceAttribute>().Any();
-
-            #region ScriptName
-
             {
+                // ScriptName
                 if (_ignoreNamespace)
                     _scriptName =
                         (PyQualifiedName)PyQualifiedName
@@ -161,58 +159,36 @@ namespace Cs2Py.Compilation
                 if (declaringTypeTranslationInfo != null)
                     _scriptName =
                         (PyQualifiedName)(declaringTypeTranslationInfo.ScriptName + "__" +
-                                           Type.Name); // parent clas followed by __ and short name
+                                          Type.Name); // parent clas followed by __ and short name
             }
 
-            #endregion
-
-            #region Module name
-
             {
-                //if (declaringTypeTranslationInfo != null && declaringTypeTranslationInfo.ModuleName != null)
-                _moduleName = new PyCodeModuleName(Type, ati, declaringTypeTranslationInfo);
+                // Module name
+                _moduleName = new PyCodeModuleName(Type, true, declaringTypeTranslationInfo);
             }
-
-            #endregion
-
-            #region PageAttribute
-
             {
+                // PageAttribute
                 var pageAttribute = ats.OfType<PageAttribute>().FirstOrDefault();
                 _isPage           = pageAttribute != null;
                 _pageMethod       = _isPage ? FindPyMainMethod(Type) : null;
             }
-
-            #endregion
-
-            #region AsArrayAttribute
-
             {
+                // AsArrayAttribute
                 var asArrayAttribute = ats.OfType<AsArrayAttribute>().FirstOrDefault();
                 _isArray             = asArrayAttribute != null;
             }
-
-            #endregion
-
-            #region SkipAttribute
-
             {
+                // SkipAttribute
                 var skipAttribute = ats.OfType<SkipAttribute>().FirstOrDefault();
                 if (skipAttribute != null)
                     _skip = true;
             }
-
-            #endregion
-
-            #region BuiltInAttribute
-
             {
+                // BuiltInAttribute
                 var builtInAttribute = ats.OfType<BuiltInAttribute>().FirstOrDefault();
                 if (builtInAttribute != null)
                     _buildIn = true;
             }
-
-            #endregion
 
             if (_skip && _buildIn)
                 throw new Exception("Don't mix SkipAttribute and BuiltInAttribute for type " + Type.ExcName());

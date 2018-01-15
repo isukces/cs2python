@@ -13,6 +13,7 @@
     <DefineConstants>$(DefineConstants);ROSLYN</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
     <PackageReference Include="Microsoft.Build" Version="15.1.1012" />
     <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.1012" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="2.2.0" />

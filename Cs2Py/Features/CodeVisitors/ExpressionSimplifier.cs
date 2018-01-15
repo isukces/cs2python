@@ -153,6 +153,11 @@ namespace Cs2Py.CodeVisitors
             return node;
         }
 
+        protected override IPyValue VisitPyModuleExpression(PyModuleExpression node)
+        {
+            return node;
+        }
+
         protected override IPyValue VisitPyConstValue(PyConstValue node)
         {
             return node;

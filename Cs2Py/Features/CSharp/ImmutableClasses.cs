@@ -114,7 +114,7 @@ namespace Cs2Py.CSharp
       }
       private string alias;
     } // end of ImportNamespace
-    public sealed partial class ClassDeclaration : CSharpBase, INamespaceMember,IClassMember {
+    public sealed partial class ClassDeclaration : CSharpBase, INamespaceMember,IClassMember,IClassOrInterface {
       public ClassDeclaration(string Name, IClassMember[] Members){
         this.name = Name;
         this.members = Members;
@@ -212,7 +212,7 @@ namespace Cs2Py.CSharp
       }
       private ImportNamespace[] items;
     } // end of ImportNamespaceCollection
-    public sealed partial class InterfaceDeclaration : CSharpBase, INamespaceMember,IClassMember {
+    public sealed partial class InterfaceDeclaration : CSharpBase, INamespaceMember,IClassMember,IClassOrInterface {
       public InterfaceDeclaration(string Name, IClassMember[] Members){
         this.name = Name;
         this.members = Members;

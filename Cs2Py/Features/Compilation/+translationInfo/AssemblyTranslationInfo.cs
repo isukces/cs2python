@@ -5,7 +5,7 @@ using Lang.Python;
 
 namespace Cs2Py.Compilation
 {
-    public class AssemblyTranslationInfo
+    public class AssemblyTranslationInfo 
     {
         public static AssemblyTranslationInfo FromAssembly(Assembly assembly, TranslationInfo translationInfo)
         {

@@ -12,11 +12,11 @@ namespace Cs2Py.Compilation
     {
         /// <summary>
         ///     Tworzy instancję obiektu
-        ///     <param name="name">nazwa pliku</param>
+        ///     <param name="moduleName">nazwa pliku</param>
         /// </summary>
-        public PyCodeModule(PyCodeModuleName name)
+        public PyCodeModule(PyCodeModuleName moduleName)
         {
-            Name = name;
+            ModuleName = moduleName;
         }
         // Private Methods 
 
@@ -148,7 +148,7 @@ namespace Cs2Py.Compilation
         /// <returns>Tekstowa reprezentacja obiektu</returns>
         public override string ToString()
         {
-            return string.Format("Module {0}", Name);
+            return string.Format("Module {0}", ModuleName);
         }
         // Private Methods 
 
@@ -195,15 +195,14 @@ namespace Cs2Py.Compilation
         {
             var result         = new List<IPyStatement>();
             var alreadyDefined = new List<string>();
-            var style          = new PyEmitStyle();
             foreach (var item in RequiredFiles.Distinct())
             {
-                var code = item.GetPyCode(style); //rozróżniam je po wygenerowanym kodzie
+                var code = item.GetPyCode(); //rozróżniam je po wygenerowanym kodzie
                 if (alreadyDefined.Contains(code))
                     continue;
                 alreadyDefined.Add(code);
-                var req = new PyMethodCallExpression("require_once", item);
-                result.Add(new PyExpressionStatement(req));
+                var req = new PyImportStatement(item.RelativeModulePath, item.Alias);
+                result.Add(req);
             }
 
             return result.ToArray();
@@ -222,7 +221,7 @@ namespace Cs2Py.Compilation
         /// <summary>
         ///     nazwa pliku; własność jest tylko do odczytu.
         /// </summary>
-        public PyCodeModuleName Name { get; }
+        public PyCodeModuleName ModuleName { get; }
 
         /// <summary>
         ///     komentarz na szczycie pliku
@@ -249,7 +248,7 @@ namespace Cs2Py.Compilation
         /// <summary>
         ///     Pliki dołączane do require; własność jest tylko do odczytu.
         /// </summary>
-        public List<IPyValue> RequiredFiles { get; } = new List<IPyValue>();
+        public List<PyImportRequest> RequiredFiles { get; } = new List<PyImportRequest>();
 
         /// <summary>
         ///     Własność jest tylko do odczytu.

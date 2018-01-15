@@ -61,10 +61,10 @@ namespace Cs2Py.CodeVisitors
     }
 	public enum PySourceItems
 	{
-		<#
+<#
 			foreach(var j in GetDirectives()) 
-				Write(j+",\r\n");               
-         #>
+                Write("		" + j + ",\r\n");               
+#>
 	}
 }
 <#+
@@ -99,9 +99,11 @@ string[] GetDirectives() {
 		"PySwitchStatement",
 		"PyWhileStatement",
 		"PyForEachStatement",
-		"PyThisExpression"
+		"PyThisExpression",
+		"PyModuleExpression"
+		
     };
-	return x;
+	return x.OrderBy(a=>a).ToArray();
    
 }
 #>

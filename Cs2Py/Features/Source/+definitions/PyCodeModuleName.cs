@@ -1,133 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Cs2Py.CodeVisitors;
 using Cs2Py.Compilation;
 using Lang.Python;
 
 namespace Cs2Py.Source
 {
-    public abstract class PySourceBase
-    {
-        public static bool EqualCode<T>(T a, T b) where T : class
-        {
-            if ((a is IPyValue || a == null) && (b is IPyValue || b == null))
-            {
-                var codeA = a == null ? "" : (a as IPyValue).GetPyCode(null);
-                var codeB = a == null ? "" : (b as IPyValue).GetPyCode(null);
-                return codeA == codeB;
-            }
-            if (a == null && b == null) return true;
-            if (a == null || b == null) return false;
-            return a == b;
-        }
-        public static bool EqualCode_Array<T>(T[] a, T[] b) where T : class
-        {
-            if (a == null && b == null) return true;
-            if (a == null || b == null) return false;
-            if (a.Length != b.Length) return false;
-            for (var i = 0; i < a.Length; i++)
-                if (!EqualCode(a[i], b[i]))
-                    return false;
-            return true;
-        }
-        public static bool EqualCode_List<T>(List<T> a, List<T> b) where T : class
-        {
-            if (a == null && b == null) return true;
-            if (a == null || b == null) return false;
-            if (a.Count != b.Count) return false;
-            for (var i = 0; i < a.Count; i++)
-                if (!EqualCode(a[i], b[i]))
-                    return false;
-            return true;
-        }
-        public PySourceItems Kind
-        {
-            get
-            {
-                return PyBaseVisitor<int>.GetKind(this);
-            }
-        }
-    }
     public class PyCodeModuleName : PySourceBase, IEquatable<PyCodeModuleName>
     {
         /// <summary>
         ///     Creates instance of modulename not related to any .NET class (i.e. for config code)
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="assemblyInfo"></param>
-        public PyCodeModuleName(string name, AssemblyTranslationInfo assemblyInfo)
+        /// <param name="isExternalModule"></param>
+        public PyCodeModuleName(string name, bool isExternalModule)
         {
-            if (assemblyInfo == null)
-                throw new ArgumentNullException(nameof(assemblyInfo));
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
-
-            AssemblyInfo = assemblyInfo;
-            Name         = name;
+            Name             = name ?? throw new ArgumentNullException(nameof(name));
+            Name             = Pn(Name);
+            IsExternalModule = isExternalModule;
         }
 
-        public PyCodeModuleName(Type type, AssemblyTranslationInfo assemblyInfo,
-            ClassTranslationInfo     declaringTypeInfo)
+        public PyCodeModuleName(Type type, bool isExternalModule, ClassTranslationInfo declaringTypeInfo)
         {
-            if (assemblyInfo == null)
-                throw new ArgumentNullException(nameof(assemblyInfo));
+            IsExternalModule = isExternalModule;
             if ((object)type == null)
                 throw new ArgumentNullException(nameof(type));
             if ((object)type.DeclaringType != null && declaringTypeInfo == null)
                 throw new ArgumentNullException(nameof(declaringTypeInfo));
-
-            AssemblyInfo = assemblyInfo;
-
-            {
-                if (type.FullName == null)
-                    Name = type.Name;
-                else
-                    Name = type.FullName.Replace(".", "_").Replace("+", "__").Replace("<", "__").Replace(">", "__");
-                // take module name from parent, this can be overrided if nested class is decorated with attributes
-                if (declaringTypeInfo != null && declaringTypeInfo.ModuleName != null)
-                    Name = declaringTypeInfo.ModuleName.Name;
-                var ats  = type.GetCustomAttributes(false);
-
-                #region ModuleAttribute
-
-                {
-                    var moduleAttribute = type.GetCustomAttribute<ModuleAttribute>();
-                    if (moduleAttribute != null)
-                    {
-                        Name                      = moduleAttribute.ModuleShortName;
-                        OptionalIncludePathPrefix = moduleAttribute.IncludePathPrefix;
-                    }
-                }
-
-                #endregion
-
-                #region PageAttribute
-
-                {
-                    var pageAttribute = type.GetCustomAttribute<PageAttribute>();
-                    if (pageAttribute != null)
-                        Name = pageAttribute.ModuleShortName;
-                }
-
-                #endregion
-            }
+            Name = Pn(GetName(type, declaringTypeInfo));
         }
 
         private PyCodeModuleName()
         {
         }
 
-        /// <summary>
-        ///     Used for patch only
-        /// </summary>
-        public static bool IsFrameworkName(PyCodeModuleName name)
-        {
-            var List = "commonlanguageruntimelibrary".Split(' ');
-            return List.Contains(name.Library);
-        }
 
         /// <summary>
         ///     Realizuje operator ==
@@ -137,9 +44,9 @@ namespace Cs2Py.Source
         /// <returns><c>true</c> jeśli obiekty są równe</returns>
         public static bool operator ==(PyCodeModuleName left, PyCodeModuleName right)
         {
-            if (left == (object)null && right == (object)null) return true;
-            if (left == (object)null || right == (object)null) return false;
-            return left.Library == right.Library && left._name == right._name;
+            if (ReferenceEquals(left, null) && ReferenceEquals(right, null)) return true;
+            if (ReferenceEquals(left, null) || ReferenceEquals(right, null)) return false;
+            return left.Name == right.Name && left.IsExternalModule == right.IsExternalModule;
         }
 
         /// <summary>
@@ -150,12 +57,36 @@ namespace Cs2Py.Source
         /// <returns><c>true</c> jeśli obiekty są różne</returns>
         public static bool operator !=(PyCodeModuleName left, PyCodeModuleName right)
         {
-            if (left == (object)null && right == (object)null) return false;
-            if (left == (object)null || right == (object)null) return true;
-            return left.Library != right.Library || left._name != right._name;
+            return !(left == right);
+        }
+
+        private static string GetName(Type type, ClassTranslationInfo declaringTypeInfo)
+        {
+            {
+                // PageAttribute
+                var pageAttribute = type.GetCustomAttribute<PageAttribute>();
+                if (pageAttribute != null)
+                    return pageAttribute.ModuleShortName;
+            }
+            {
+                // ModuleAttribute
+                var moduleAttribute = type.GetCustomAttribute<ModuleAttribute>();
+                if (moduleAttribute != null)
+                    return moduleAttribute.ModuleShortName;
+            }
+            if (declaringTypeInfo != null && declaringTypeInfo.ModuleName != null)
+                return declaringTypeInfo.ModuleName.Name;
+            return type.FullName?.Replace(".", "_").Replace("+", "__").Replace("<", "__").Replace(">", "__")
+                   ?? type.Name;
+        }
+
+        private static string Pn(string value)
+        {
+            value = (value?.Trim() ?? string.Empty).Replace("\\", "/");
+            return value;
         }
         // Private Methods 
-
+/*
         private static string ProcessPath(string name, string relatedTo)
         {
             var p1     = Split(name);
@@ -181,7 +112,7 @@ namespace Cs2Py.Source
             //    return new PyConstValue(Name + extension);
             return g;
         }
-
+    */
         // Private Methods 
 
         private static string[] Split(string name)
@@ -210,8 +141,7 @@ namespace Cs2Py.Source
         /// <returns><c>true</c> jeśli wskazany obiekt jest równy bieżącemu; w przeciwnym wypadku<c>false</c></returns>
         public override bool Equals(object other)
         {
-            if (!(other is PyCodeModuleName)) return false;
-            return Equals((PyCodeModuleName)other);
+            return other is PyCodeModuleName pyCodeModuleName && Equals(pyCodeModuleName);
         }
 
         /// <summary>
@@ -220,23 +150,25 @@ namespace Cs2Py.Source
         /// <returns>kod HASH obiektu</returns>
         public override int GetHashCode()
         {
-            // Good implementation suggested by Josh Bloch
-            var _hash_ = 17;
-            _hash_     = _hash_ * 31 + (Library == (object)null ? 0 : Library.GetHashCode());
-            _hash_     = _hash_ * 31 + _name.GetHashCode();
-            return _hash_;
+            return Name.GetHashCode();
+        }
+
+        public string MakeEmitPath(string basePath, int someNumber)
+        {
+            var p = Path.Combine(basePath, Name.Replace("/", "\\") + ".py");
+            return p;
         }
 
         // Public Methods 
 
-        public string MakeEmitPath(string basePath, int dupa)
-        {
-            var p = Path.Combine(basePath, Name.Replace("/", "\\") + _extension);
-            return p;
-        }
 
-        public IPyValue MakeIncludePath(PyCodeModuleName relatedTo)
+        public string MakeIncludePath(PyCodeModuleName relatedTo)
         {
+            if (IsExternalModule)
+                return Name;
+            throw new NotImplementedException();
+            return Name;
+            /*
             if (relatedTo.Library == Library)
             {
                 var knownPath = ProcessPath(_name + _extension, relatedTo._name + _extension);
@@ -275,8 +207,9 @@ namespace Cs2Py.Source
                     return new PyConstValue(knownPath);
                 }
 
-                throw new NotSupportedException();              
+                throw new NotSupportedException();
             }
+            */
         }
 
         /// <summary>
@@ -285,9 +218,10 @@ namespace Cs2Py.Source
         /// <returns>Tekstowa reprezentacja obiektu</returns>
         public override string ToString()
         {
-            return string.Format("{0}@{1}", _name, Library);
+            return Name;
         }
 
+/*
         private void UpdateIncludePathExpression()
         {
             if (AssemblyInfo == null)
@@ -311,77 +245,28 @@ namespace Cs2Py.Source
             pathItems.Add(new PyConstValue(_name + Extension));
             PyIncludePathExpression = PyBinaryOperatorExpression.ConcatStrings(pathItems.ToArray());
         }
-
-        public static PyCodeModuleName Cs2PyConfigModuleName
-        {
-            get
-            {
-                var a  = new PyCodeModuleName();
-                a.Name = CS2Py_CONFIG_MODULE_NAME;
-                return a;
-            }
-        }
-
+*/
+#if OLD
+        public static PyCodeModuleName Cs2PyConfigModuleName => new PyCodeModuleName(CS2PY_CONFIG_MODULE_NAME, false);
         /// <summary>
-        ///     Własność jest tylko do odczytu.
+        ///     Late binging module
         /// </summary>
-        public AssemblyTranslationInfo AssemblyInfo { get; }
-
-        /// <summary>
-        ///     Library name for containing assembly; własność dopuszcza wartości NULL i jest tylko do odczytu.
-        /// </summary>
-        public string Library => AssemblyInfo?.LibraryName;
+        public const string CS2PY_CONFIG_MODULE_NAME = "*cs2Pyconfig*";
+#endif
 
         /// <summary>
         ///     Module name without library prefix
         /// </summary>
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                value = (value ?? string.Empty).Trim();
-                value = value.Replace("\\", "/");
-                if (value == _name) return;
-                _name = value;
-                UpdateIncludePathExpression();
-            }
-        }
+        public string Name { get; } = string.Empty;
 
-        /// <summary>
-        ///     defined const or variables to include before module name
-        /// </summary>
-        public string[] OptionalIncludePathPrefix { get; set; }
+        public bool IsExternalModule { get; }
 
-        /// <summary>
-        ///     rozszerzenie nazwy pliku
-        /// </summary>
-        public string Extension
-        {
-            get => _extension;
-            set => _extension = (value ?? string.Empty).Trim();
-        }
-
-        /// <summary>
-        ///     Expression with complete path to this module
-        /// </summary>
-        public IPyValue PyIncludePathExpression { get; set; }
 
         /// <summary>
         ///     Indicated that name is empty; własność jest tylko do odczytu.
         /// </summary>
-        public bool IsEmpty => string.IsNullOrEmpty(_name);
+        public bool IsEmpty => string.IsNullOrEmpty(Name);
 
-        private string _name      = string.Empty;
-        private string _extension = ".Py";
 
-        #region Fields
-
-        /// <summary>
-        ///     Late binging module
-        /// </summary>
-        public const string CS2Py_CONFIG_MODULE_NAME = "*cs2Pyconfig*";
-
-        #endregion Fields
     }
 }

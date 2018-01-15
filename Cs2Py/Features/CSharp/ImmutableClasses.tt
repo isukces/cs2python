@@ -25,7 +25,7 @@ namespace Cs2Py.CSharp
     MakeClass("CsharpMethodCallExpression","IValue, IStatement", "MethodInfo MethodInfo", "IValue TargetObject",  "FunctionArgument[] Arguments", "Type[] GenericTypes", "bool IsDelegate");
 	MakeClass("CompilationUnit", "",  "ImportNamespace[] ImportNamespaces", "NamespaceDeclaration[] NamespaceDeclarations");
 	MakeClass("ImportNamespace", "IStatement",  "string Name;Nazwa przestrzeni nazw", "string Alias;Opcjonalny alias dla przestrzeni nazw lub typu");
-	MakeClass("ClassDeclaration", "INamespaceMember,IClassMember", "string Name;Nazwa klasy", "IClassMember[] Members;Elementy");
+	MakeClass("ClassDeclaration", "INamespaceMember,IClassMember,IClassOrInterface", "string Name;Nazwa klasy", "IClassMember[] Members;Elementy");
 	MakeClass("NamespaceDeclaration", null, "string Name;Nazwa przestrzeni", "INamespaceMember[] Members; Elementy");
 	MakeClass("VariableDeclaration", "IStatement", "LangType Type", "VariableDeclarator[] Declarators");
 
@@ -37,7 +37,7 @@ namespace Cs2Py.CSharp
 	 
 	MakeClass("ImportNamespaceCollection", "IStatement",  "ImportNamespace[] Items;Lista definicji");
 	
-	MakeClass("InterfaceDeclaration", "INamespaceMember,IClassMember", "string Name;Nazwa interfejsu", "IClassMember[] Members;Elementy");
+	MakeClass("InterfaceDeclaration", "INamespaceMember,IClassMember,IClassOrInterface", "string Name;Nazwa interfejsu", "IClassMember[] Members;Elementy");
 	MakeClass("FieldDeclaration", "IClassMember",  "LangType Type", "VariableDeclarator[] Items", "Modifiers Modifiers");
 	MakeClass("VariableDeclarator", "", "string Name", "IValue Value", "FieldInfo OptionalFieldInfo");
 

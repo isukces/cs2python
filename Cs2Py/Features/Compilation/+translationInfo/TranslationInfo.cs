@@ -195,8 +195,8 @@ namespace Cs2Py.Compilation
                         var obj                  = Activator.CreateInstance(type);
                         var map                  = type.GetInterfaceMap(interfaceType);
                         var methods              = map.InterfaceMethods;
-                        var methodTranslateToPy = methods.Single(ii => ii.Name == "TranslateToPy");
-                        var gpmethod             = methods.Single(ii => ii.Name == "GetPriority");
+                        var methodTranslateToPy  = methods.Single(ii => ii.Name == nameof(IPyNodeTranslator<IValue>.TranslateToPython));
+                        var gpmethod             = methods.Single(ii => ii.Name == nameof(IPyNodeTranslator<IValue>.GetPriority));
                         var bound                = new NodeTranslatorBound(methodTranslateToPy, obj, gpmethod);
                         NodeTranslators.Add(genericType, bound);
                     }
