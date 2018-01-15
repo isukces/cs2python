@@ -13,6 +13,16 @@ namespace Lang.Python.Tests
 {
     public class TestingBase
     {
+        protected static string WrapClass(string code)
+        {
+            return $@"
+namespace Foo {{
+    [Lang.Python.IgnoreNamespaceAttribute]
+    public class Demo{{
+        {code}
+    }}
+}}";
+        }
         protected static CompilationTestInfo CheckTranslation(string code, string compare)
         {
             return ParseCs(code, true, compare);
