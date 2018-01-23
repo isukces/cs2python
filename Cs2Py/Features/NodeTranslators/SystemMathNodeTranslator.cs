@@ -3,7 +3,7 @@ using System.Linq;
 using Cs2Py.CSharp;
 using Cs2Py.Source;
 
-namespace Cs2Py.NodeTranlators
+namespace Cs2Py.NodeTranslators
 {
     public class SystemMathNodeTranslator : IPyNodeTranslator<CsharpMethodCallExpression>
     {
@@ -20,7 +20,9 @@ namespace Cs2Py.NodeTranlators
                 || name == "asin" || name == "acos" || name == "atan"
                 || name == "sinh" || name == "cosh" || name == "tanh"
                 || name == "asinh" || name == "acosh" || name == "atanh"
-                || name == "exp" || name == "floor" || name == "log10")
+                || name == "exp" || name == "floor" || name == "log10"
+                || name == "sqrt"
+                )
                 return name;
             if (name == "ceiling") return "ceil";
             return null;

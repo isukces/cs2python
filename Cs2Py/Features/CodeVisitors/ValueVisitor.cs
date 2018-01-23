@@ -51,7 +51,7 @@ namespace Cs2Py.CodeVisitors
                     var list = functionArguments.ToList();
                     if (targetObject == null)
                         throw new NotSupportedException();
-                    list.Insert(0, new FunctionArgument("", targetObject));
+                    list.Insert(0, new FunctionArgument("", targetObject, null));
                     result = new CsharpMethodCallExpression(mii, null, list.ToArray(), genericTypes, isDelegate);
                 }
                 else
@@ -159,7 +159,8 @@ namespace Cs2Py.CodeVisitors
             //if (eti.Type.ToString().Contains("Date"))
             //    System.Diagnostics.Debug.WriteLine("{0} => {1}, {2}", eti.Type, eti.ConvertedType, eti.ImplicitConversion);
             var g                = node.RefOrOutKeyword.ValueText;
-            var functionArgument = new FunctionArgument(g, v);
+            var name = node.NameColon?.Name?.Identifier.Text;
+            var functionArgument = new FunctionArgument(g, v, name);
             return Simplify(functionArgument);
         }
 
@@ -178,9 +179,43 @@ namespace Cs2Py.CodeVisitors
 
         protected override IValue VisitArrayInitializerExpression(InitializerExpressionSyntax node)
         {
-            var b = ModelExtensions.GetSymbolInfo(context.RoslynModel, node);
-            var a = context.RoslynModel.GetTypeInfo2(node);
-            throw new NotSupportedException();
+            var b   = ModelExtensions.GetSymbolInfo(context.RoslynModel, node);
+            var a   = context.RoslynModel.GetTypeInfo2(node);
+            var tmp = node.Expressions.Select(Visit).ToArray();
+
+            Type GetType()
+            {
+                var distinctTypes = tmp
+                    .Select(q => q.ValueType)
+                    .Distinct()
+                    .OrderBy(SafeTypeToString)
+                    .ToArray();
+                if (distinctTypes.Length == 0)
+                    throw new NotSupportedException();
+                if (distinctTypes.Length == 1)
+                    return distinctTypes[0];
+                var tmp2 = string.Join("|", distinctTypes.Select(SafeTypeToString));
+                if (tmp2 == "System.Double|System.Int32")
+                    return typeof(double);
+                throw new NotSupportedException(tmp2);
+            }
+
+            var type = GetType().MakeArrayType(1);
+            return new ArrayCreateExpression(type, tmp);
+        }
+
+        private static string SafeTypeToString(Type q)
+        {
+            try
+            {
+                return q.FullName;
+            }
+            catch
+            {
+                return q.Name;
+            }
+
+            ;
         }
 
         protected override IValue VisitArrayType(ArrayTypeSyntax node)
@@ -477,6 +512,12 @@ namespace Cs2Py.CodeVisitors
             // return InternalVisitTextIdentifier(identifier);
         }
 
+
+        protected override IValue VisitImplicitArrayCreationExpression(ImplicitArrayCreationExpressionSyntax node)
+        {
+            return Visit(node.Initializer);
+        }
+
         protected override IValue VisitInvocationExpression(InvocationExpressionSyntax node)
         {
             // var si = ModelExtensions.GetSymbolInfo(context.RoslynModel, node);
@@ -527,7 +568,7 @@ namespace Cs2Py.CodeVisitors
                     {
                         var realExpression = getRealExpression();
                         var ggg            = nl.ToList();
-                        ggg.Insert(0, new FunctionArgument("", realExpression));
+                        ggg.Insert(0, new FunctionArgument("", realExpression, null));
                         tmp = _Make_DotnetMethodCall(mi1, realExpression, nl, null);
                     }
                     else
@@ -762,7 +803,6 @@ namespace Cs2Py.CodeVisitors
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             {
-                 
                 var symbolInfo = ModelExtensions.GetSymbolInfo(_state.Context.RoslynModel, node);
                 // var typex = GetResultTypeForBinaryExpression(symbolInfo);
                 //TypeInfo ti = ModelExtensions.GetTypeInfo(state.Context.RoslynModel, node);
@@ -779,7 +819,6 @@ namespace Cs2Py.CodeVisitors
                 var a = new CsharpAssignExpression(l, r, string.Empty);
                 return Simplify(a);
             }
-             
         }
 
         protected override IValue VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
@@ -1041,7 +1080,7 @@ namespace Cs2Py.CodeVisitors
                 return v;
             var m = context.Roslyn_ResolveMethod(methodSymbol);
             var a = new CsharpMethodCallExpression(m as MethodInfo, null,
-                new[] {new FunctionArgument("", v)},
+                new[] {new FunctionArgument("", v, null)},
                 null, false
             );
             return a;
@@ -1049,7 +1088,7 @@ namespace Cs2Py.CodeVisitors
 
         private IValue internalVisit_AssignWithPrefix(BinaryExpressionSyntax node, string _operator)
         {
-            if (node == null) 
+            if (node == null)
                 throw new ArgumentNullException(nameof(node));
             var symbolInfo = ModelExtensions.GetSymbolInfo(_state.Context.RoslynModel, node);
             // var typex = GetResultTypeForBinaryExpression(symbolInfo);

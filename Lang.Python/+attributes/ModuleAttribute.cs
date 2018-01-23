@@ -21,5 +21,17 @@ namespace Lang.Python
         public string ModuleShortName { get; }
 
         public bool IsExternal { get; }
+        
+        /// <summary>
+        /// Class contains static methods that are tranlated as module methods
+        /// </summary>
+        public bool ClassIsModule { get; set; }
+
+        public string ImportModule { get; set; }
+
+        public string GetImportModuleName()
+        {
+            return string.IsNullOrEmpty(ImportModule) ? ModuleShortName : ImportModule;
+        }
     }
 }

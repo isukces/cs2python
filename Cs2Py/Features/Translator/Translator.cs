@@ -8,6 +8,7 @@ using Cs2Py.Compilation;
 using Cs2Py.CSharp;
 using Cs2Py.Sandbox;
 using Cs2Py.Source;
+using JetBrains.Annotations;
 using Lang.Python;
 
 namespace Cs2Py.Translator
@@ -25,55 +26,6 @@ namespace Cs2Py.Translator
 #endif
             _state = translationState; // ?? new TranslationState(new TranslationInfo());
             Info   = translationState.Principles;
-        }
-
-        // Private Methods 
-
-        /*
-                static IPyStatement[] MkArray(IPyStatement x)
-                {
-                    return new IPyStatement[] { x };
-                }
-        */
-
-        // Public Methods 
-
-        public void Translate(AssemblySandbox sandbox)
-        {
-            var classes = Info.GetClasses();
-            if (Info.CurrentAssembly == null)
-                throw new Exception("Info.CurrentAssembly is null");
-            var fullName           = Info.CurrentAssembly.FullName;
-            var classesToTranslate = Info.ClassTranslations.Values
-                .Where(u => u.Type.Assembly.FullName == fullName).ToArray();
-            //            classesToTranslate = (from i in _info.ClassTranslations.Values
-            //                                      where i.Type.Assembly.FullName == _info.CurrentAssembly.FullName
-            //                                      select this.ge.ToArray();
-            var interfaces = Info.GetInterfaces();
-            //     var interfacesToTranslate = info.ClassTranslations.Values.Where(u => u.Type.Assembly == info.CurrentAssembly).ToArray();
-            foreach (var classTranslationInfo in classesToTranslate)
-                TranslateClass(classTranslationInfo, interfaces, classes);
-
-            {
-                var emptyModules = Modules.Where(a => a.IsEmpty).ToArray();
-                foreach (var module in Modules)
-                {
-                    // if (module.IsEmpty) 
-                }
-            }
-        }
-
-        public IPyStatement[] TranslateStatement(IStatement x)
-        {
-            if (!(x is CSharpBase)) throw new Exception("Błąd translacji " + x.GetType().FullName);
-            var op = new OptimizeOptions();
-
-            var s      = new PyStatementSimplifier(op);
-            var a      = new PyStatementTranslatorVisitor(_state);
-            var tmp    = a.Visit(x as CSharpBase);
-            var result = new List<IPyStatement>(tmp.Length);
-            result.AddRange(tmp.Select(i => s.Visit(i as PySourceBase)));
-            return result.ToArray();
         }
 
         private static void AppendCodeReq(PyCodeModuleName req, PyCodeModule currentModule)
@@ -124,41 +76,68 @@ namespace Cs2Py.Translator
                 }
             }
 */
-         
-            string includePath = req.MakeIncludePath(currentModule.ModuleName);
-            /*
-            if (includePath == null) return;
-            if (currentModule.RequiredFiles.Any())
-            {
-                var s    = new PyEmitStyle();
-                var code = includePath.GetPyCode(s);
-                var a    = currentModule.RequiredFiles.Select(i => i.GetPyCode()).ToArray();
-                if (a.Any(i => i == code))
-                    return;
-            }
 
-            // if (fileNameExpression1 !=null)
-            {
-                var fileNameExpressionICodeRelated = includePath as ICodeRelated;
-                // scan nested requests
-                var nestedCodeRequests = fileNameExpressionICodeRelated.GetCodeRequests().ToArray();
-                if (nestedCodeRequests.Any())
+            var includePath = req.GetImportPath(currentModule.ModuleName);           
+            currentModule.RequiredFiles.Add(new PyImportRequest(includePath));
+        }
+
+        // Private Methods 
+
+        /*
+                static IPyStatement[] MkArray(IPyStatement x)
                 {
-                    var nestedModuleCodeRequests = nestedCodeRequests.OfType<ModuleCodeRequest>();
-                    foreach (var nested in nestedModuleCodeRequests)
-                        AppendCodeReq(nested.ModuleName, currentModule);
+                    return new IPyStatement[] { x };
+                }
+        */
+
+        // Public Methods 
+
+        public void Translate(AssemblySandbox sandbox)
+        {
+            var classes = Info.GetClasses();
+            if (Info.CurrentAssembly == null)
+                throw new Exception("Info.CurrentAssembly is null");
+            var fullName           = Info.CurrentAssembly.FullName;
+            var classesToTranslate = Info.ClassTranslations.Values
+                .Where(u => u.Type.Assembly.FullName == fullName).ToArray();
+            //            classesToTranslate = (from i in _info.ClassTranslations.Values
+            //                                      where i.Type.Assembly.FullName == _info.CurrentAssembly.FullName
+            //                                      select this.ge.ToArray();
+            var interfaces = Info.GetInterfaces();
+            //     var interfacesToTranslate = info.ClassTranslations.Values.Where(u => u.Type.Assembly == info.CurrentAssembly).ToArray();
+            foreach (var classTranslationInfo in classesToTranslate)
+                TranslateClass(classTranslationInfo, interfaces, classes);
+
+            {
+                var emptyModules = Modules.Where(a => a.IsEmpty).ToArray();
+                foreach (var module in Modules)
+                {
+                    // if (module.IsEmpty) 
                 }
             }
-            */
-            currentModule.RequiredFiles.Add(new PyImportRequest(includePath));
-           
+        }
+
+        public IPyStatement[] TranslateStatement([NotNull] IStatement x)
+        {
+            if (x == null) 
+                throw new ArgumentNullException(nameof(x));
+            if (!(x is CSharpBase))
+                throw new Exception($"Translation error: {x.GetType().FullName} is not CSharpBase instance");
+            var op = new OptimizeOptions();
+
+            var s      = new PyStatementSimplifier(op);
+            var a      = new PyStatementTranslatorVisitor(_state);
+            var tmp    = a.Visit(x as CSharpBase);
+            var result = new List<IPyStatement>(tmp.Length);
+            result.AddRange(tmp.Select(i => s.Visit(i as PySourceBase)));
+            return result.ToArray();
         }
 
         private PyCodeModule CurrentConfigModule()
         {
             var assemblyTranslationInfo = Info.GetOrMakeTranslationInfo(Info.CurrentAssembly);
             var pyCodeModuleName        =
-                new PyCodeModuleName(assemblyTranslationInfo.ConfigModuleName, false);
+                new PyCodeModuleName(assemblyTranslationInfo.ConfigModuleName, assemblyTranslationInfo.ConfigModuleName, false);
             var pyModule = GetOrMakeModuleByName(pyCodeModuleName);
             return pyModule;
         }
@@ -254,8 +233,8 @@ namespace Cs2Py.Translator
             try
             {
                 _state.Principles.CurrentAssembly = _state.Principles.CurrentType.Assembly;
-                var fullname = classTranslationInfo.Type.FullName;
-                var srcs     = classTranslationInfo.Type.IsInterface
+                var fullname                      = classTranslationInfo.Type.FullName;
+                var srcs                          = classTranslationInfo.Type.IsInterface
                     ? interfaces
                         .Where(q => q.FullName == fullname)
                         .Select(q => q.ClassDeclaration)
@@ -264,7 +243,7 @@ namespace Cs2Py.Translator
                         .Where(q => q.FullName == fullname)
                         .Select(q => q.ClassDeclaration)
                         .OfType<IClassOrInterface>().ToArray();
-                var members = srcs.SelectMany(i => i.Members).ToArray();
+                var members   = srcs.SelectMany(i => i.Members).ToArray();
                 var fileNames = classTranslationInfo.Type.GetCustomAttributes<RequireOnceAttribute>()
                     .Select(i => i.Filename).Distinct().ToArray();
                 if (fileNames.Any())
@@ -272,7 +251,7 @@ namespace Cs2Py.Translator
                     var b = fileNames.Select(u => new PyImportRequest(u)).ToArray();
                     pyModule.RequiredFiles.AddRange(b);
                 }
-                 
+
                 var constructors = members.OfType<ConstructorDeclaration>().ToArray();
                 if (constructors.Length > 1)
                     throw new Exception("Python supports only one constructor per class");

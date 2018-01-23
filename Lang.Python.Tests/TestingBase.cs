@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Cs2Py.Compilation;
 using Cs2Py.Emit;
 using Cs2Py.Sandbox;
@@ -13,9 +15,11 @@ namespace Lang.Python.Tests
 {
     public class TestingBase
     {
-        protected static string WrapClass(string code)
+        protected static string WrapClass(string code, params string[] namespaces)
         {
+            var ns = string.Join("", namespaces.Select(q => $"using {q};\r\n"));
             return $@"
+{ns}
 namespace Foo {{
     [Lang.Python.IgnoreNamespaceAttribute]
     public class Demo{{
@@ -23,12 +27,12 @@ namespace Foo {{
     }}
 }}";
         }
-        protected static CompilationTestInfo CheckTranslation(string code, string compare)
+        protected static CompilationTestInfo CheckTranslation(string code, Info compare)
         {
             return ParseCs(code, true, compare);
         }
 
-        protected static Project CreateOneFileProject(string code)
+        protected static Project CreateOneFileProject(string code, Assembly[] refAssemblies)
         {
             var tmp      = new AdhocWorkspace(DesktopMefHostServices.DefaultServices);
             var solution = tmp.AddSolution(SolutionInfo.Create(SolutionId.CreateNewId(), VersionStamp.Create()));
@@ -36,19 +40,25 @@ namespace Foo {{
             var doc      = project.AddDocument("foo.cs", code);
             project      = doc.Project;
             project      = project.AddMetadataReferences(GetGlobalReferences());
+            if (refAssemblies!=null&&refAssemblies.Any())
+                foreach(var ass in refAssemblies)                    
+                    project = project.AddMetadataReference(MetadataReference.CreateFromFile(ass.Location));
             return project;
         }
 
-        protected static CompilationTestInfo ParseCs(string code, bool translate, string compare = null)
+        protected static CompilationTestInfo ParseCs(string code, bool translate, Info info = null)
         {
-            var project = CreateOneFileProject(code);
+            var project = CreateOneFileProject(code,info?.Ref);
             var c       = new Cs2PyCompiler
             {
                 CSharpProject = project
             };
             c.TranslationAssemblies.Add(typeof(AssemblySandbox).Assembly);
+            c.ReferencedAssemblies.Add(typeof(Tensorflow.TensorShape).Assembly);
             var filename = Path.GetTempFileName().Replace(".tmp", ".dll");
             var er       = c.CompileCSharpProject(c.Sandbox, filename);
+            if (!er.Success && er.Diagnostics.Any())
+                throw new Exception(er.Diagnostics[0].GetMessage());
             Assert.True(er.Success);
             var translationInfo = c.ParseCsSource();
             if (!translate)
@@ -57,6 +67,7 @@ namespace Foo {{
             var translator                  = new Translator(translationState);
             translator.Info.CurrentAssembly = c.CompiledAssembly;
             translator.Translate(c.Sandbox);
+            var compare = info?.Compare;
             if (compare != null)
             {
                 compare = compare.Trim();

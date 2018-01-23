@@ -51,14 +51,19 @@ namespace Cs2Py.Source
         {
             style = PyEmitStyle.xClone(style);
             if (!style.AsIncrementor)
-                if (Expression is PyMethodCallExpression)
+            {
+                switch (Expression)
                 {
-                    var methodCallExpression = Expression as PyMethodCallExpression;
-                    if (methodCallExpression.CallType == MethodCallStyles.Procedural
-                        && methodCallExpression.Name == "echo")
-                        if (EmitInlineHtml(writer, style))
-                            return;
+                    case PyEmptyExpression _:
+                        return;
+                    case PyMethodCallExpression methodCallExpression:
+                        if (methodCallExpression.CallType == MethodCallStyles.Procedural
+                            && methodCallExpression.Name == "echo")
+                            if (EmitInlineHtml(writer, style))
+                                return;
+                        break;
                 }
+            }
 
             var code = Expression.GetPyCode(style);
             if (style.AsIncrementor)

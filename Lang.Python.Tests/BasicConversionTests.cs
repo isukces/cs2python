@@ -35,7 +35,7 @@ class Demo:
     def Sum(cls, a, b):
         return a + b;";
 
-            CheckTranslation(cs, expected);
+            CheckTranslation(cs, new Info{Compare = expected});
         }
 
         [Fact]
@@ -63,7 +63,7 @@ class Demo:
     def Sum(cls, a, b):
         return a + b;   
 ";
-            CheckTranslation(cs, expected);
+            CheckTranslation(cs, new Info{Compare = expected});
         }
 
         [Fact]
@@ -94,13 +94,13 @@ class Demo:
         self.__privateField = i
  
 ";
-            CheckTranslation(cs, expected);
+            CheckTranslation(cs, new Info{Compare = expected});
         }
+
 
         [Fact]
         public void T05_Should_convert_class_with_field()
         {
-            // No init
             var cs       = @"
 namespace Foo {
     [Lang.Python.IgnoreNamespaceAttribute]
@@ -115,7 +115,7 @@ Generated with cs2py
 class Demo:
 
 ";
-            CheckTranslation(cs, expected);
+            CheckTranslation(cs, new Info{Compare = expected});
             // Init
             cs       = @"
 namespace Foo {
@@ -131,7 +131,7 @@ Generated with cs2py
 class Demo:
     someField = 76
 ";
-            CheckTranslation(cs, expected);
+            CheckTranslation(cs, new Info{Compare = expected});
         }
     }
 }

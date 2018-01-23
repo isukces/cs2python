@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cs2Py.CSharp;
 using Cs2Py.Source;
+using JetBrains.Annotations;
 
 namespace Cs2Py.Translator
 {
@@ -23,14 +24,25 @@ namespace Cs2Py.Translator
             return new IPyStatement[] {new PyExpressionStatement(x)};
         }
 
-        public IPyStatement[] TranslateStatements(IEnumerable<IStatement> x)
+        private IPyStatement[] TranslateStatements(IEnumerable<IStatement> x)
         {
-            var re = new List<IPyStatement>();
+            if (x == null)
+                return new IPyStatement[0];
+            var re    = new List<IPyStatement>();
+            var index = -1;
             foreach (var i in x)
             {
+                index++;
+                if (i == null)
+                    throw new NullReferenceException($"statement index={index} is null");
                 var j = TranslateStatement(i);
                 foreach (var tt in j)
+                {
+                    //if (tt is PyExpressionStatement es)
+//                        if (es.Expression is PyEmptyExpression)
+   //                         continue;
                     re.Add(tt);
+                }
             }
 
             return re.ToArray();
@@ -61,9 +73,9 @@ namespace Cs2Py.Translator
 
         protected override IPyStatement[] VisitForEachStatement(ForEachStatement src)
         {
-            var                 g          = src.VarName;
-            var                 collection = TransValue(src.Collection);
-            var                 statement  = TranslateStatementOne(src.Statement);
+            var                g          = src.VarName;
+            var                collection = TransValue(src.Collection);
+            var                statement  = TranslateStatementOne(src.Statement);
             PyForEachStatement a          = null;
             if (src.ItemType.DotnetType.IsGenericType)
             {
@@ -84,10 +96,10 @@ namespace Cs2Py.Translator
 
         protected override IPyStatement[] VisitForStatement(ForStatement src)
         {
-            var condition       = TransValue(src.Condition);
-            var statement       = TranslateStatementOne(src.Statement);
-            var incrementors    = TranslateStatements(src.Incrementors);
-            var declarations    = TranslateStatement(src.Declaration).ToArray();
+            var condition      = TransValue(src.Condition);
+            var statement      = TranslateStatementOne(src.Statement);
+            var incrementors   = TranslateStatements(src.Incrementors);
+            var declarations   = TranslateStatement(src.Declaration).ToArray();
             var PyDeclarations = new List<PyAssignExpression>();
             foreach (object declaration in declarations)
             {
@@ -221,6 +233,48 @@ namespace Cs2Py.Translator
             return MkArray(switchStatement);
         }
 
+        protected override IPyStatement[] VisitWithStatement(CsharpWithStatement src)
+        {
+            if (src.Variables.Length == 0)
+                throw new NotSupportedException("with statement with no variables");
+            PyUsingStatement owner  = null;
+            PyUsingStatement result = null;
+            for (var index = 0; index < src.Variables.Length; index++)
+            {
+                var ii        = src.Variables[index];
+                var nextLevel = new PyUsingStatement
+                {
+                    Variable = new PyUsingStatementVariable
+                    {
+                        Name  = ii.Name,
+                        Value = TransValue(ii.Value)
+                    }
+                };
+                if (owner == null)
+                    result = nextLevel;
+                else
+                    owner.Statements.Add(nextLevel);
+
+                owner = nextLevel;
+            }
+
+            if (result == null)
+                throw new Exception("Internal exception");
+            IPyStatement[] stats = TranslateStatements(src.Statements);
+            result.Statements.AddRange(stats);
+            /*
+            foreach (var i in src.Statements)
+            {
+                var ii = CastOrThrow<CSharpBase>(i);
+                var b  = Visit(ii);
+                var bb = CastOrThrow<PyStatementBase>(b);
+                result.Statements.Add(bb);
+            }
+            */
+
+            return new[] {result};
+        }
+
         protected override IPyStatement[] VisitVariableDeclaration(VariableDeclaration src)
         {
             //throw new Exception("DELETE THIS ??????");
@@ -249,8 +303,9 @@ namespace Cs2Py.Translator
             return MkArray(a);
         }
 
-        private IPyStatement[] TranslateStatement(IStatement x)
+        private IPyStatement[] TranslateStatement([NotNull] IStatement x)
         {
+            if (x == null) throw new ArgumentNullException(nameof(x));
             if (x is CSharpBase)
                 return Visit(x as CSharpBase);
             var trans = new Translator(_state);

@@ -1,6 +1,6 @@
 ﻿using Cs2Py.Source;
 
-namespace Cs2Py.NodeTranlators
+namespace Cs2Py.NodeTranslators
 {
     public static class PyModules
     {
@@ -8,7 +8,7 @@ namespace Cs2Py.NodeTranlators
         {
             get
             {
-                var moduleName = new PyCodeModuleName("math", true);
+                var moduleName = new PyCodeModuleName("math", "math", true);
                 return moduleName;
             }
         }

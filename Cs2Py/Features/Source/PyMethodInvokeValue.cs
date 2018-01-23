@@ -8,11 +8,11 @@ namespace Cs2Py.Source
     {
         /// <summary>
         ///     Tworzy instancję obiektu
-        ///     <param name="Expression"></param>
+        ///     <param name="expression"></param>
         /// </summary>
-        public PyMethodInvokeValue(IPyValue Expression)
+        public PyMethodInvokeValue(IPyValue expression)
         {
-            this.Expression = Expression;
+            Expression = expression;
         }
 
         public override IEnumerable<ICodeRequest> GetCodeRequests()
@@ -27,7 +27,9 @@ namespace Cs2Py.Source
             var ex = PyParenthesizedExpression.Strip(Expression);
             var a  = Expression.GetPyCode(style);
             if (ByRef)
-                a = "&" + a;
+                throw new NotSupportedException("'By ref' argument is not supported");
+            if (!string.IsNullOrEmpty(Name))
+                a = Name + "=" + a;
             return a;
         }
 
@@ -39,14 +41,6 @@ namespace Cs2Py.Source
         /// </summary>
         public bool ByRef { get; set; }
 
-        /// <summary>
-        ///     Nazwa własności Expression;
-        /// </summary>
-        public const string PROPERTYNAME_EXPRESSION = "Expression";
-
-        /// <summary>
-        ///     Nazwa własności ByRef;
-        /// </summary>
-        public const string PROPERTYNAME_BYREF = "ByRef";
+        public string Name { get; set; }
     }
 }

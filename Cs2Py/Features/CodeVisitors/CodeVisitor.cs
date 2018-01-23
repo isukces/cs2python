@@ -6,8 +6,25 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Cs2Py.CodeVisitors
 {
-    public class CodeVisitor<T>
+    public class CodeVisitor
     {
+        protected static TT CastOrThrow<TT>(object src)
+        {
+            switch (src)
+            {
+                case null:
+                    throw new NullReferenceException();
+                case TT stat:
+                    return stat;
+                default:
+                    throw new Exception($"{src.GetType().FullName} is not {typeof(TT).FullName}");
+            }
+        }
+    }
+    public class CodeVisitor<T>:CodeVisitor
+    {
+    
+
         public virtual T Visit(SyntaxNode node)
         {
             if (node == null)
@@ -364,7 +381,10 @@ namespace Cs2Py.CodeVisitors
                     return VisitGenericName(node as GenericNameSyntax);
                 case SyntaxKind.ForEachStatement:
                     return VisitForEachStatement(node as ForEachStatementSyntax);
-                default: throw new NotSupportedException($"{node.Kind()},{node.GetType().Name}");
+                case SyntaxKind.UsingStatement:
+                    return VisitUsingStatement(node as UsingStatementSyntax);
+                default:
+                    throw new NotSupportedException($"Add {GetType()} => {node.Kind()},{node.GetType().Name}");
             }
         }
 
@@ -1661,6 +1681,14 @@ namespace Cs2Py.CodeVisitors
             if (throwNotImplementedException)
                 throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}",
                     "VisitUsingDirective", GetType().FullName));
+            return default(T);
+        }
+
+        protected virtual T VisitUsingStatement(UsingStatementSyntax usingStatementSyntax)
+        {
+            if (throwNotImplementedException)
+                throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}",
+                    nameof(VisitUsingStatement), GetType().FullName));
             return default(T);
         }
 

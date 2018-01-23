@@ -131,7 +131,7 @@
                 WLF("    {0}Kind,", MakeShort(i));
             WLF("}}");
 
-            WLF("public class {0}Visitor<T> {{", baseClass);
+            WLF("public class {0}Visitor<T>: CodeVisitor {{", baseClass);
             WLF("        public T Visit(CSharpBase a)");
             WLF("        {{");
             WLF("            switch (a.TokenKind)");
@@ -147,7 +147,9 @@
             foreach (var i in classes)
             {
                 WLF("    protected virtual T Visit{1}({0} src) {{", i, MakeShort(i));
-                WLF("        throw new NotSupportedException();");
+                WLF("        throw new NotSupportedException(GetType().FullName + \" doesn't implement Visit{0}\");",                          
+                        MakeShort(i)
+                );
                 WLF("    }}");
             }
             WLF("}}");

@@ -8,7 +8,7 @@
 using System;
 using System.Reflection;
 using Cs2Py.Compilation;
-
+using Cs2Py.CodeVisitors;
     
 namespace Cs2Py.CSharp
 {
@@ -20,7 +20,7 @@ namespace Cs2Py.CSharp
     MakeInterface("IClassMember", null);
     MakeInterface("IValue", null, "Type ValueType");	 
     MakeInterface("INamespaceMember", null);
-    MakeClass("FunctionArgument", "IValue", "string RefOrOutKeyword", "IValue MyValue");
+    MakeClass("FunctionArgument", "IValue", "string RefOrOutKeyword", "IValue MyValue", "string ExplicitName");
 
     MakeClass("CsharpMethodCallExpression","IValue, IStatement", "MethodInfo MethodInfo", "IValue TargetObject",  "FunctionArgument[] Arguments", "Type[] GenericTypes", "bool IsDelegate");
 	MakeClass("CompilationUnit", "",  "ImportNamespace[] ImportNamespaces", "NamespaceDeclaration[] NamespaceDeclarations");
@@ -123,7 +123,10 @@ namespace Cs2Py.CSharp
 
 	MakeClass("FullClassDeclaration","", "string FullName", "ClassDeclaration ClassDeclaration", "NamespaceDeclaration NamespaceDeclaration");
 	MakeClass("FullInterfaceDeclaration","", "string FullName", "InterfaceDeclaration ClassDeclaration", "NamespaceDeclaration NamespaceDeclaration");
-
+	
+	MakeClass("CsharpWithStatement","IStatement", "CsharpWithStatementVariableDeclaration[] Variables", "IStatement[] Statements");
+	MakeClass("CsharpWithStatementVariableDeclaration","", "string Name", "IValue Value");
+ 
 
 	MakeClassBase();
 	 

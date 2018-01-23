@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 using Cs2Py.Compilation;
-
+using Cs2Py.CodeVisitors;
     
 namespace Cs2Py.CSharp
 {
@@ -16,9 +16,10 @@ namespace Cs2Py.CSharp
     public interface INamespaceMember {
     } // end of INamespaceMember
     public sealed partial class FunctionArgument : CSharpBase, IValue {
-      public FunctionArgument(string RefOrOutKeyword, IValue MyValue){
+      public FunctionArgument(string RefOrOutKeyword, IValue MyValue, string ExplicitName){
         this.refOrOutKeyword = RefOrOutKeyword;
         this.myValue = MyValue;
+        this.explicitName = ExplicitName;
       }
       public string RefOrOutKeyword {
         get {
@@ -32,6 +33,12 @@ namespace Cs2Py.CSharp
         }
       }
       private IValue myValue;
+      public string ExplicitName {
+        get {
+          return explicitName;
+        }
+      }
+      private string explicitName;
     } // end of FunctionArgument
     public sealed partial class CsharpMethodCallExpression : CSharpBase, IValue, IStatement {
       public CsharpMethodCallExpression(MethodInfo MethodInfo, IValue TargetObject, FunctionArgument[] Arguments, Type[] GenericTypes, bool IsDelegate){
@@ -1311,6 +1318,42 @@ namespace Cs2Py.CSharp
       }
       private NamespaceDeclaration namespaceDeclaration;
     } // end of FullInterfaceDeclaration
+    public sealed partial class CsharpWithStatement : CSharpBase, IStatement {
+      public CsharpWithStatement(CsharpWithStatementVariableDeclaration[] Variables, IStatement[] Statements){
+        this.variables = Variables;
+        this.statements = Statements;
+      }
+      public CsharpWithStatementVariableDeclaration[] Variables {
+        get {
+          return variables;
+        }
+      }
+      private CsharpWithStatementVariableDeclaration[] variables;
+      public IStatement[] Statements {
+        get {
+          return statements;
+        }
+      }
+      private IStatement[] statements;
+    } // end of CsharpWithStatement
+    public sealed partial class CsharpWithStatementVariableDeclaration : CSharpBase {
+      public CsharpWithStatementVariableDeclaration(string Name, IValue Value){
+        this.name = Name;
+        this._value = Value;
+      }
+      public string Name {
+        get {
+          return name;
+        }
+      }
+      private string name;
+      public IValue Value {
+        get {
+          return _value;
+        }
+      }
+      private IValue _value;
+    } // end of CsharpWithStatementVariableDeclaration
 public class CSharpBase {
     public CSharpBaseKinds TokenKind
     {
@@ -1381,6 +1424,8 @@ public class CSharpBase {
             if (this is CsharpSwichLabel) return CSharpBaseKinds.SwichLabelKind;
             if (this is FullClassDeclaration) return CSharpBaseKinds.FullClassDeclarationKind;
             if (this is FullInterfaceDeclaration) return CSharpBaseKinds.FullInterfaceDeclarationKind;
+            if (this is CsharpWithStatement) return CSharpBaseKinds.WithStatementKind;
+            if (this is CsharpWithStatementVariableDeclaration) return CSharpBaseKinds.WithStatementVariableDeclarationKind;
         throw new NotSupportedException();
         }
     }
@@ -1451,8 +1496,10 @@ public enum CSharpBaseKinds {
     SwichLabelKind,
     FullClassDeclarationKind,
     FullInterfaceDeclarationKind,
+    WithStatementKind,
+    WithStatementVariableDeclarationKind,
 }
-public class CSharpBaseVisitor<T> {
+public class CSharpBaseVisitor<T>: CodeVisitor {
         public T Visit(CSharpBase a)
         {
             switch (a.TokenKind)
@@ -1587,203 +1634,213 @@ public class CSharpBaseVisitor<T> {
                     return VisitFullClassDeclaration(a as FullClassDeclaration);
                 case CSharpBaseKinds.FullInterfaceDeclarationKind:
                     return VisitFullInterfaceDeclaration(a as FullInterfaceDeclaration);
+                case CSharpBaseKinds.WithStatementKind:
+                    return VisitWithStatement(a as CsharpWithStatement);
+                case CSharpBaseKinds.WithStatementVariableDeclarationKind:
+                    return VisitWithStatementVariableDeclaration(a as CsharpWithStatementVariableDeclaration);
             }
             throw new NotSupportedException();
         }
     protected virtual T VisitFunctionArgument(FunctionArgument src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitFunctionArgument");
     }
     protected virtual T VisitMethodCallExpression(CsharpMethodCallExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitMethodCallExpression");
     }
     protected virtual T VisitCompilationUnit(CompilationUnit src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitCompilationUnit");
     }
     protected virtual T VisitImportNamespace(ImportNamespace src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitImportNamespace");
     }
     protected virtual T VisitClassDeclaration(ClassDeclaration src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitClassDeclaration");
     }
     protected virtual T VisitNamespaceDeclaration(NamespaceDeclaration src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitNamespaceDeclaration");
     }
     protected virtual T VisitVariableDeclaration(VariableDeclaration src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitVariableDeclaration");
     }
     protected virtual T VisitNameType(NameType src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitNameType");
     }
     protected virtual T VisitImportNamespaceCollection(ImportNamespaceCollection src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitImportNamespaceCollection");
     }
     protected virtual T VisitInterfaceDeclaration(InterfaceDeclaration src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitInterfaceDeclaration");
     }
     protected virtual T VisitFieldDeclaration(FieldDeclaration src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitFieldDeclaration");
     }
     protected virtual T VisitVariableDeclarator(VariableDeclarator src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitVariableDeclarator");
     }
     protected virtual T VisitPropertyDeclaration(CsharpPropertyDeclaration src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitPropertyDeclaration");
     }
     protected virtual T VisitEnumDeclaration(EnumDeclaration src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitEnumDeclaration");
     }
     protected virtual T VisitPropertyDeclarationAccessor(CsharpPropertyDeclarationAccessor src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitPropertyDeclarationAccessor");
     }
     protected virtual T VisitConstValue(ConstValue src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitConstValue");
     }
     protected virtual T VisitTypeValue(TypeValue src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitTypeValue");
     }
     protected virtual T VisitTypeOfExpression(TypeOfExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitTypeOfExpression");
     }
     protected virtual T VisitInvocationExpression(InvocationExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitInvocationExpression");
     }
     protected virtual T VisitLocalVariableExpression(LocalVariableExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitLocalVariableExpression");
     }
     protected virtual T VisitArgumentExpression(ArgumentExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitArgumentExpression");
     }
     protected virtual T VisitSimpleLambdaExpression(SimpleLambdaExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitSimpleLambdaExpression");
     }
     protected virtual T VisitCastExpression(CastExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitCastExpression");
     }
     protected virtual T VisitLangType(LangType src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitLangType");
     }
     protected virtual T VisitCallConstructor(CallConstructor src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitCallConstructor");
     }
     protected virtual T VisitModifiers(Modifiers src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitModifiers");
     }
     protected virtual T VisitFunctionDeclarationParameter(FunctionDeclarationParameter src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitFunctionDeclarationParameter");
     }
     protected virtual T VisitCodeBlock(CodeBlock src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitCodeBlock");
     }
     protected virtual T VisitReturnStatement(ReturnStatement src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitReturnStatement");
     }
     protected virtual T VisitMethodDeclaration(MethodDeclaration src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitMethodDeclaration");
     }
     protected virtual T VisitConstructorDeclaration(ConstructorDeclaration src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitConstructorDeclaration");
     }
     protected virtual T VisitLocalDeclarationStatement(LocalDeclarationStatement src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitLocalDeclarationStatement");
     }
     protected virtual T VisitThisExpression(ThisExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitThisExpression");
     }
     protected virtual T VisitMemberAccessExpression(MemberAccessExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitMemberAccessExpression");
     }
     protected virtual T VisitClassFieldAccessExpression(ClassFieldAccessExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitClassFieldAccessExpression");
     }
     protected virtual T VisitClassPropertyAccessExpression(ClassPropertyAccessExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitClassPropertyAccessExpression");
     }
     protected virtual T VisitInstanceFieldAccessExpression(InstanceFieldAccessExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitInstanceFieldAccessExpression");
     }
     protected virtual T VisitArrayCreateExpression(ArrayCreateExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitArrayCreateExpression");
     }
     protected virtual T VisitStaticMemberAccessExpression(StaticMemberAccessExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitStaticMemberAccessExpression");
     }
     protected virtual T VisitInstanceMemberAccessExpression(InstanceMemberAccessExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitInstanceMemberAccessExpression");
     }
     protected virtual T VisitInstancePropertyAccessExpression(CsharpInstancePropertyAccessExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitInstancePropertyAccessExpression");
     }
     protected virtual T VisitIfStatement(IfStatement src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitIfStatement");
     }
     protected virtual T VisitWhileStatement(WhileStatement src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitWhileStatement");
     }
     protected virtual T VisitForStatement(ForStatement src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitForStatement");
     }
     protected virtual T VisitForEachStatement(ForEachStatement src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitForEachStatement");
     }
     protected virtual T VisitBreakStatement(BreakStatement src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitBreakStatement");
     }
     protected virtual T VisitContinueStatement(ContinueStatement src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitContinueStatement");
     }
     protected virtual T VisitBinaryOperatorExpression(BinaryOperatorExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitBinaryOperatorExpression");
     }
     protected virtual T VisitUnaryOperatorExpression(UnaryOperatorExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitUnaryOperatorExpression");
     }
     protected virtual T VisitAssignExpression(CsharpAssignExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitAssignExpression");
     }
     protected virtual T VisitIncrementDecrementExpression(IncrementDecrementExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitIncrementDecrementExpression");
     }
     protected virtual T VisitElementAccessExpression(ElementAccessExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitElementAccessExpression");
     }
     protected virtual T VisitConditionalExpression(ConditionalExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitConditionalExpression");
     }
     protected virtual T VisitCompileResult(CompileResult src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitCompileResult");
     }
     protected virtual T VisitParenthesizedExpression(ParenthesizedExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitParenthesizedExpression");
     }
     protected virtual T VisitUnknownIdentifierValue(UnknownIdentifierValue src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitUnknownIdentifierValue");
     }
     protected virtual T VisitIValueTable_PseudoValue(IValueTable_PseudoValue src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitIValueTable_PseudoValue");
     }
     protected virtual T VisitIValueTable2_PseudoValue(IValueTable2_PseudoValue src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitIValueTable2_PseudoValue");
     }
     protected virtual T VisitMethodExpression(MethodExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitMethodExpression");
     }
     protected virtual T VisitLambdaExpression(LambdaExpression src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitLambdaExpression");
     }
     protected virtual T VisitSwitchStatement(CsharpSwitchStatement src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitSwitchStatement");
     }
     protected virtual T VisitSwichSection(CsharpSwichSection src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitSwichSection");
     }
     protected virtual T VisitSwichLabel(CsharpSwichLabel src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitSwichLabel");
     }
     protected virtual T VisitFullClassDeclaration(FullClassDeclaration src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitFullClassDeclaration");
     }
     protected virtual T VisitFullInterfaceDeclaration(FullInterfaceDeclaration src) {
-        throw new NotSupportedException();
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitFullInterfaceDeclaration");
+    }
+    protected virtual T VisitWithStatement(CsharpWithStatement src) {
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitWithStatement");
+    }
+    protected virtual T VisitWithStatementVariableDeclaration(CsharpWithStatementVariableDeclaration src) {
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitWithStatementVariableDeclaration");
     }
 }
 }

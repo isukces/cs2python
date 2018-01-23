@@ -29,7 +29,7 @@ class Demo:
         return math.acos(a);
         return math.atan(a);
 ";
-            CheckTranslation(WrapClass(cs), expected);
+            CheckTranslation(WrapClass(cs), new Info{Compare = expected});
         }
 
         [Fact]
@@ -54,7 +54,7 @@ class Demo:
     def IsInfinity(cls, a):
         return math.isinf(a);
 ";
-            CheckTranslation(WrapClass(cs), expected);
+            CheckTranslation(WrapClass(cs), new Info{Compare = expected});
         }
 
         [Fact]
@@ -76,7 +76,7 @@ class Demo:
         return math.cosh(a);
         return math.tanh(a);
 ";
-            CheckTranslation(WrapClass(cs), expected);
+            CheckTranslation(WrapClass(cs), new Info{Compare = expected});
         }
 
         [Fact]
@@ -106,7 +106,7 @@ class Demo:
         f = math.floor(x)
         return a + b + c + d + e + f;
 ";
-            CheckTranslation(WrapClass(cs), expected);
+            CheckTranslation(WrapClass(cs), new Info{Compare = expected});
         }
     }
 }

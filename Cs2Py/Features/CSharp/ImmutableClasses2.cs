@@ -217,7 +217,8 @@ namespace Cs2Py.CSharp
                         return rt.MakeArrayType(rank);
                     }
 
-                throw new NotSupportedException();
+                return rt;
+                // throw new NotSupportedException();
             }
         }
     }
@@ -383,5 +384,7 @@ namespace Cs2Py.CSharp
 
         public Type ValueType => throw new NotSupportedException();
     }
+
+    
  
 }

@@ -132,11 +132,10 @@ namespace Cs2Py.Translator
             if (src.OperatorMethod != null)
             {
                 if (!src.OperatorMethod.IsStatic)
-                    throw new NotSupportedException();
-
+                    throw new NotSupportedException("Operator method is not static??!!");
                 var a = new CsharpMethodCallExpression(
                     src.OperatorMethod, null,
-                    new[] {new FunctionArgument("", src.Left), new FunctionArgument("", src.Right)},
+                    new[] {new FunctionArgument("", src.Left, null), new FunctionArgument("", src.Right, null)},
                     new Type[0], false);
                 var trans = TransValue(a);
                 return trans;
@@ -208,6 +207,9 @@ namespace Cs2Py.Translator
                 _state.Principles.GetPyType(src.Info.ReflectedType, true, null),
                 _state.Principles.GetOrMakeTranslationInfo(src.Info)
             ); // class name for constructor
+            {
+                // var a = src.Info.GetCustomAttribute();
+            }
 
             var cti = _state.Principles.GetTi(src.Info.ReflectedType, true);
             if (cti.DontIncludeModuleForClassMembers)

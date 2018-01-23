@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lang.Python", "Lang.Python\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lang.Python.Tests", "Lang.Python.Tests\Lang.Python.Tests.csproj", "{8A17D8E8-C345-4B0E-8C70-60AB507E5983}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lang.Python.Tensorflow", "Lang.Python.Tensorflow\Lang.Python.Tensorflow.csproj", "{77E707C8-32A1-490C-8974-7A30AEA0D157}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo01", "Demos\Demo01\Demo01.csproj", "{8ECAB976-4152-439F-90D9-0168A7204A32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{8A17D8E8-C345-4B0E-8C70-60AB507E5983}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A17D8E8-C345-4B0E-8C70-60AB507E5983}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A17D8E8-C345-4B0E-8C70-60AB507E5983}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77E707C8-32A1-490C-8974-7A30AEA0D157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77E707C8-32A1-490C-8974-7A30AEA0D157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77E707C8-32A1-490C-8974-7A30AEA0D157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77E707C8-32A1-490C-8974-7A30AEA0D157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ECAB976-4152-439F-90D9-0168A7204A32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ECAB976-4152-439F-90D9-0168A7204A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ECAB976-4152-439F-90D9-0168A7204A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ECAB976-4152-439F-90D9-0168A7204A32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

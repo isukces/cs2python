@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Cs2Py.Compilation;
 using Cs2Py.CSharp;
+using Cs2Py.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -45,7 +46,7 @@ namespace Cs2Py.CodeVisitors
 
         public FunctionDeclarationParameter[] rVisit(ParameterListSyntax s)
         {
-            IParameterSymbol[] symbols = (from i in s.Parameters
+            var symbols = (from i in s.Parameters
                 let symbol = ModelExtensions.GetDeclaredSymbol(context.RoslynModel, i) as IParameterSymbol
                 select symbol
             ).ToArray();
@@ -73,6 +74,38 @@ namespace Cs2Py.CodeVisitors
         {
             throw new Exception("Why am I here???");
         }
+        
+        protected override object VisitUsingStatement(UsingStatementSyntax syntax)
+        {
+            if (syntax.Declaration.Variables.Count == 0)
+                throw new NotSupportedException("with statement with no variables");
+
+            var q = new List<CsharpWithStatementVariableDeclaration>();
+            for (var index = 0; index < syntax.Declaration.Variables.Count; index++)
+            {
+                var ii    = syntax.Declaration.Variables[index];
+                var name  = ii.Identifier.Text;
+                var value = _VisitExpression(ii.Initializer.Value);
+                var decl  = new CsharpWithStatementVariableDeclaration(name, value);
+                q.Add(decl);
+            }
+
+            var w = new List<IStatement>();
+            {
+                IReadOnlyList<StatementSyntax> inside = new[] {syntax.Statement};
+                if (syntax.Statement is BlockSyntax bs)
+                    inside = bs.Statements;
+
+                foreach (var i in inside)
+                {
+                    var b = Visit(i);
+                    w.Add(CastOrThrow<IStatement>(b));
+                }
+            }
+
+            var result = new CsharpWithStatement(q.ToArray(), w.ToArray());
+            return result;          
+        }
 
         [Obsolete]
         protected override object VisitArgument(ArgumentSyntax node)
@@ -90,7 +123,6 @@ namespace Cs2Py.CodeVisitors
         }
         protected override object VisitSimpleAssignmentExpression(AssignmentExpressionSyntax node)
         {
-            Console.WriteLine("aa");
             return base.VisitSimpleAssignmentExpression(node);
         }
 
@@ -102,19 +134,24 @@ namespace Cs2Py.CodeVisitors
             return context.DoWithLocalVariables(null,
                 () =>
                 {
-                    var a = node.Statements.Where(u => !(u is EmptyStatementSyntax)).Select(i => Visit(i) as IStatement).ToArray();
+                    var a = node.Statements.Where(u => !(u is EmptyStatementSyntax)).Select(i =>
+                    {
+                        var visited = Visit(i);
+                        var tmp = CastOrThrow<IStatement>(visited);
+                        return tmp;
+                    }).ToArray();
                     return new CodeBlock(a);
                 });
         }
         protected override object VisitSwitchStatement(SwitchStatementSyntax node)
         {
             var                      expression = _VisitExpression(node.Expression);
-            List<CsharpSwichSection> sections   = new List<CsharpSwichSection>(node.Sections.Count);
+            var sections   = new List<CsharpSwichSection>(node.Sections.Count);
             foreach (var csSection in node.Sections)
             {
-                CsharpSwichLabel[] labels     = csSection.Labels.Select(a => _VisitExpression(a)).Cast<CsharpSwichLabel>().ToArray();
-                IStatement[]       statements = csSection.Statements.Select(a => Visit(a)).Cast<IStatement>().ToArray();
-                CsharpSwichSection section    = new CsharpSwichSection(labels, statements);
+                var labels     = csSection.Labels.Select(a => _VisitExpression(a)).Cast<CsharpSwichLabel>().ToArray();
+                var       statements = csSection.Statements.Select(a => Visit(a)).Cast<IStatement>().ToArray();
+                var section    = new CsharpSwichSection(labels, statements);
                 sections.Add(section);
             }
             return new CsharpSwitchStatement(expression, sections.ToArray());
@@ -123,6 +160,7 @@ namespace Cs2Py.CodeVisitors
         {
             return new BreakStatement();
         }
+        
 
         protected override object VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
         {
@@ -298,9 +336,9 @@ namespace Cs2Py.CodeVisitors
             var info = info1 as ILocalSymbol;
             if (info == null)
                 throw new ArgumentNullException("info");
-            Type rosType = context.Roslyn_ResolveType(info.Type);
+            var rosType = context.Roslyn_ResolveType(info.Type);
             var loopVariableType = new LangType(rosType);
-            string loopVariableName = info.Name;
+            var loopVariableName = info.Name;
 #else
             var type = _VisitExpression(node.Type);   
             if (type is UnknownIdentifierValue)
@@ -319,7 +357,7 @@ namespace Cs2Py.CodeVisitors
             var loopVariableName = _Name(node.Identifier);
 #endif
 
-            VariableDeclaration ps = new VariableDeclaration(
+            var ps = new VariableDeclaration(
                 loopVariableType,
                 new VariableDeclarator[] {
                     new VariableDeclarator(loopVariableName, null, null)
@@ -349,9 +387,9 @@ namespace Cs2Py.CodeVisitors
             return state.Context.DoWithLocalVariables(declaration,
                 () =>
                 {
-                    IValue       condition     = _VisitExpression(node.Condition);
-                    object[]     incrementors1 = node.Incrementors.Select(i => Visit(i)).ToArray();
-                    IStatement[] incrementors  = incrementors1.OfType<IStatement>().ToArray();
+                    var       condition     = _VisitExpression(node.Condition);
+                    var     incrementors1 = node.Incrementors.Select(i => Visit(i)).ToArray();
+                    var incrementors  = incrementors1.OfType<IStatement>().ToArray();
                     Debug.Assert(incrementors1.Length == incrementors.Length);
                     var statement1 = Visit(node.Statement);
                     Debug.Assert(statement1 is IStatement);
@@ -503,8 +541,8 @@ namespace Cs2Py.CodeVisitors
         {
             // throw new Exception("Roslyn should do this");
             var       name     = _Name(node.Identifier);
-            Modifiers mod      = VisitModifiers(node.Modifiers);
-            LangType  t        = node.Type == null ? null : _ResolveLangType(node.Type);
+            var mod      = VisitModifiers(node.Modifiers);
+            var  t        = node.Type == null ? null : _ResolveLangType(node.Type);
             var       _default = node.Default == null ? null : _VisitExpression(node.Default);
             return new FunctionDeclarationParameter(name, mod, t, _default as IValue);
 
@@ -552,7 +590,7 @@ namespace Cs2Py.CodeVisitors
 
         protected override object VisitReturnStatement(ReturnStatementSyntax node)
         {
-            IValue v = node.Expression == null ? null : _VisitExpression(node.Expression);
+            var v = node.Expression == null ? null : _VisitExpression(node.Expression);
             return new ReturnStatement(v);
         }
 
@@ -581,7 +619,7 @@ namespace Cs2Py.CodeVisitors
 
         protected override object VisitVariableDeclaration(VariableDeclarationSyntax node)
         {
-            LangType t = _ResolveLangType(node.Type);
+            var t = _ResolveLangType(node.Type);
 #if ROSLYN
 //if (t == null || t.DotnetType == null)
 //    throw new Exception("Roslyn powinien tozwiązać ten typ");
@@ -647,13 +685,13 @@ namespace Cs2Py.CodeVisitors
         private Type _ResolveTypeX(SyntaxNode name)
         {
             // We can do this directly 
-            TypeVisitor v = new TypeVisitor(state);
+            var v = new TypeVisitor(state);
             return v.Visit(name);
         }
 
         IValue _VisitExpression(SyntaxNode n)
         {
-            ValueVisitor vv  = new ValueVisitor(state);
+            var vv  = new ValueVisitor(state);
             var           tmp = vv.Visit(n);
             return tmp;
         }
@@ -695,8 +733,8 @@ namespace Cs2Py.CodeVisitors
 
         FunctionDeclarationParameter rVisit(IParameterSymbol s)
         {
-            string    name    = s.Name;
-            Modifiers m       = rVisit(s.RefKind);
+            var    name    = s.Name;
+            var m       = rVisit(s.RefKind);
             var       type    = context.Roslyn_ResolveType(s.Type);
             IValue    initial = null;
             if (s.HasExplicitDefaultValue)
@@ -744,7 +782,7 @@ namespace Cs2Py.CodeVisitors
 
         object[] Visit(IEnumerable<MemberDeclarationSyntax> i)
         {
-            List<object> res = new List<object>();
+            var res = new List<object>();
             foreach (var ii in i)
             {
                 try

@@ -22,8 +22,12 @@
       <Project>{0FCBE202-B77B-4DC2-8073-8A08EDFBEAAA}</Project>
       <Name>Cs2Py</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Lang.Python.Tensorflow\Lang.Python.Tensorflow.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build.Engine" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NUmpy" />
   </ItemGroup>
 </Project>

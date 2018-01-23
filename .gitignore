@@ -3,4 +3,4 @@
 bin
 obj
 *.cache
-/Cs2Py/*.DotSettings
+*.DotSettings

@@ -195,7 +195,7 @@ namespace Cs2Py.Compilation
         {
             var result         = new List<IPyStatement>();
             var alreadyDefined = new List<string>();
-            foreach (var item in RequiredFiles.Distinct())
+            foreach (PyImportRequest item in RequiredFiles.Distinct())
             {
                 var code = item.GetPyCode(); //rozróżniam je po wygenerowanym kodzie
                 if (alreadyDefined.Contains(code))

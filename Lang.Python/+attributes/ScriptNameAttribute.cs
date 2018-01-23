@@ -7,7 +7,7 @@ namespace Lang.Python
     /// ScriptNameAttribute is used to decorate classes or methods with an alternate name optionally including namespace that should be presented in PHP code. 
     /// <see cref="https://github.com/isukces/cs2php/wiki/ScriptNameAttribute">Wiki</see>
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter, AllowMultiple = false)]
     public class ScriptNameAttribute : Attribute
     {
         /// <summary>

@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lang.Python\Lang.Python.csproj">
+      <Project>{25DF4EF8-BC83-4785-9F40-1391F529637F}</Project>
+      <Name>Lang.Python</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

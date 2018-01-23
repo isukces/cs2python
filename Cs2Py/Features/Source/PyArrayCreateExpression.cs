@@ -102,7 +102,7 @@ namespace Cs2Py.Source
                     list.Add(initializeValue.GetPyCode(style));
                 }
 
-            return "array(" + string.Join(przecinek, list) + ")";
+            return "[" + string.Join(przecinek, list) + "]";
         }
 
 

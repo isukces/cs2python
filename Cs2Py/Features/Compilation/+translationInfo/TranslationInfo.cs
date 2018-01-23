@@ -159,7 +159,11 @@ namespace Cs2Py.Compilation
                 return null;
             if (doCheckAccesibility)
                 CheckAccesibility(type);
-            return ClassTranslations[type];
+            if (type.IsGenericType)
+                type = type.GetGenericTypeDefinition();
+            if (ClassTranslations.TryGetValue(type, out var result))
+                return result;
+            throw new Exception("Unable to find translation info for type " + type);
         }
 
         public void Log(MessageLevels level, string text)

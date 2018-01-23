@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Cs2Py.Compilation;
+using JetBrains.Annotations;
 using Lang.Python;
 
 namespace Cs2Py.Source
@@ -13,13 +14,17 @@ namespace Cs2Py.Source
         ///     Creates instance of modulename not related to any .NET class (i.e. for config code)
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="importName"></param>
         /// <param name="isExternalModule"></param>
-        public PyCodeModuleName(string name, bool isExternalModule)
+        public PyCodeModuleName(string name, string importName, bool isExternalModule)
         {
             Name             = name ?? throw new ArgumentNullException(nameof(name));
             Name             = Pn(Name);
+            ImportName       = Pn(importName);
             IsExternalModule = isExternalModule;
         }
+
+        public string ImportName { get; set; }
 
         public PyCodeModuleName(Type type, bool isExternalModule, ClassTranslationInfo declaringTypeInfo)
         {
@@ -85,45 +90,7 @@ namespace Cs2Py.Source
             value = (value?.Trim() ?? string.Empty).Replace("\\", "/");
             return value;
         }
-        // Private Methods 
-/*
-        private static string ProcessPath(string name, string relatedTo)
-        {
-            var p1     = Split(name);
-            var p2     = Split(relatedTo);
-            var common = 0;
-            for (int i = 0, max = Math.Min(p1.Length, p2.Length); i < max; i++)
-                if (p1[i] == p2[i])
-                    common++;
-                else
-                    break;
-            if (common > 0)
-            {
-                p1 = p1.Skip(common).ToArray();
-                p2 = p2.Skip(common).ToArray();
-            }
-
-            var aa = new List<string>();
-            for (var i = 0; i < p2.Length - 1; i++)
-                aa.Add("..");
-            aa.AddRange(p1);
-            var g = string.Join("/", aa);
-            //if (p1.Length == 1)
-            //    return new PyConstValue(Name + extension);
-            return g;
-        }
-    */
-        // Private Methods 
-
-        private static string[] Split(string name)
-        {
-            if (name.Contains("\\"))
-                name = name.Replace("\\", "/");
-            var p1   = ("/" + name).Split('/').Select(a => a.Trim()).Where(a => !string.IsNullOrEmpty(a)).ToArray();
-            return p1;
-        }
-
-
+       
         /// <summary>
         ///     Sprawdza, czy wskazany obiekt jest równy bieżącemu
         /// </summary>
@@ -159,59 +126,6 @@ namespace Cs2Py.Source
             return p;
         }
 
-        // Public Methods 
-
-
-        public string MakeIncludePath(PyCodeModuleName relatedTo)
-        {
-            if (IsExternalModule)
-                return Name;
-            throw new NotImplementedException();
-            return Name;
-            /*
-            if (relatedTo.Library == Library)
-            {
-                var knownPath = ProcessPath(_name + _extension, relatedTo._name + _extension);
-                //dirname(__FILE__)
-                var __FILE__ = new PyDefinedConstExpression("__FILE__", null);
-                var dirname  = new PyMethodCallExpression("dirname", __FILE__);
-                var path     = new PyConstValue(PathUtil.MakeUnixPath(PathUtil.UNIX_SEP + knownPath));
-                var result   = PyBinaryOperatorExpression.ConcatStrings(dirname, path);
-                return result;
-            }
-            else
-            {
-                string path      = null;
-                string pathRelTo = null;
-                if (PyIncludePathExpression is PyConstValue)
-                {
-                    path = (PyIncludePathExpression as PyConstValue).Value as string;
-                    if (path == null)
-                        throw new NotSupportedException();
-                }
-                else
-                {
-                    return PyIncludePathExpression; // assume expression like MPDF_LIB_PATH . 'lib/mpdf/mpdf.Py'
-                }
-
-                if (relatedTo.PyIncludePathExpression is PyConstValue)
-                {
-                    pathRelTo = (relatedTo.PyIncludePathExpression as PyConstValue).Value as string;
-                    if (pathRelTo == null)
-                        throw new NotSupportedException();
-                }
-
-                if (!string.IsNullOrEmpty(path) && !string.IsNullOrEmpty(path))
-                {
-                    var knownPath = ProcessPath(path, pathRelTo);
-                    return new PyConstValue(knownPath);
-                }
-
-                throw new NotSupportedException();
-            }
-            */
-        }
-
         /// <summary>
         ///     Zwraca tekstową reprezentację obiektu
         /// </summary>
@@ -220,32 +134,7 @@ namespace Cs2Py.Source
         {
             return Name;
         }
-
-/*
-        private void UpdateIncludePathExpression()
-        {
-            if (AssemblyInfo == null)
-            {
-                PyIncludePathExpression = null;
-                return;
-            }
-
-            var pathItems = new List<IPyValue>();
-            {
-                var assemblyPath = AssemblyInfo.PyIncludePathExpression;
-                if (assemblyPath != null)
-                    pathItems.Add(assemblyPath);
-            }
-            if (OptionalIncludePathPrefix != null && OptionalIncludePathPrefix.Any())
-                foreach (var n in OptionalIncludePathPrefix)
-                    if (n.StartsWith("$"))
-                        pathItems.Add(new PyVariableExpression(n, PyVariableKind.Global));
-                    else
-                        pathItems.Add(new PyDefinedConstExpression(n, null));
-            pathItems.Add(new PyConstValue(_name + Extension));
-            PyIncludePathExpression = PyBinaryOperatorExpression.ConcatStrings(pathItems.ToArray());
-        }
-*/
+ 
 #if OLD
         public static PyCodeModuleName Cs2PyConfigModuleName => new PyCodeModuleName(CS2PY_CONFIG_MODULE_NAME, false);
         /// <summary>
@@ -268,5 +157,19 @@ namespace Cs2Py.Source
         public bool IsEmpty => string.IsNullOrEmpty(Name);
 
 
+        public static PyCodeModuleName FromAttribute([NotNull] ModuleAttribute moduleAttribute)
+        {
+            if (moduleAttribute == null)
+                throw new ArgumentNullException(nameof(moduleAttribute));
+            return new PyCodeModuleName(
+                moduleAttribute.ModuleShortName,
+                moduleAttribute.GetImportModuleName(),
+                moduleAttribute.IsExternal);
+        }
+
+        public string GetImportPath(PyCodeModuleName relatedTo)
+        {
+            return ImportName;
+        }
     }
 }

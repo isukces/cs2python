@@ -41,6 +41,12 @@ namespace Cs2Py.Translator
             return a.Visit(x as PySourceBase);
         }
 
+        protected override IPyStatement VisitPyUsingStatement(PyUsingStatement node)
+        {
+            // todo: Simlifications
+            return node;
+        }
+
         protected override IPyStatement VisitPyBreakStatement(PyBreakStatement node)
         {
             return node;

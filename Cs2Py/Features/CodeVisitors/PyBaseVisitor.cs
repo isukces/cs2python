@@ -70,6 +70,8 @@ namespace Cs2Py.CodeVisitors
                     return VisitPyThisExpression(node as PyThisExpression);
                 case PySourceItems.PyUnaryOperatorExpression:
                     return VisitPyUnaryOperatorExpression(node as PyUnaryOperatorExpression);
+                case PySourceItems.PyUsingStatement:
+                    return VisitPyUsingStatement(node as PyUsingStatement);
                 case PySourceItems.PyVariableExpression:
                     return VisitPyVariableExpression(node as PyVariableExpression);
                 case PySourceItems.PyWhileStatement:
@@ -282,6 +284,13 @@ namespace Cs2Py.CodeVisitors
             return default(T);
         }
 
+        protected virtual T VisitPyUsingStatement(PyUsingStatement node)
+        {
+            if (ThrowNotImplementedException)
+                throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}", "VisitPyUsingStatement", this.GetType().FullName));
+            return default(T);
+        }
+
         protected virtual T VisitPyVariableExpression(PyVariableExpression node)
         {
             if (ThrowNotImplementedException)
@@ -325,6 +334,7 @@ namespace Cs2Py.CodeVisitors
 			if (x.GetType() == typeof(PySwitchStatement)) return PySourceItems.PySwitchStatement;
 			if (x.GetType() == typeof(PyThisExpression)) return PySourceItems.PyThisExpression;
 			if (x.GetType() == typeof(PyUnaryOperatorExpression)) return PySourceItems.PyUnaryOperatorExpression;
+			if (x.GetType() == typeof(PyUsingStatement)) return PySourceItems.PyUsingStatement;
 			if (x.GetType() == typeof(PyVariableExpression)) return PySourceItems.PyVariableExpression;
 			if (x.GetType() == typeof(PyWhileStatement)) return PySourceItems.PyWhileStatement;
             throw new NotSupportedException(x.GetType().FullName);
@@ -360,6 +370,7 @@ namespace Cs2Py.CodeVisitors
 		PySwitchStatement,
 		PyThisExpression,
 		PyUnaryOperatorExpression,
+		PyUsingStatement,
 		PyVariableExpression,
 		PyWhileStatement,
 	}

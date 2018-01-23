@@ -100,7 +100,8 @@ string[] GetDirectives() {
 		"PyWhileStatement",
 		"PyForEachStatement",
 		"PyThisExpression",
-		"PyModuleExpression"
+		"PyModuleExpression",
+		"PyUsingStatement"
 		
     };
 	return x.OrderBy(a=>a).ToArray();

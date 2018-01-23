@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lang.Python.Tensorflow\Lang.Python.Tensorflow.csproj">
+      <Project>{77E707C8-32A1-490C-8974-7A30AEA0D157}</Project>
+      <Name>Lang.Python.Tensorflow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Lang.Python\Lang.Python.csproj">
+      <Project>{25DF4EF8-BC83-4785-9F40-1391F529637F}</Project>
+      <Name>Lang.Python</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

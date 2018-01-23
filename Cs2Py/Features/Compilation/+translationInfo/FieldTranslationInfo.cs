@@ -89,7 +89,7 @@ namespace Cs2Py.Compilation
                             throw new Exception(string.Format(
                                 "Module attribute can only be defined for GlobalVariable or DefinedConst. Check {0}.",
                                 fieldInfo.ExcName()));
-                        fti.IncludeModule = new PyCodeModuleName(moduleAttribute.ModuleShortName, moduleAttribute.IsExternal);
+                        fti.IncludeModule = PyCodeModuleName.FromAttribute(moduleAttribute);
                     }
                 }
                     if (cti.IsPage)
