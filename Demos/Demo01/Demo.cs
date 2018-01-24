@@ -7,11 +7,22 @@ namespace Demo01
 {
     public class Demo
     {
+        public static void ConvertArange()
+        {
+            var int1 = Np.ARange(5);
+            var int2 = Np.ARange(5, 10);
+            var int3 = Np.ARange(5, 10, 3);
+
+            var double1 = Np.ARange(5.1);
+            var double2 = Np.ARange(5.1, 10);
+            var double3 = Np.ARange(5.1, 10, 3);
+        }
+
         public static void CreateNumpyArrays()
         {
             var list = new[] {1, 2, 3};
-            var tmp  = Numpy.Array(new[] {1.0, 2, 3});
-            var tmp2 = Numpy.Array(new[] {1.0, 2, 3}, order: NumpyArrayOrder.C);                       
+            var tmp  = Np.Array(new[] {1.0, 2, 3});
+            var tmp2 = Np.Array(new[] {1.0, 2, 3}, order: NumpyArrayOrder.C);
         }
 
         public static void DoubleWithDemo()
@@ -21,7 +32,7 @@ namespace Demo01
                 Py.Nothing();
             }
         }
-        
+
 
         public static void inferenceb(Tensor<double> images, int hidden1Units)
         {
@@ -29,10 +40,10 @@ namespace Demo01
             {
                 var weights = Tf.Variable(
                     Tf.TruncatedNormal(new[] {IMAGE_PIXELS, hidden1Units}, stddev: 1.0 / Math.Sqrt(IMAGE_PIXELS)),
-                    name:"weights");
-                  
-                TfVariable<Tensor<double>> biases = Tf.Variable(Tf.ZerosDouble(new[] {hidden1Units}), name: "biases");
-                Tensor<double> hidden1 = TfNn.Relu(Tf.MatMul(images, weights) + biases);
+                    name: "weights");
+
+                var biases  = Tf.Variable(Tf.ZerosDouble(new[] {hidden1Units}), name: "biases");
+                var hidden1 = TfNn.Relu(Tf.MatMul(images, weights) + biases);
             }
 
             /*
@@ -81,7 +92,7 @@ namespace Demo01
              */
         }
 
-        private const int NUM_CLASSES = 10;
+        private const int NUM_CLASSES  = 10;
         private const int IMAGE_SIZE   = 28;
         private const int IMAGE_PIXELS = IMAGE_SIZE * IMAGE_SIZE;
     }

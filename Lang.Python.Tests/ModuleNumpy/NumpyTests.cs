@@ -10,7 +10,7 @@ namespace Lang.Python.Tests.ModuleNumpy
             const string cs = @"
         public static void CreateNumpyArrays()
         {
-            var tmp = Numpy.Array(new[] {1.0, 2, 3}, order: NumpyArrayOrder.C);
+            var tmp = Np.Array(new[] {1.0, 2, 3}, order: NumpyArrayOrder.C);
         }
         ";
 
@@ -50,6 +50,41 @@ class Demo:
             with tensorflow.name_scope('scopeName2') as scope2:
 ";
             CheckTranslation(WrapClass(cs, "Lang.Python.Tensorflow", "System", "Lang.Python"), new Info
+            {
+                Compare = expected,
+                Ref     = new [] { typeof(Lang.Python.Tensorflow.Graph).Assembly}
+            });
+        }
+        
+        
+        [Fact]
+        public void T03_Should_convert_arange()
+        {
+            const string cs = @"
+        public static void ConvertArange()
+        {
+            var int1 = Np.ARange(5);
+            var int2 = Np.ARange(5, 10);
+            var int3 = Np.ARange(5, 10, 3);
+
+            var double1 = Np.ARange(5.1);
+            var double2 = Np.ARange(5.1, 10);
+            var double3 = Np.ARange(5.1, 10, 3);
+        }
+        ";
+
+            const string expected = @"
+import numpy
+class Demo:
+    @staticmethod
+    def ConvertArange(cls):
+        int1 = numpy.arange(5)
+        int2 = numpy.arange(5, 10)
+        int3 = numpy.arange(5, 10, 3)
+        double1 = numpy.arange(5.1)
+        double2 = numpy.arange(5.1, 10)
+        double3 = numpy.arange(5.1, 10, 3)";
+            CheckTranslation(WrapClass(cs, "Lang.Python.Numpy", "System", "Lang.Python"), new Info
             {
                 Compare = expected,
                 Ref     = new [] { typeof(Lang.Python.Tensorflow.Graph).Assembly}

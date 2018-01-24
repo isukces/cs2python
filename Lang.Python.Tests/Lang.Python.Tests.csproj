@@ -27,7 +27,4 @@
   <ItemGroup>
     <Reference Include="Microsoft.Build.Engine" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NUmpy" />
-  </ItemGroup>
 </Project>
