@@ -1,6 +1,7 @@
 ﻿using System;
 using Lang.Python;
 using Lang.Python.Numpy;
+using Lang.Python.Plot;
 using Lang.Python.Tensorflow;
 
 namespace Demo01
@@ -16,6 +17,13 @@ namespace Demo01
             var double1 = Np.ARange(5.1);
             var double2 = Np.ARange(5.1, 10);
             var double3 = Np.ARange(5.1, 10, 3);
+        }
+
+        public static void ConvertPyPlot()
+        {
+            var x = Np.ARange(0, 5, 0.1);
+            var y = Np.Sin(x);
+            PyPlot.Plot(x, y);
         }
 
         public static void CreateNumpyArrays()

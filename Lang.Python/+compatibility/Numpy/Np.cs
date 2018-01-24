@@ -71,5 +71,16 @@ namespace Lang.Python.Numpy
         }
 
         public static Type Int32 => typeof(int);
+
+        [DirectCall("sin")]
+        public static List<double> Sin(List<double> x)
+        {
+            return x.MapToList(Math.Sin);
+        }
+        [DirectCall("cos")]
+        public static List<double> Cos(List<double> x)
+        {
+            return x.MapToList(Math.Cos);
+        }
     }
 }
