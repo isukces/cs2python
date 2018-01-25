@@ -6,20 +6,21 @@ namespace Lang.Python.Tensorflow
     ///     Tensorflow module
     /// </summary>
     // [ScriptName("tensorflow")]
-    [Module("tensorflow", true, ClassIsModule = true)]
+    [PyModule("tensorflow", true)]
+    [ExportAsPyModule]
     public class Tf
     {
         [DirectCall("matmul")]
         public static Tensor<T> MatMul<T>(
-            [ScriptName("a")]           Tensor<T> a,
-            [ScriptName("b")]           Tensor<T> b,
-            [ScriptName("transpose_a")] bool      transposeA = false,
-            [ScriptName("transpose_b")] bool      transposeB = false,
-            [ScriptName("adjoint_a")]   bool      adjointA   = false,
-            [ScriptName("adjoint_b")]   bool      adjointB   = false,
-            [ScriptName("a_is_sparse")] bool      aIsSparse  = false,
-            [ScriptName("b_is_sparse")] bool      bIsSparse  = false,
-            [ScriptName("name")]        string    name       = null)
+            [PyName("a")]           Tensor<T> a,
+            [PyName("b")]           Tensor<T> b,
+            [PyName("transpose_a")] bool      transposeA = false,
+            [PyName("transpose_b")] bool      transposeB = false,
+            [PyName("adjoint_a")]   bool      adjointA   = false,
+            [PyName("adjoint_b")]   bool      adjointB   = false,
+            [PyName("a_is_sparse")] bool      aIsSparse  = false,
+            [PyName("b_is_sparse")] bool      bIsSparse  = false,
+            [PyName("name")]        string    name       = null)
         {
             // https://www.tensorflow.org/api_docs/python/tf/matmul
             throw new NotImplementedException();
@@ -43,12 +44,12 @@ namespace Lang.Python.Tensorflow
         /// <exception cref="NotImplementedException"></exception>
         [DirectCall("truncated_normal")]
         public static Tensor<double> TruncatedNormal(
-            [ScriptName("shape")]  int[]  shape,
-            [ScriptName("mean")]   double mean   = 0.0,
-            [ScriptName("stddev")] double stddev = 1.0,
+            [PyName("shape")]  int[]  shape,
+            [PyName("mean")]   double mean   = 0.0,
+            [PyName("stddev")] double stddev = 1.0,
             // [ScriptName("dtype")]  TfDataType dtype  = TfDataType.float32, // implicit double
-            [ScriptName("seed")] int?   seed = null,
-            [ScriptName("name")] string name = null
+            [PyName("seed")] int?   seed = null,
+            [PyName("name")] string name = null
         )
         {
             // https://www.tensorflow.org/api_docs/python/tf/truncated_normal
@@ -57,17 +58,17 @@ namespace Lang.Python.Tensorflow
 
         [DirectCall("zeros")]
         public static Tensor<T> Zeros<T>(
-            [ScriptName("shape")] int[]        shape,
-            [ScriptName("dtype")] PyNumberType dtype,
-            [ScriptName("name")]  string       name = null)
+            [PyName("shape")] int[]        shape,
+            [PyName("dtype")] PyNumberType dtype,
+            [PyName("name")]  string       name = null)
         {
             throw new NotImplementedException();
         }
 
         [DirectCall("zeros")]
         public static Tensor<double> ZerosDouble(
-            [ScriptName("shape")] int[]  shape,
-            [ScriptName("name")]  string name = null)
+            [PyName("shape")] int[]  shape,
+            [PyName("name")]  string name = null)
         {
             throw new NotImplementedException();
         }
@@ -80,17 +81,17 @@ namespace Lang.Python.Tensorflow
 
         [DirectCall("variable")]
         public static TfVariable<T> Variable<T>(
-            [ScriptName("initial_value")]  T      initialValue,
-            [ScriptName("trainable")]      bool   trainable     = true,
-            [ScriptName("collections")]    object collections   = null,
-            [ScriptName("validate_shape")] bool   validateShape = true,
-            [ScriptName("caching_device")] object cachingDevice = null,
-            [ScriptName("name")]           object name          = null,
-            [ScriptName("variable_def")]   object variableDef   = null,
-            [ScriptName("dtype")]          object dtype         = null,
-            [ScriptName("expected_shape")] object expectedShape = null,
-            [ScriptName("import_scope")]   object importScope   = null,
-            [ScriptName("constraint")]     object constraint    = null
+            [PyName("initial_value")]  T      initialValue,
+            [PyName("trainable")]      bool   trainable     = true,
+            [PyName("collections")]    object collections   = null,
+            [PyName("validate_shape")] bool   validateShape = true,
+            [PyName("caching_device")] object cachingDevice = null,
+            [PyName("name")]           object name          = null,
+            [PyName("variable_def")]   object variableDef   = null,
+            [PyName("dtype")]          object dtype         = null,
+            [PyName("expected_shape")] object expectedShape = null,
+            [PyName("import_scope")]   object importScope   = null,
+            [PyName("constraint")]     object constraint    = null
         )
         {
             return new TfVariable<T>(initialValue, trainable, collections, validateShape, cachingDevice,

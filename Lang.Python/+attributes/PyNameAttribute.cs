@@ -8,12 +8,12 @@ namespace Lang.Python
     /// <see cref="https://github.com/isukces/cs2php/wiki/ScriptNameAttribute">Wiki</see>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter, AllowMultiple = false)]
-    public class ScriptNameAttribute : Attribute
+    public class PyNameAttribute : Attribute
     {
         /// <summary>
         /// Creates instance of attribute
         /// </summary>
-        public ScriptNameAttribute()
+        public PyNameAttribute()
         {
 
         }
@@ -22,7 +22,7 @@ namespace Lang.Python
         /// Creates instance of attribute
         /// </summary>
         /// <param name="name">Name in script</param>
-        public ScriptNameAttribute(string name)
+        public PyNameAttribute(string name)
         {
             Name = name;
         }

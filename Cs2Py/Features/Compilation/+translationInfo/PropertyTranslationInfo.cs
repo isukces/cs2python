@@ -27,7 +27,7 @@ namespace Cs2Py.Compilation
                 result.FieldScriptName = name.Substring(0, 1).ToLower() + name.Substring(1); // lowecase field name
             }
             {
-                var at = propInfo.GetCustomAttribute<ScriptNameAttribute>(false);
+                var at = propInfo.GetCustomAttribute<PyNameAttribute>(false);
                 if (at != null)
                     result.FieldScriptName = at.Name; // preserve case
             }

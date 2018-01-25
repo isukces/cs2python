@@ -14,7 +14,7 @@ namespace Cs2Py.Compilation
                 ScriptName = methodInfo.Name,
                 ClassTi = classTranslationInfo
             };
-            var scriptNameAttribute = methodInfo.GetCustomAttribute<ScriptNameAttribute>();
+            var scriptNameAttribute = methodInfo.GetCustomAttribute<PyNameAttribute>();
             if (scriptNameAttribute != null)
                 result.ScriptName = scriptNameAttribute.Name.Trim();
             if (string.IsNullOrEmpty(result.ScriptName))

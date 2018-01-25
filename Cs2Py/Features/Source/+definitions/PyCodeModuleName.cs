@@ -75,7 +75,7 @@ namespace Cs2Py.Source
             }
             {
                 // ModuleAttribute
-                var moduleAttribute = type.GetCustomAttribute<ModuleAttribute>();
+                var moduleAttribute = type.GetCustomAttribute<PyModuleAttribute>();
                 if (moduleAttribute != null)
                     return moduleAttribute.ModuleShortName;
             }
@@ -157,14 +157,14 @@ namespace Cs2Py.Source
         public bool IsEmpty => string.IsNullOrEmpty(Name);
 
 
-        public static PyCodeModuleName FromAttribute([NotNull] ModuleAttribute moduleAttribute)
+        public static PyCodeModuleName FromAttribute([NotNull] PyModuleAttribute pyModuleAttribute)
         {
-            if (moduleAttribute == null)
-                throw new ArgumentNullException(nameof(moduleAttribute));
+            if (pyModuleAttribute == null)
+                throw new ArgumentNullException(nameof(pyModuleAttribute));
             return new PyCodeModuleName(
-                moduleAttribute.ModuleShortName,
-                moduleAttribute.GetImportModuleName(),
-                moduleAttribute.IsExternal);
+                pyModuleAttribute.ModuleShortName,
+                pyModuleAttribute.GetImportModuleName(),
+                pyModuleAttribute.IsExternal);
         }
 
         public string GetImportPath(PyCodeModuleName relatedTo)

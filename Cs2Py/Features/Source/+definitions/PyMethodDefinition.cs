@@ -20,7 +20,6 @@ namespace Cs2Py.Source
         public virtual void Emit(PySourceCodeEmiter emiter, PySourceCodeWriter code, PyEmitStyle style)
         {
             // public function addFunction($function, $namespace = '') 
-            var accessModifiers = GetAccessModifiers();
             var argumentsCode   = Arguments.Select(u => u.GetPyCode(style)).ToList();
             var mk              = GetPyMethodKind();
             switch (mk)
@@ -39,7 +38,7 @@ namespace Cs2Py.Source
             }
 
             var param = Arguments == null ? "" : string.Join(", ", argumentsCode);
-            code.OpenLnF("def {1}({2}):", accessModifiers, Name, param);
+            code.OpenLnF("def {0}({1}):", Name, param);
             {
                 var g = GetGlobals();
                 if (!string.IsNullOrEmpty(g))
@@ -63,10 +62,6 @@ namespace Cs2Py.Source
         }
         // Protected Methods 
 
-        protected virtual string GetAccessModifiers()
-        {
-            return "";
-        }
 
         protected string GetGlobals()
         {

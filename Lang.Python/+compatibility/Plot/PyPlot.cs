@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace Lang.Python.Plot
 {
-    [Module("matplotlib.pyplot", true, ClassIsModule = true, ImportModule = "matplotlib")]
+    [PyModule("matplotlib.pyplot", true, ImportModule = "matplotlib")]
+    [ExportAsPyModule]
     public class PyPlot
     {
         [DirectCall("plot")]

@@ -9,7 +9,7 @@ namespace Cs2Py.NodeTranslators
     {
         public static PyMethodCallExpression TrySetTargetObjectFromModule(this PyMethodCallExpression self, Type methodInfoDeclaringType)
         {
-            var ar = methodInfoDeclaringType?.GetCustomAttribute<ModuleAttribute>();
+            var ar = methodInfoDeclaringType?.GetCustomAttribute<PyModuleAttribute>();
             if (ar != null)
                 self.TargetObject = new PyModuleExpression(PyCodeModuleName.FromAttribute(ar), "?");
             return self;

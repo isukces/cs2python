@@ -132,7 +132,7 @@ namespace Cs2Py.Compilation
             if (doCheckAccesibility)
                 CheckAccesibility(type);
             var classTranslationInfo = GetOrMakeTranslationInfo(type);
-            var pyQualifiedName     = classTranslationInfo.ScriptName;
+            var pyQualifiedName     = classTranslationInfo.PyName;
             if ((object)relativeTo == null)
                 return pyQualifiedName;
             if (type == relativeTo)

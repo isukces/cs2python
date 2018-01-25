@@ -24,11 +24,11 @@ namespace Cs2Py.Compilation
                     fti.ScriptName = "_" + fieldInfo.Name;
                 if (fieldInfo.IsPrivate)
                     fti.ScriptName      = "__" + fieldInfo.Name;
-                var scriptNameAttribute = fieldInfo.GetCustomAttribute<ScriptNameAttribute>();
+                var scriptNameAttribute = fieldInfo.GetCustomAttribute<PyNameAttribute>();
                 if (scriptNameAttribute != null)
                 {
                     fti.ScriptName            = scriptNameAttribute.Name;
-                    fti.IsScriptNamePyEncoded = scriptNameAttribute.Kind == ScriptNameAttribute.Kinds.IntIndex;
+                    fti.IsScriptNamePyEncoded = scriptNameAttribute.Kind == PyNameAttribute.Kinds.IntIndex;
                 }
             }
             {
@@ -82,7 +82,7 @@ namespace Cs2Py.Compilation
                                               fti.Destination == FieldTranslationDestionations.DefinedConst;
                 {
                     // can be in other module for GlobalVariable and DefinedConst
-                    var moduleAttribute = fieldInfo.GetCustomAttribute<ModuleAttribute>();
+                    var moduleAttribute = fieldInfo.GetCustomAttribute<PyModuleAttribute>();
                     if (moduleAttribute != null)
                     {
                         if (!isFieldOutsideClass)

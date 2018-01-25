@@ -54,22 +54,19 @@ namespace Cs2Py.Source
         }
         // Protected Methods 
 
-        protected override string GetAccessModifiers()
-        {
-            return PySourceCodeEmiter.GetAccessModifiers(this);
-        }
 
         protected override PyMethodKind GetPyMethodKind()
         {
-            return IsStatic ? PyMethodKind.ClassStatic : PyMethodKind.ClassInstance;
+            return Kind;
         }
 
         /// <summary>
         /// </summary>
-        public bool IsStatic { get; set; }
+        public PyMethodKind Kind { get; set; } = PyMethodKind.ClassInstance;
 
         /// <summary>
         /// </summary>
         public Visibility Visibility { get; set; }
+        
     }
 }

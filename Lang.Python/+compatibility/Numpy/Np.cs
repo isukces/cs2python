@@ -4,36 +4,10 @@ using System.Linq;
 
 namespace Lang.Python.Numpy
 {
-    [Module("numpy", true, ClassIsModule = true)]
+    [PyModule("numpy", true)]
+    [ExportAsPyModule]
     public class Np
     {
-        [DirectCall("array")]
-        public static NdArray<int> Array(
-            IEnumerable<int> obj,
-            bool             copy  = true,
-            NumpyArrayOrder  order = NumpyArrayOrder.K)
-        {
-            return NdArray.Make(obj, copy, order);
-        }
-
-        [DirectCall("array")]
-        public static NdArray<double> Array(
-            IEnumerable<double> obj,
-            bool                copy  = true,
-            NumpyArrayOrder     order = NumpyArrayOrder.K)
-        {
-            return NdArray.Make(obj, copy, order);
-        }
-
-        [DirectCall("array")]
-        public static NdArray<Complex> Array(
-            IEnumerable<Complex> obj,
-            bool                 copy  = true,
-            NumpyArrayOrder      order = NumpyArrayOrder.K)
-        {
-            return NdArray.Make(obj, copy, order);
-        }
-
         [DirectCall("arange")]
         public static List<int> ARange(int stop)
         {
@@ -70,17 +44,45 @@ namespace Lang.Python.Numpy
             return result;
         }
 
-        public static Type Int32 => typeof(int);
+        [DirectCall("array")]
+        public static NdArray<int> Array(
+            IEnumerable<int> obj,
+            bool             copy  = true,
+            NumpyArrayOrder  order = NumpyArrayOrder.K)
+        {
+            return NdArray.Make(obj, copy, order);
+        }
+
+        [DirectCall("array")]
+        public static NdArray<double> Array(
+            IEnumerable<double> obj,
+            bool                copy  = true,
+            NumpyArrayOrder     order = NumpyArrayOrder.K)
+        {
+            return NdArray.Make(obj, copy, order);
+        }
+
+        [DirectCall("array")]
+        public static NdArray<Complex> Array(
+            IEnumerable<Complex> obj,
+            bool                 copy  = true,
+            NumpyArrayOrder      order = NumpyArrayOrder.K)
+        {
+            return NdArray.Make(obj, copy, order);
+        }
+
+        [DirectCall("cos")]
+        public static List<double> Cos(List<double> x)
+        {
+            return x.MapToList(Math.Cos);
+        }
 
         [DirectCall("sin")]
         public static List<double> Sin(List<double> x)
         {
             return x.MapToList(Math.Sin);
         }
-        [DirectCall("cos")]
-        public static List<double> Cos(List<double> x)
-        {
-            return x.MapToList(Math.Cos);
-        }
+
+        public static Type Int32 => typeof(int);
     }
 }

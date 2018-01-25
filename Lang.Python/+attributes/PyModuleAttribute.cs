@@ -3,13 +3,13 @@
 namespace Lang.Python
 {
     [AttributeUsage(AttributeTargets.All)]
-    public class ModuleAttribute : Attribute
+    public class PyModuleAttribute : Attribute
     {
         /// <summary>
         ///     Tworzy instancję obiektu
         ///     <param name="moduleShortName">Module short name i.e "hello-page" or "mynamespace/hello-class"</param>
         /// </summary>
-        public ModuleAttribute(string moduleShortName, bool isExternal)
+        public PyModuleAttribute(string moduleShortName, bool isExternal)
         {
             ModuleShortName = moduleShortName;
             IsExternal      = isExternal;
@@ -21,12 +21,7 @@ namespace Lang.Python
         public string ModuleShortName { get; }
 
         public bool IsExternal { get; }
-        
-        /// <summary>
-        /// Class contains static methods that are tranlated as module methods
-        /// </summary>
-        public bool ClassIsModule { get; set; }
-
+               
         public string ImportModule { get; set; }
 
         public string GetImportModuleName()

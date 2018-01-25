@@ -50,14 +50,11 @@ namespace Cs2Py.Compilation
 
         public override string ToString()
         {
-            return string.Format("{0} => {1}@{2}", Type.FullName, _scriptName, _moduleName);
+            return string.Format("{0} => {1}@{2}", Type.FullName, _pyName, _moduleName);
         }
 
-        private bool GetBuildIn()
-        {
-            Update();
-            return _buildIn;
-        }
+      
+        
         // Private Methods 
 
         private bool GetDontIncludeModuleForClassMembers()
@@ -66,11 +63,8 @@ namespace Cs2Py.Compilation
             return _skip || _isArray || Type.IsEnum;
         }
 
-        private bool GetIgnoreNamespace()
-        {
-            Update();
-            return _ignoreNamespace;
-        }
+        
+        
 
         private PyCodeModuleName GetIncluideModule()
         {
@@ -84,11 +78,8 @@ namespace Cs2Py.Compilation
             return _isArray;
         }
 
-        private bool GetIsPage()
-        {
-            Update();
-            return _isPage;
-        }
+        
+        
 
         private bool GetIsReflected()
         {
@@ -108,17 +99,6 @@ namespace Cs2Py.Compilation
             return _pageMethod;
         }
 
-        private PyQualifiedName GetScriptName()
-        {
-            Update();
-            return _scriptName;
-        }
-
-        private bool GetSkip()
-        {
-            Update();
-            return _skip;
-        }
 
         private void Update()
         {
@@ -135,30 +115,30 @@ namespace Cs2Py.Compilation
             {
                 // ScriptName
                 if (_ignoreNamespace)
-                    _scriptName =
+                    _pyName =
                         (PyQualifiedName)PyQualifiedName
                             .SanitizePyName(Type.Name); // only short name without namespace
                 else if (Type.IsGenericType)
-                    _scriptName =
+                    _pyName =
                         (PyQualifiedName)DotNetNameToPyName(Type.FullName ?? Type.Name); // beware of generic types
                 else
-                    _scriptName = (PyQualifiedName)DotNetNameToPyName(Type.FullName ?? Type.Name);
+                    _pyName = (PyQualifiedName)DotNetNameToPyName(Type.FullName ?? Type.Name);
 
-                var scriptNameAttribute = ats.OfType<ScriptNameAttribute>().FirstOrDefault();
+                var scriptNameAttribute = ats.OfType<PyNameAttribute>().FirstOrDefault();
                 if (scriptNameAttribute != null)
                     if (scriptNameAttribute.Name.StartsWith(
                         PyQualifiedName.TokenNsSeparator.ToString(CultureInfo.InvariantCulture)))
-                        _scriptName = (PyQualifiedName)scriptNameAttribute.Name;
+                        _pyName = (PyQualifiedName)scriptNameAttribute.Name;
                     else if (IgnoreNamespace)
-                        _scriptName = (PyQualifiedName)(PyQualifiedName.TokenNsSeparator + scriptNameAttribute.Name);
+                        _pyName = (PyQualifiedName)(PyQualifiedName.TokenNsSeparator + scriptNameAttribute.Name);
                     else
-                        _scriptName =
+                        _pyName =
                             (PyQualifiedName)
                             (DotNetNameToPyName(Type.FullName) + PyQualifiedName.TokenNsSeparator +
                              scriptNameAttribute.Name);
                 if (declaringTypeTranslationInfo != null)
-                    _scriptName =
-                        (PyQualifiedName)(declaringTypeTranslationInfo.ScriptName + "__" +
+                    _pyName =
+                        (PyQualifiedName)(declaringTypeTranslationInfo.PyName + "__" +
                                           Type.Name); // parent clas followed by __ and short name
             }
 
@@ -171,6 +151,11 @@ namespace Cs2Py.Compilation
                 var pageAttribute = ats.OfType<PageAttribute>().FirstOrDefault();
                 _isPage           = pageAttribute != null;
                 _pageMethod       = _isPage ? FindPyMainMethod(Type) : null;
+            }
+            {
+                // export as Module
+                var pageAttribute = ats.OfType<ExportAsPyModuleAttribute>().FirstOrDefault();
+                _exportAsModule   = pageAttribute != null;
             }
             {
                 // AsArrayAttribute
@@ -213,27 +198,68 @@ namespace Cs2Py.Compilation
         /// <summary>
         ///     Własność jest tylko do odczytu.
         /// </summary>
-        public bool IgnoreNamespace => GetIgnoreNamespace();
+        public bool IgnoreNamespace
+        {
+            get {
+                Update();
+                return _ignoreNamespace;
+            }
+        }
 
         /// <summary>
-        ///     Własność jest tylko do odczytu.
+        ///     Python name of class
         /// </summary>
-        public PyQualifiedName ScriptName => GetScriptName();
+        public PyQualifiedName PyName
+        {
+            get
+            {
+                Update();
+                return _pyName;
+            }
+        }
+
+        public bool ExportAsModule
+        {
+            get
+            {
+                Update();
+                return _exportAsModule;
+            }
+        }
 
         /// <summary>
         ///     czy klasa ma wygenerować moduł z odpalaną metodą PyMain; własność jest tylko do odczytu.
         /// </summary>
-        public bool IsPage => GetIsPage();
+        public bool IsPage
+        {
+            get {
+                Update();
+                return _isPage;
+            }
+        }
 
         /// <summary>
         ///     czy pominąć generowanie klasy; własność jest tylko do odczytu.
         /// </summary>
-        public bool Skip => GetSkip();
+        public bool Skip
+        {
+            get
+            {
+                Update();
+                return _skip;
+            }
+        }
 
         /// <summary>
         ///     class from host application i.e. wordpress; własność jest tylko do odczytu.
         /// </summary>
-        public bool BuildIn => GetBuildIn();
+        public bool BuildIn
+        {
+            get {
+                Update();
+                return _buildIn;
+            }
+        }
 
         /// <summary>
         ///     czy pominąć includowanie modułu z klasą; własność jest tylko do odczytu.
@@ -266,16 +292,17 @@ namespace Cs2Py.Compilation
         /// </summary>
         public bool IsArray => GetIsArray();
 
-        private          bool              _buildIn;
-        private          bool              _ignoreNamespace;
-        private readonly TranslationInfo   _info;
-        private          bool              _initialized;
-        private          bool              _isArray;
-        private          bool              _isPage;
-        private          bool              _isReflected;
+        private          bool             _buildIn;
+        private          bool             _ignoreNamespace;
+        private readonly TranslationInfo  _info;
+        private          bool             _initialized;
+        private          bool             _isArray;
+        private          bool             _isPage;
+        private          bool             _isReflected;
         private          PyCodeModuleName _moduleName;
-        private          MethodInfo        _pageMethod;
-        private          PyQualifiedName  _scriptName;
-        private          bool              _skip;
+        private          MethodInfo       _pageMethod;
+        private          PyQualifiedName  _pyName;
+        private          bool             _skip;
+        private          bool             _exportAsModule;
     }
 }

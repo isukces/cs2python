@@ -2,7 +2,7 @@
 
 namespace Lang.Python.Tensorflow
 {
-    [ScriptName("tensorflow.Variable")]
+    [PyName("tensorflow.Variable")]
     // tensorflow.python.ops.variables.Variable
     public class TfVariable<T>
     {
@@ -25,17 +25,17 @@ namespace Lang.Python.Tensorflow
 
         
         internal TfVariable(
-            [ScriptName("initial_value")]  T      initialValue,
-            [ScriptName("trainable")]      bool   trainable      = true,
-            [ScriptName("collections")]    object collections    = null,
-            [ScriptName("validate_shape")] bool   validateShape = true,
-            [ScriptName("caching_device")] object cachingDevice = null,
-            [ScriptName("name")]           object name           = null,
-            [ScriptName("variable_def")]   object variableDef   = null,
-            [ScriptName("dtype")]          object dtype          = null,
-            [ScriptName("expected_shape")] object expectedShape = null,
-            [ScriptName("import_scope")]   object importScope   = null,
-            [ScriptName("constraint")]     object constraint     = null
+            [PyName("initial_value")]  T      initialValue,
+            [PyName("trainable")]      bool   trainable      = true,
+            [PyName("collections")]    object collections    = null,
+            [PyName("validate_shape")] bool   validateShape = true,
+            [PyName("caching_device")] object cachingDevice = null,
+            [PyName("name")]           object name           = null,
+            [PyName("variable_def")]   object variableDef   = null,
+            [PyName("dtype")]          object dtype          = null,
+            [PyName("expected_shape")] object expectedShape = null,
+            [PyName("import_scope")]   object importScope   = null,
+            [PyName("constraint")]     object constraint     = null
         )
         {
         }

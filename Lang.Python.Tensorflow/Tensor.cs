@@ -9,8 +9,8 @@ namespace Lang.Python.Tensorflow
     public class Tensor<T> : Tensor
     {
         public Tensor(
-            [ScriptName("op")]          object op,
-            [ScriptName("value_index")] int    valueIndex
+            [PyName("op")]          object op,
+            [PyName("value_index")] int    valueIndex
             // [ScriptName("dtype")]       Type dtype
         )
         {
@@ -59,38 +59,38 @@ Returns the TensorShape that represents the shape of this tensor.*/
         /// <summary>
         ///     The name of the device on which this tensor will be produced, or None.
         /// </summary>
-        [ScriptName("device")]
+        [PyName("device")]
         public object Device { get; set; }
 
         /// <summary>
         ///     The DType of elements in this tensor.
         /// </summary>
-        [ScriptName("dtype")]
+        [PyName("dtype")]
         public Type Dtype { get; set; }
 
         /// <summary>
         ///     The Graph that contains this tensor.
         /// </summary>
-        [ScriptName("graph")]
+        [PyName("graph")]
         public Graph Graph { get; set; }
 
 
         /// <summary>
         ///     The string name of this tensor.
         /// </summary>
-        [ScriptName("name")]
+        [PyName("name")]
         public string Name { get; set; }
 
         /// <summary>
         ///     The Operation that produces this tensor as an output.
         /// </summary>
-        [ScriptName("op")]
+        [PyName("op")]
         public object Op { get; set; }
 
         /// <summary>
         ///     Returns the TensorShape that represents the shape of this tensor.*/
         /// </summary>
-        [ScriptName("shape")]
+        [PyName("shape")]
         public TensorShape Shape { get; }
     }
 }

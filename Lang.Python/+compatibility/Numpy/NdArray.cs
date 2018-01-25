@@ -35,7 +35,7 @@ namespace Lang.Python.Numpy
     /// <summary>
     ///     https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.array.html
     /// </summary>
-    [ScriptName("numpy.ndarray")]
+    [PyName("numpy.ndarray")]
     public class NdArray
     {
         internal static NdArray<T> Make<T>(IEnumerable<T> obj, bool copy = true,

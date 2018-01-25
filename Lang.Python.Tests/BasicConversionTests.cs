@@ -33,15 +33,15 @@ Generated with cs2py
 class Demo:
     @staticmethod
     def Sum(cls, a, b):
-        return a + b;";
+        return a + b";
 
-            CheckTranslation(cs, new Info{Compare = expected});
+            CheckTranslation(cs, new Info {Compare = expected});
         }
 
         [Fact]
         public void T03_Should_convert_class_with_static_method_and_constructor()
         {
-            var cs       = @"
+            var cs                                 = @"
 namespace Foo {
     [Lang.Python.IgnoreNamespaceAttribute]
     public class Demo{
@@ -52,7 +52,7 @@ namespace Foo {
         }
     }
 }";
-            var expected = @"
+            var expected                           = @"
 '''
 Generated with cs2py
 '''
@@ -61,15 +61,15 @@ class Demo:
     
     @staticmethod
     def Sum(cls, a, b):
-        return a + b;   
+        return a + b   
 ";
-            CheckTranslation(cs, new Info{Compare = expected});
+            CheckTranslation(cs, new Info {Compare = expected});
         }
 
         [Fact]
         public void T04_Should_convert_class_with_constructor()
         {
-            var cs       = @"
+            var cs                                 = @"
 namespace Foo {
     [Lang.Python.IgnoreNamespaceAttribute]
     public class Demo{
@@ -83,7 +83,7 @@ namespace Foo {
         private int privateField;
     }
 }";
-            var expected = @"
+            var expected                           = @"
 '''
 Generated with cs2py
 '''
@@ -94,44 +94,68 @@ class Demo:
         self.__privateField = i
  
 ";
-            CheckTranslation(cs, new Info{Compare = expected});
+            CheckTranslation(cs, new Info {Compare = expected});
         }
-
 
         [Fact]
         public void T05_Should_convert_class_with_field()
         {
-            var cs       = @"
+            var cs                                 = @"
 namespace Foo {
     [Lang.Python.IgnoreNamespaceAttribute]
     public class Demo{
              public static int someField;
     }
 }";
-            var expected = @"
+            var expected                           = @"
 '''
 Generated with cs2py
 '''
 class Demo:
 
 ";
-            CheckTranslation(cs, new Info{Compare = expected});
+            CheckTranslation(cs, new Info {Compare = expected});
             // Init
-            cs       = @"
+            cs                                     = @"
 namespace Foo {
     [Lang.Python.IgnoreNamespaceAttribute]
     public class Demo{
              public static int someField = 76;
     }
 }";
-            expected = @"
+            expected                               = @"
 '''
 Generated with cs2py
 '''
 class Demo:
     someField = 76
 ";
-            CheckTranslation(cs, new Info{Compare = expected});
+            CheckTranslation(cs, new Info {Compare = expected});
+        }
+
+        [Fact]
+        public void T06_Should_export_class_as_module()
+        {
+            var cs                                 = @"using Lang.Python;
+
+namespace Demo01
+{
+    [PyModule(""demo"", false)]
+    [ExportAsPyModule]
+    public static class ClassAsModuleDemo
+    {
+        [PyName(""sum"")]
+        public static int Sum(int a, int b)
+        {
+            return a + b;
+        } 
+    }
+}";
+            var expected                           = @"
+def sum(a, b):
+    return a + b
+";
+            CheckTranslation(cs, new Info {Compare = expected});
         }
     }
 }

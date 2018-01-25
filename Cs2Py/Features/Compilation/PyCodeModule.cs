@@ -106,7 +106,8 @@ namespace Cs2Py.Compilation
                         collectedTopCodeBlock.Statements.AddRange(TopCode.Statements);
                     nsManager.Add(collectedTopCodeBlock.Statements);
                 }
-
+                foreach (var m in Methods)
+                    m.Emit(emiter, writer, style);
                 {
                     var classesGbNamespace = module.Classes.GroupBy(u => u.Name.Namespace);
                     foreach (var classesInNamespace in classesGbNamespace.OrderBy(i => !i.Key.IsRoot))
@@ -115,14 +116,17 @@ namespace Cs2Py.Compilation
                 }
                 if (BottomCode != null)
                     nsManager.Add(BottomCode.Statements);
-                if (!nsManager.Container.Any())
-                    return;
-                if (nsManager.OnlyOneRootStatement)
-                    foreach (var cl in nsManager.Container[0].Items)
-                        cl.Emit(emiter, writer, style);
-                else
-                    foreach (var ns in nsManager.Container)
-                        EmitWithNamespace(ns.Name, emiter, writer, style, ns.Items);
+                if (nsManager.Container.Any())
+                {
+                    if (nsManager.OnlyOneRootStatement)
+                        foreach (var cl in nsManager.Container[0].Items)
+                            cl.Emit(emiter, writer, style);
+                    else
+                        foreach (var ns in nsManager.Container)
+                            EmitWithNamespace(ns.Name, emiter, writer, style, ns.Items);
+                }
+
+             
             }
         }
 
@@ -255,6 +259,8 @@ namespace Cs2Py.Compilation
         /// </summary>
         public List<KeyValuePair<string, IPyValue>> DefinedConsts { get; } =
             new List<KeyValuePair<string, IPyValue>>();
+        
+        public List<PyClassMethodDefinition> Methods { get; set; } = new List<PyClassMethodDefinition>();
 
         private string _topComments = "Generated with cs2py";
     }

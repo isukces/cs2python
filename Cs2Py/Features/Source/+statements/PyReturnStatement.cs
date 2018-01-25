@@ -18,9 +18,9 @@ namespace Cs2Py.Source
         public override void Emit(PySourceCodeEmiter emiter, PySourceCodeWriter writer, PyEmitStyle style)
         {
             if (ReturnValue == null)
-                writer.WriteLn("return;");
+                writer.WriteLn("return");
             else
-                writer.WriteLnF("return {0};", ReturnValue.GetPyCode(style));
+                writer.WriteLnF("return {0}", ReturnValue.GetPyCode(style));
         }
 
         public override IEnumerable<ICodeRequest> GetCodeRequests()

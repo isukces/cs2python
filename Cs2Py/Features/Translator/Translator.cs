@@ -77,7 +77,7 @@ namespace Cs2Py.Translator
             }
 */
 
-            var includePath = req.GetImportPath(currentModule.ModuleName);           
+            var includePath = req.GetImportPath(currentModule.ModuleName);
             currentModule.RequiredFiles.Add(new PyImportRequest(includePath));
         }
 
@@ -119,7 +119,7 @@ namespace Cs2Py.Translator
 
         public IPyStatement[] TranslateStatement([NotNull] IStatement x)
         {
-            if (x == null) 
+            if (x == null)
                 throw new ArgumentNullException(nameof(x));
             if (!(x is CSharpBase))
                 throw new Exception($"Translation error: {x.GetType().FullName} is not CSharpBase instance");
@@ -137,7 +137,8 @@ namespace Cs2Py.Translator
         {
             var assemblyTranslationInfo = Info.GetOrMakeTranslationInfo(Info.CurrentAssembly);
             var pyCodeModuleName        =
-                new PyCodeModuleName(assemblyTranslationInfo.ConfigModuleName, assemblyTranslationInfo.ConfigModuleName, false);
+                new PyCodeModuleName(assemblyTranslationInfo.ConfigModuleName, assemblyTranslationInfo.ConfigModuleName,
+                    false);
             var pyModule = GetOrMakeModuleByName(pyCodeModuleName);
             return pyModule;
         }
@@ -157,8 +158,9 @@ namespace Cs2Py.Translator
             return mod;
         }
 
-        private void Tranlate_MethodOrProperty(PyClassDefinition pyClass, MethodInfo info, IStatement body,
-            string                                               overrideName)
+        private void Tranlate_MethodOrProperty(PyCodeModule pyModule, [CanBeNull] PyClassDefinition pyClass,
+            MethodInfo                                      info, IStatement                        body,
+            string                                          overrideName)
         {
             _state.Principles.CurrentMethod = info;
             try
@@ -166,7 +168,16 @@ namespace Cs2Py.Translator
                 var mti      = _state.Principles.GetOrMakeTranslationInfo(info);
                 var pyMethod =
                     new PyClassMethodDefinition(string.IsNullOrEmpty(overrideName) ? mti.ScriptName : overrideName);
-                pyClass.Methods.Add(pyMethod);
+                if (pyClass == null)
+                {
+                    pyModule.Methods.Add(pyMethod);
+                    pyMethod.Kind = PyMethodKind.OutOfClass;
+                }
+                else
+                {
+                    pyClass.Methods.Add(pyMethod);
+                    pyMethod.Kind = info.IsStatic ? PyMethodKind.ClassStatic : PyMethodKind.ClassInstance;
+                }
 
                 if (info.IsPublic)
                     pyMethod.Visibility = Visibility.Public;
@@ -175,13 +186,14 @@ namespace Cs2Py.Translator
                 else
                     pyMethod.Visibility = Visibility.Protected;
 
-                pyMethod.IsStatic = info.IsStatic;
                 {
                     var declaredParameters = info.GetParameters();
                     foreach (var parameter in declaredParameters)
                     {
-                        var pyParameter  = new PyMethodArgument();
-                        pyParameter.Name = parameter.Name;
+                        var pyParameter = new PyMethodArgument
+                        {
+                            Name = parameter.Name
+                        };
                         pyMethod.Arguments.Add(pyParameter);
                         if (parameter.HasDefaultValue)
                             pyParameter.DefaultValue = new PyConstValue(parameter.DefaultValue);
@@ -204,30 +216,24 @@ namespace Cs2Py.Translator
         {
             if (classTranslationInfo.Skip)
                 Debug.Write("");
-            PyClassDefinition pyClass;
-            var               pyModule = GetOrMakeModuleByName(classTranslationInfo.ModuleName);
-            // var assemblyTI = _info.GetOrMakeTranslationInfo(_info.CurrentAssembly);
+            var pyModule = GetOrMakeModuleByName(classTranslationInfo.ModuleName);
 
+            // var assemblyTI = _info.GetOrMakeTranslationInfo(_info.CurrentAssembly);
+            PyQualifiedName GetBaseClassName()
             {
-                PyQualifiedName pyBaseClassName;
-                {
-                    var netBaseType = classTranslationInfo.Type.BaseType;
-                    if ((object)netBaseType == null || netBaseType == typeof(object))
-                    {
-                        pyBaseClassName = PyQualifiedName.Empty;
-                    }
-                    else
-                    {
-                        // _state.Principles.CurrentTyp is null so we will obtain absolute name
-                        pyBaseClassName =
-                            _state.Principles.GetPyType(netBaseType, true, null); // absolute name
-                        var baseTypeTranslationInfo = _state.Principles.GetOrMakeTranslationInfo(netBaseType);
-                        if (baseTypeTranslationInfo.Skip)
-                            pyBaseClassName = PyQualifiedName.Empty;
-                    }
-                }
-                pyClass = pyModule.FindOrCreateClass(classTranslationInfo.ScriptName, pyBaseClassName);
+                var netBaseType = classTranslationInfo.Type.BaseType;
+                if ((object)netBaseType == null || netBaseType == typeof(object))
+                    return PyQualifiedName.Empty;
+                var baseTypeTranslationInfo = _state.Principles.GetOrMakeTranslationInfo(netBaseType);
+                if (baseTypeTranslationInfo.Skip)
+                    return PyQualifiedName.Empty;
+                return _state.Principles.GetPyType(netBaseType, true, null);
             }
+
+            
+            var pyClass = classTranslationInfo.ExportAsModule
+                ? null
+                : pyModule.FindOrCreateClass(classTranslationInfo.PyName, GetBaseClassName());
             Console.WriteLine(classTranslationInfo.ModuleName);
             _state.Principles.CurrentType = classTranslationInfo.Type;
             try
@@ -252,15 +258,20 @@ namespace Cs2Py.Translator
                     pyModule.RequiredFiles.AddRange(b);
                 }
 
-                var constructors = members.OfType<ConstructorDeclaration>().ToArray();
-                if (constructors.Length > 1)
-                    throw new Exception("Python supports only one constructor per class");
-                if (constructors.Any())
-                    TranslateConstructor(pyClass, constructors.First());
+                {
+                    var constructors = members.OfType<ConstructorDeclaration>().ToArray();
+                    if (pyClass == null && constructors.Length > 0)
+                        throw new Exception("Class exported as module cannot have constructors");
+                    if (constructors.Length > 1)
+                        throw new Exception("Python supports only one constructor per class");
+                    if (constructors.Any())
+                        TranslateConstructor(pyClass, constructors.First());
+                }
+
                 foreach (var methodDeclaration in members.OfType<MethodDeclaration>())
-                    TranslateMethod(pyClass, methodDeclaration);
+                    TranslateMethod(pyModule, pyClass, methodDeclaration);
                 foreach (var pDeclaration in members.OfType<CsharpPropertyDeclaration>())
-                    TranslateProperty(pyClass, pDeclaration);
+                    TranslateProperty(pyModule, pyClass, pDeclaration);
                 foreach (var constDeclaration in members.OfType<FieldDeclaration>())
                     TranslateField(pyModule, pyClass, constDeclaration);
             }
@@ -276,7 +287,7 @@ namespace Cs2Py.Translator
                         classTranslationInfo);
                     var callMain = new PyMethodCallExpression(mti.ScriptName);
                     callMain.SetClassName(
-                        classTranslationInfo.ScriptName,
+                        classTranslationInfo.PyName,
                         mti
                     );
                     pyModule.BottomCode.Statements.Add(new PyExpressionStatement(callMain));
@@ -294,7 +305,7 @@ namespace Cs2Py.Translator
 
                     foreach (var req in classCodeRequests)
                     {
-                        var m = Info.ClassTranslations.Values.Where(i => i.ScriptName.FullName == req).ToArray();
+                        var m = Info.ClassTranslations.Values.Where(i => i.PyName.FullName == req).ToArray();
                         if (m.Length != 1)
                             throw new NotSupportedException();
                         var mm = m[0];
@@ -340,7 +351,7 @@ namespace Cs2Py.Translator
                 else
                     pyMethod.Visibility = Visibility.Protected;
 
-                pyMethod.IsStatic = md.Info.IsStatic;
+                pyMethod.Kind = md.Info.IsStatic ? PyMethodKind.ClassStatic : PyMethodKind.ClassInstance;
                 {
                     var declaredParameters = md.Info.GetParameters();
                     foreach (var parameter in declaredParameters)
@@ -450,13 +461,17 @@ namespace Cs2Py.Translator
             }
         }
 
-        private void TranslateMethod(PyClassDefinition pyClass, MethodDeclaration md)
+        private void TranslateMethod(PyCodeModule pyModule, [CanBeNull] PyClassDefinition pyClass, MethodDeclaration md)
         {
-            Tranlate_MethodOrProperty(pyClass, md.Info, md.Body, null);
+            if (pyClass==null)
+                if (!md.Info.IsStatic)
+                    throw new Exception(
+                        $"Unable to translate {md.Info} method: Module class can contain only static methods");
+            Tranlate_MethodOrProperty(pyModule, pyClass, md.Info, md.Body, null);
         }
 
-        private void TranslateProperty(PyClassDefinition pyClassDefinition,
-            CsharpPropertyDeclaration                    propertyDeclaration)
+        private void TranslateProperty(PyCodeModule pyModule, [CanBeNull] PyClassDefinition pyClassDefinition,
+            CsharpPropertyDeclaration               propertyDeclaration)
         {
             var pi  = _state.Principles.CurrentType.GetProperty(propertyDeclaration.PropertyName);
             var pti = PropertyTranslationInfo.FromPropertyInfo(pi);
@@ -467,14 +482,14 @@ namespace Cs2Py.Translator
                 {
                     accessor = propertyDeclaration.Accessors.FirstOrDefault(u => u.Name == "get");
                     if (accessor != null)
-                        Tranlate_MethodOrProperty(pyClassDefinition, pi.GetGetMethod(), accessor.Statement,
+                        Tranlate_MethodOrProperty(pyModule, pyClassDefinition, pi.GetGetMethod(), accessor.Statement,
                             pti.GetMethodName);
                 }
 
                 if (string.IsNullOrEmpty(pti.SetMethodName)) return;
                 accessor = propertyDeclaration.Accessors.FirstOrDefault(u => u.Name == "set");
                 if (accessor != null)
-                    Tranlate_MethodOrProperty(pyClassDefinition, pi.GetSetMethod(), accessor.Statement,
+                    Tranlate_MethodOrProperty(pyModule, pyClassDefinition, pi.GetSetMethod(), accessor.Statement,
                         pti.SetMethodName);
             }
             else

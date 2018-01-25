@@ -22,12 +22,12 @@ import math
 class Demo:
     @staticmethod
     def Sin(cls, a):
-        return math.sin(a);
-        return math.cos(a);
-        return math.tan(a);
-        return math.asin(a);
-        return math.acos(a);
-        return math.atan(a);
+        return math.sin(a)
+        return math.cos(a)
+        return math.tan(a)
+        return math.asin(a)
+        return math.acos(a)
+        return math.atan(a)
 ";
             CheckTranslation(WrapClass(cs), new Info{Compare = expected});
         }
@@ -48,11 +48,11 @@ import math
 class Demo:
     @staticmethod
     def IsNaN(cls, a):
-        return math.isnan(a);
+        return math.isnan(a)
     
     @staticmethod
     def IsInfinity(cls, a):
-        return math.isinf(a);
+        return math.isinf(a)
 ";
             CheckTranslation(WrapClass(cs), new Info{Compare = expected});
         }
@@ -72,9 +72,9 @@ import math
 class Demo:
     @staticmethod
     def Sin(cls, a):
-        return math.sinh(a);
-        return math.cosh(a);
-        return math.tanh(a);
+        return math.sinh(a)
+        return math.cosh(a)
+        return math.tanh(a)
 ";
             CheckTranslation(WrapClass(cs), new Info{Compare = expected});
         }
@@ -104,7 +104,7 @@ class Demo:
         d = math.exp(x)
         e = math.ceil(x)
         f = math.floor(x)
-        return a + b + c + d + e + f;
+        return a + b + c + d + e + f
 ";
             CheckTranslation(WrapClass(cs), new Info{Compare = expected});
         }

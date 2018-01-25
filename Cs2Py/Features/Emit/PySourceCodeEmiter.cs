@@ -21,8 +21,6 @@ namespace Cs2Py.Emit
                     break;
             }
 
-            if (m.IsStatic)
-                modifiers.Add("static");
             return string.Join(" ", modifiers);
         }
 

@@ -43,14 +43,14 @@ namespace Lang.Python.Tests
         {
             var method = new PyClassMethodDefinition("Foo")
             {
-                IsStatic   = false,
+                Kind   = PyMethodKind.ClassInstance,
                 Visibility = Visibility.Public
             };
             method.Statements.Add(new PyReturnStatement(new PyConstValue(123)));
             method.Arguments.Add(new PyMethodArgument {Name = "x"});
             WriteCode(method, @"
 def Foo(self, x):
-    return 123;");
+    return 123");
         }
 
         [Fact]
@@ -58,7 +58,7 @@ def Foo(self, x):
         {
             var method = new PyClassMethodDefinition("Foo")
             {
-                IsStatic   = true,
+                Kind = PyMethodKind.ClassStatic,
                 Visibility = Visibility.Public
             };
             method.Statements.Add(new PyReturnStatement(new PyConstValue(123)));
@@ -66,7 +66,7 @@ def Foo(self, x):
             WriteCode(method, @"
 @staticmethod
 def Foo(cls, x):
-    return 123;");
+    return 123");
         }
     }
 }
