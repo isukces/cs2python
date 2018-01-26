@@ -166,6 +166,7 @@ using System.Linq;
 
 namespace Demo01
 {
+    [Lang.Python.IgnoreNamespaceAttribute]
     public class LinqCodes
     {
         public static void Enumerable1()
@@ -177,9 +178,12 @@ namespace Demo01
 }
 ";
             var expected    = @"
-def demo(a, b):
-    a = numpy.arange(2, 11)
-    b = numpy.arange(3, 7)
+import numpy
+class LinqCodes:
+    @staticmethod
+    def Enumerable1(cls):
+        a = numpy.arange(2, 11)
+        b = numpy.arange(3, 7)
 ";
             CheckTranslation(cs, new Info {Compare = expected,Ref = new[]{ typeof(System.Linq.Enumerable).Assembly}});
         }
