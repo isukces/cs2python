@@ -182,10 +182,18 @@ import numpy
 class LinqCodes:
     @staticmethod
     def Enumerable1(cls):
-        a = numpy.arange(2, 11)
-        b = numpy.arange(3, 7)
+        a = numpy.arange(2, 12)
+        b = numpy.arange(3, 8)
 ";
-            CheckTranslation(cs, new Info {Compare = expected,Ref = new[]{ typeof(System.Linq.Enumerable).Assembly}});
+            var info = new Info
+            {
+                Compare = expected,
+                Ref     = new[]
+                {
+                    typeof(System.Linq.Enumerable).Assembly
+                }
+            };
+            CheckTranslation(cs, info);
         }
     }
 }

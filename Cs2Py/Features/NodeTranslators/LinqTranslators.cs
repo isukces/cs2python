@@ -19,8 +19,7 @@ namespace Cs2Py.NodeTranslators
             var v1 = src.Arguments[0].MyValue;
             var v2 = src.Arguments[1].MyValue;
 
-            var max = new BinaryOperatorExpression(v1,  v2,                "+", typeof(int), null);
-            max     = new BinaryOperatorExpression(max, new ConstValue(1), "-", typeof(int), null);
+            var max = new BinaryOperatorExpression(v1, v2, "+", typeof(int), null);
 
             var newCall = new CsharpMethodCallExpression(tmp, null, new[]
             {
