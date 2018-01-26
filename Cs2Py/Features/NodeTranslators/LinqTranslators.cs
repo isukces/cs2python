@@ -6,35 +6,36 @@ using Lang.Python.Numpy;
 
 namespace Cs2Py.NodeTranslators
 {
-    public class LinqTranslators : IPyNodeTranslator<CsharpMethodCallExpression>
+    public class LinqTranslators : CsharpMethodCallExpressionTranslatorBase
     {
+        public LinqTranslators() : base(100)
+        {
+        }
+
         private static IPyValue Translate_Enumerable_Range(IExternalTranslationContext ctx,
             CsharpMethodCallExpression                                                 src)
         {
+            var info = MapNamedParameters(src);
             // mapujemy na arange
             var methods = typeof(Np).GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .ToDictionary(a => a.ToString(), a => a);
             var tmp = methods["System.Collections.Generic.List`1[System.Int32] ARange(Int32, Int32, Int32)"];
 
-            var v1 = src.Arguments[0].MyValue;
-            var v2 = src.Arguments[1].MyValue;
+            var v1 = info.GetArgumentValue(0);
+            var v2 = info.GetArgumentValue(1);
 
             var max = new BinaryOperatorExpression(v1, v2, "+", typeof(int), null);
 
             var newCall = new CsharpMethodCallExpression(tmp, null, new[]
             {
-                src.Arguments[0],
-                new FunctionArgument("", max, null)
+                new FunctionArgument(v1),
+                new FunctionArgument(max)
             }, null, false);
             return ctx.TranslateValue(newCall);
         }
 
-        public int GetPriority()
-        {
-            return 100;
-        }
 
-        public IPyValue TranslateToPython(IExternalTranslationContext ctx, CsharpMethodCallExpression src)
+        public override IPyValue TranslateToPython(IExternalTranslationContext ctx, CsharpMethodCallExpression src)
         {
             var mi   = src.MethodInfo;
             var type = mi.DeclaringType;

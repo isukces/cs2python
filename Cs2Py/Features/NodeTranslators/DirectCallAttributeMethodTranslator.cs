@@ -7,15 +7,14 @@ using Lang.Python;
 
 namespace Cs2Py.NodeTranslators
 {
-    public class DirectCallAttributeMethodTranslator : IPyNodeTranslator<CsharpMethodCallExpression>
+    public class DirectCallAttributeMethodTranslator : CsharpMethodCallExpressionTranslatorBase
     {
-        public int GetPriority()
+        public DirectCallAttributeMethodTranslator() : base(2)
         {
-            return 2;
         }
 
 
-        public IPyValue TranslateToPython(IExternalTranslationContext ctx, CsharpMethodCallExpression src)
+        public override IPyValue TranslateToPython(IExternalTranslationContext ctx, CsharpMethodCallExpression src)
         {
             string GetOperatorName()
             {
@@ -31,7 +30,7 @@ namespace Cs2Py.NodeTranslators
 
                     case "op_Equality":    return "==";
                     case "op_Inequality ": return "!=";
-                    case "op_Implicit" : return "i";
+                    case "op_Implicit":    return "i";
                 }
 
                 return null;
@@ -52,6 +51,7 @@ namespace Cs2Py.NodeTranslators
             var agrsIndexByName  = Enumerable.Range(0, cSharpParameters.Length)
                 .ToDictionary(a => cSharpParameters[a].Name, a => a);
             var argsValues = new Argument[cSharpParameters.Length];
+            var info = MapNamedParameters(src);
             for (var index = 0; index < src.Arguments.Length; index++)
             {
                 var i = src.Arguments[index];
@@ -71,11 +71,7 @@ namespace Cs2Py.NodeTranslators
 
             if (opName != null)
             {
-                if (opName == "i" && argsValues.Length == 1)
-                {
-                    // skip implicit operator
-                    return argsValues[0].Value;
-                }
+                if (opName == "i" && argsValues.Length == 1) return argsValues[0].Value;
                 switch (argsValues.Length)
                 {
                     case 2:
@@ -87,6 +83,7 @@ namespace Cs2Py.NodeTranslators
                 throw new NotSupportedException("Unable to convert operator " + opName + " with " + argsValues.Length +
                                                 " arguments");
             }
+
             var result  = new PyMethodCallExpression(name);
             var setName = false;
             foreach (var i in argsValues)

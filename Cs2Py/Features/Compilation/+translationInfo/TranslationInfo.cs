@@ -182,7 +182,7 @@ namespace Cs2Py.Compilation
                 select type).ToArray();
             foreach (var type in allTypes)
             {
-                if (type.IsInterface)
+                if (type.IsInterface || type.IsAbstract)
                     continue;
                 var interfaces = type.GetInterfaces();
                 foreach (var interfaceType in interfaces)

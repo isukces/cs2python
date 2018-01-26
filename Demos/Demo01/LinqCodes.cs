@@ -10,5 +10,11 @@ namespace Demo01
             var b = Enumerable.Range(3, 5).ToArray();
         }        
         
+        public static void Enumerable2()
+        {
+            var a = Enumerable.Range(start: 2, count: 10).ToList();
+            var b = Enumerable.Range(count: 10, start: 2).ToList();
+        }        
+        
     }
 }

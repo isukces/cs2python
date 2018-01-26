@@ -135,7 +135,7 @@ namespace Cs2Py.Translator
                     throw new NotSupportedException("Operator method is not static??!!");
                 var a = new CsharpMethodCallExpression(
                     src.OperatorMethod, null,
-                    new[] {new FunctionArgument("", src.Left, null), new FunctionArgument("", src.Right, null)},
+                    new[] {new FunctionArgument(src.Left), new FunctionArgument(src.Right)},
                     new Type[0], false);
                 var trans = TransValue(a);
                 return trans;

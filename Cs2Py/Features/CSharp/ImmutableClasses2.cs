@@ -41,6 +41,10 @@ namespace Cs2Py.CSharp
 
     sealed partial class FunctionArgument
     {
+        public FunctionArgument(IValue value) : this("", value, null)
+        {
+            
+        }
         public override string ToString()
         {
             return string.Format("{0} {1}", refOrOutKeyword, myValue).Trim();

@@ -30,7 +30,7 @@ namespace Cs2Py.CodeVisitors
                     return functionArguments;
                 if (targetObject == null)
                     throw new NotSupportedException();
-                var fa = new FunctionArgument("", targetObject, null);
+                var fa = new FunctionArgument(targetObject);
                 if (functionArguments == null || functionArguments.Length == 0)
                     return new[] {fa};
                 var list = functionArguments.ToList();
@@ -584,7 +584,7 @@ namespace Cs2Py.CodeVisitors
                     {
                         var realExpression = getRealExpression();
                         var ggg            = nl.ToList();
-                        ggg.Insert(0, new FunctionArgument("", realExpression, null));
+                        ggg.Insert(0, new FunctionArgument(realExpression));
                         tmp = _Make_DotnetMethodCall(mi1, realExpression, nl, null);
                     }
                     else
@@ -1096,7 +1096,7 @@ namespace Cs2Py.CodeVisitors
                 return v;
             var m = context.Roslyn_ResolveMethod(methodSymbol);
             var a = new CsharpMethodCallExpression(m as MethodInfo, null,
-                new[] {new FunctionArgument("", v, null)},
+                new[] {new FunctionArgument(v)},
                 null, false
             );
             return a;

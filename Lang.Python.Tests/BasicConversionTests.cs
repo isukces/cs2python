@@ -1,3 +1,4 @@
+using System.Linq;
 using Xunit;
 
 namespace Lang.Python.Tests
@@ -157,11 +158,11 @@ def sum(a, b):
 ";
             CheckTranslation(cs, new Info {Compare = expected});
         }
-        
+
         [Fact]
         public void T07_Should_convert_enumerable_to_list_and_array()
         {
-            var cs  = @"
+            var cs       = @"
 using System.Linq;
 
 namespace Demo01
@@ -177,7 +178,7 @@ namespace Demo01
     }
 }
 ";
-            var expected    = @"
+            var expected = @"
 import numpy
 class LinqCodes:
     @staticmethod
@@ -185,12 +186,50 @@ class LinqCodes:
         a = numpy.arange(2, 12)
         b = numpy.arange(3, 8)
 ";
-            var info = new Info
+            var info     = new Info
             {
                 Compare = expected,
                 Ref     = new[]
                 {
-                    typeof(System.Linq.Enumerable).Assembly
+                    typeof(Enumerable).Assembly
+                }
+            };
+            CheckTranslation(cs, info);
+        }
+
+        [Fact]
+        public void T08_Should_convert_enumerable_to_list_and_array_with_argument_names()
+        {
+            var cs       = @"
+using System.Linq;
+
+namespace Demo01
+{
+    [Lang.Python.IgnoreNamespaceAttribute]
+    public class LinqCodes
+    {
+        public static void Enumerable2()
+        {
+            var a = Enumerable.Range(start: 2, count: 10).ToList();
+            var b = Enumerable.Range(count: 10, start: 2).ToList();
+        }                  
+    }
+}
+";
+            var expected = @"
+import numpy
+class LinqCodes:
+    @staticmethod
+    def Enumerable2(cls):
+        a = numpy.arange(2, 12)
+        b = numpy.arange(2, 12)
+";
+            var info     = new Info
+            {
+                Compare = expected,
+                Ref     = new[]
+                {
+                    typeof(Enumerable).Assembly
                 }
             };
             CheckTranslation(cs, info);
