@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -15,16 +16,33 @@ namespace Cs2Py.CodeVisitors
         public ValueVisitor(CompileState ts)
         {
             if (ts == null)
-                throw new ArgumentNullException("ts");
+                throw new ArgumentNullException(nameof(ts));
             _state  = ts;
             context = ts.Context;
         }
 
         private static IValue _Make_DotnetMethodCall(MethodBase mi, IValue                targetObject,
             FunctionArgument[]                                  functionArguments, Type[] genericTypes)
-        {
+        {          
+            FunctionArgument[] ResolveExtensionMethod()
+            {
+                if (!(mi is MethodInfo methodInfo) || !methodInfo.IsExtensionMethod()) 
+                    return functionArguments;
+                if (targetObject == null)
+                    throw new NotSupportedException();
+                var fa = new FunctionArgument("", targetObject, null);
+                if (functionArguments == null || functionArguments.Length == 0)
+                    return new[] {fa};
+                var list = functionArguments.ToList();
+                list.Insert(0, fa);
+                return list.ToArray();
+            }
+
+          
+
             if (mi == null)
-                throw new ArgumentNullException("mi");
+                throw new ArgumentNullException(nameof(mi));
+            functionArguments = ResolveExtensionMethod();
             IValue result;
             var    isDelegate = mi.DeclaringType.IsMulticastDelegate();
 
@@ -35,24 +53,22 @@ namespace Cs2Py.CodeVisitors
                     (genericTypes == null || genericTypes.Length != genericArguments.Length))
                     genericTypes = genericArguments;
                 if (genericTypes == null || genericTypes.Length != genericArguments.Length)
-                    throw new NotSupportedException("Brak automatycznego rozpoznawania typów generycznych (na razie)");
-                // var pa = mi.GetParameters();
+                {
+                    var a = new GenericTypesResolver(mi, functionArguments);
+                    genericTypes = a.Find();
+                  
+                }                
             }
             else
             {
                 genericTypes = new Type[0];
             }
 
-            if (mi is MethodInfo)
+            if (mi is MethodInfo mii)
             {
-                var mii = mi as MethodInfo;
                 if (mii.IsExtensionMethod())
                 {
-                    var list = functionArguments.ToList();
-                    if (targetObject == null)
-                        throw new NotSupportedException();
-                    list.Insert(0, new FunctionArgument("", targetObject, null));
-                    result = new CsharpMethodCallExpression(mii, null, list.ToArray(), genericTypes, isDelegate);
+                    result = new CsharpMethodCallExpression(mii, null, functionArguments, genericTypes, isDelegate);
                 }
                 else
                 {
@@ -64,7 +80,7 @@ namespace Cs2Py.CodeVisitors
             else if (mi is ConstructorInfo)
             {
                 // ReSharper disable once UnusedVariable
-                var mii = mi as ConstructorInfo;
+                var constructorInfo = mi as ConstructorInfo;
                 throw new NotSupportedException();
             }
             else

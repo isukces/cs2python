@@ -54,7 +54,10 @@ namespace Foo {{
                 CSharpProject = project
             };
             c.TranslationAssemblies.Add(typeof(AssemblySandbox).Assembly);
+            
             c.ReferencedAssemblies.Add(typeof(Tensorflow.TensorShape).Assembly);
+            c.ReferencedAssemblies.Add(typeof(System.Linq.Enumerable).Assembly);
+            c.ReferencedAssemblies.Add(typeof(System.Data.Linq.Binary).Assembly);
             var filename = Path.GetTempFileName().Replace(".tmp", ".dll");
             var er       = c.CompileCSharpProject(c.Sandbox, filename);
             if (!er.Success && er.Diagnostics.Any())

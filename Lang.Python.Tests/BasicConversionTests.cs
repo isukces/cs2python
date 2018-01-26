@@ -157,5 +157,31 @@ def sum(a, b):
 ";
             CheckTranslation(cs, new Info {Compare = expected});
         }
+        
+        [Fact]
+        public void T07_Should_convert_enumerable_to_list_and_array()
+        {
+            var cs  = @"
+using System.Linq;
+
+namespace Demo01
+{
+    public class LinqCodes
+    {
+        public static void Enumerable1()
+        {
+            var a = Enumerable.Range(2, 10).ToList();
+            var b = Enumerable.Range(3, 5).ToArray();
+        }                
+    }
+}
+";
+            var expected    = @"
+def demo(a, b):
+    a = numpy.arange(2, 11)
+    b = numpy.arange(3, 7)
+";
+            CheckTranslation(cs, new Info {Compare = expected,Ref = new[]{ typeof(System.Linq.Enumerable).Assembly}});
+        }
     }
 }

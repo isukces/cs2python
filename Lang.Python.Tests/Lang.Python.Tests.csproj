@@ -26,5 +26,6 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="System.Data.Linq" />
   </ItemGroup>
 </Project>

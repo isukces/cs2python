@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Cs2Py.CodeVisitors;
@@ -15,9 +16,9 @@ namespace Cs2Py.Compilation
         private static bool CompareArrayTypes(ParameterInfo[] a, Type[] b)
         {
             if (a.Length != b.Length) return false;
-            for (int i = 0; i < a.Length; i++)
+            for (var i = 0; i < a.Length; i++)
             {
-                var g = a[i].ParameterType;
+                var g  = a[i].ParameterType;
                 var bb = b[i];
                 if (g != bb)
                     return false;
@@ -46,8 +47,8 @@ namespace Cs2Py.Compilation
         {
             if (a.Name != b.Name)
                 return false;
-            var c = a.Parameters.AsEnumerable().Select(i => i.Name).ToArray();
-            var d = b.GetParameters().Select(i => i.Name).ToArray();
+            var c  = a.Parameters.AsEnumerable().Select(i => i.Name).ToArray();
+            var d  = b.GetParameters().Select(i => i.Name).ToArray();
             var cc = string.Join("\r\n", c);
             var dd = string.Join("\r\n", d);
             return cc == dd;
@@ -134,7 +135,7 @@ namespace Cs2Py.Compilation
         {
 #warning 'Dorobić const'
             var f = type.IsStatic ? BindingFlags.Static : BindingFlags.Instance;
-            f |= BindingFlags.Public | BindingFlags.NonPublic;
+            f     |= BindingFlags.Public | BindingFlags.NonPublic;
 
             var ct = Roslyn_ResolveType(type.ContainingType);
             var fi = ct.GetField(type.Name, f);
@@ -153,8 +154,8 @@ namespace Cs2Py.Compilation
 
         public PropertyInfo Roslyn_ResolveProperty(IPropertySymbol type)
         {
-            var t = type.ContainingType;
-            var tt = Roslyn_ResolveType(t);
+            var t   = type.ContainingType;
+            var tt  = Roslyn_ResolveType(t);
             var ttt = tt.GetProperty(type.Name);
             return ttt;
             throw new NotSupportedException();
@@ -166,6 +167,8 @@ namespace Cs2Py.Compilation
             if (_cacheRoslynResolveType.TryGetValue(type, out t))
                 return t;
             t = Roslyn_ResolveType_internal(type);
+            if (t == null)
+                Debug.Write("");
             _cacheRoslynResolveType[type] = t;
             return t;
         }
@@ -179,18 +182,18 @@ namespace Cs2Py.Compilation
         private MethodBase _Resolve_OrdinaryMethod(IMethodSymbol method)
         {
             var reflectionFlags = method.IsStatic ? BindingFlags.Static : BindingFlags.Instance;
-            reflectionFlags |= BindingFlags.Public | BindingFlags.NonPublic;
+            reflectionFlags     |= BindingFlags.Public | BindingFlags.NonPublic;
 
-            var rt = Roslyn_ResolveType(method.ReturnType);
+            var rt             = Roslyn_ResolveType(method.ReturnType);
             var _typeArguments = method.TypeArguments.ToArray();
             if (_typeArguments == null)
                 throw new ArgumentNullException("_typeArguments");
             var typeArguments = _typeArguments.Select(Roslyn_ResolveType).ToArray();
-            var rType = Roslyn_ResolveType(method.ReturnType);
-            var pTypes = ConvertParameterTypes(method.Parameters.ToArray());
-            var hostType = Roslyn_ResolveType(method.ContainingType);
+            var rType         = Roslyn_ResolveType(method.ReturnType);
+            var pTypes        = ConvertParameterTypes(method.Parameters.ToArray());
+            var hostType      = Roslyn_ResolveType(method.ContainingType);
 
-            MethodInfo[] AllMethods = hostType.GetMethods(reflectionFlags).Where(i => i.Name == method.Name).ToArray();
+            var AllMethods = hostType.GetMethods(reflectionFlags).Where(i => i.Name == method.Name).ToArray();
             var
                 AllMethods1 = (from i in AllMethods
                     where ParameterNamesEqual(method, i)
@@ -249,8 +252,8 @@ namespace Cs2Py.Compilation
                 }
 
                 var arity = typeArguments.Length;
-                var am = hostType.GetMethods(reflectionFlags);
-                var am1 = (from i in am
+                var am    = hostType.GetMethods(reflectionFlags);
+                var am1   = (from i in am
                     where
                         i.Name == method.Name
                         && i.IsGenericMethodDefinition
@@ -259,12 +262,12 @@ namespace Cs2Py.Compilation
                     // where aa.ReturnType == rt
                     select new
                     {
-                        Method = i,
+                        Method  = i,
                         GMethod = aa,
-                        Rt = aa.ReturnType
+                        Rt      = aa.ReturnType
                     }
                 ).ToArray();
-                MethodInfo[] a = (from i in am1 where CompareTypes(i.Rt, rt, true) select i.Method).ToArray();
+                var a = (from i in am1 where CompareTypes(i.Rt, rt, true) select i.Method).ToArray();
                 //var am1 = am.Where(i => i.Name == method.Name && i.IsGenericMethodDefinition)
                 //    .Select(i => new { Method = i, GA = i.GetGenericArguments() })
                 //    .ToArray();
@@ -290,7 +293,7 @@ namespace Cs2Py.Compilation
                         pTypes,
                         null);
                 }
-                var hh = method.IsDefinition;
+                var hh  = method.IsDefinition;
                 var ggg = method.IsGenericMethod;
                 //Type[] pTypes1 = (from i in pTypes
                 //                  select i.IsGenericType && !i.IsGenericTypeDefinition
@@ -344,8 +347,8 @@ namespace Cs2Py.Compilation
                 case MethodKind.Constructor: // 1 Konstruktor
                 {
                     var hostType = Roslyn_ResolveType(method.ContainingType);
-                    var pTypes = ConvertParameterTypes(method.Parameters.ToArray());
-                    var ci = hostType.GetConstructor(pTypes);
+                    var pTypes   = ConvertParameterTypes(method.Parameters.ToArray());
+                    var ci       = hostType.GetConstructor(pTypes);
                     if (ci != null)
                         return ci;
                     throw new NotSupportedException();
@@ -363,8 +366,8 @@ namespace Cs2Py.Compilation
                     }
                 case MethodKind.BuiltinOperator: // 15
                     goto case MethodKind.Ordinary;
-                case MethodKind.Conversion: // 2 A user-defined conversion.
-                case MethodKind.DelegateInvoke: // 3 The invoke method of a delegate.
+                case MethodKind.Conversion:          // 2 A user-defined conversion.
+                case MethodKind.DelegateInvoke:      // 3 The invoke method of a delegate.
                 case MethodKind.UserDefinedOperator: // 9 A user-defined operator
 
                 case MethodKind.Ordinary: // 10 A normal method.
@@ -446,8 +449,8 @@ namespace Cs2Py.Compilation
                         case TypeKind.Array:
                         {
                             var arrayTypeSymbol = type as IArrayTypeSymbol;
-                            var elementType = Roslyn_ResolveType(arrayTypeSymbol.ElementType);
-                            var result = arrayTypeSymbol.Rank == 1
+                            var elementType     = Roslyn_ResolveType(arrayTypeSymbol.ElementType);
+                            var result          = arrayTypeSymbol.Rank == 1
                                 ? elementType.MakeArrayType()
                                 : elementType.MakeArrayType(arrayTypeSymbol.Rank);
                             return result;
@@ -456,13 +459,54 @@ namespace Cs2Py.Compilation
                             return null;
                         case TypeKind.TypeParameter:
                         {
-                            var type1 = (ITypeParameterSymbol)type;
-                            var a = KnownTypes.Where(i => i.IsGenericParameter && i.DeclaringMethod != null).ToArray();
-                            var b = a.Where(i => i.DeclaringMethod.Name == type1.DeclaringMethod.Name).ToArray();
+                            var type1    = (ITypeParameterSymbol)type;
+                            var dm = type1.DeclaringMethod;
+                            var typeName = type1.Name;
+                            var a        = KnownTypes.Where(i => i.Name == typeName && i.IsGenericParameter)
+                                .ToArray();
+                            var methodName = dm.Name;
+                            var b          = a.Where(i => i.DeclaringMethod?.Name == methodName).ToArray();
 
                             MethodInfo mi;
                             if (b.Length == 1)
                                 return b[0];
+                            {
+                                var whereToSearchMethod  = dm.ContainingType;
+                                var whereToSearchMethod2 = Roslyn_ResolveType(whereToSearchMethod);
+                                var reqParameter = string.Join(",", dm.Parameters.Select(q =>/*q.Type.Name+" "+ */ q.Name));
+                                var mes = whereToSearchMethod2.GetMethods(
+                                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static |
+                                    BindingFlags.Instance).Where(q =>
+                                    {
+                                        if (q.Name != methodName || !q.IsGenericMethod) 
+                                            return false;
+                                        var parameters = q.GetParameters();
+                                        var compare = string.Join(",",
+                                            parameters.Select(w => /*w.ParameterType.Name + " " +*/ w.Name));
+                                        return reqParameter == compare;
+
+                                    })
+                                    .ToArray();
+                                if (mes.Length != 1)
+                                    throw new Exception($"Unable to find method {dm}");
+                                var mesT = mes[0].GetGenericArguments().ToArray();
+                                var mesT1 = mesT.Where(q => q.Name == typeName).ToArray();
+                                if (mesT1.Length == 1)
+                                    return mesT1[0];
+                                throw new Exception($"Unable to find type {typeName} method {dm}");
+                                /*
+                                var whereToSearch2 = Roslyn_ResolveMethod(type1.DeclaringMethod);
+                                
+                           
+
+                                
+                                var asse = KnownTypes.Select(aa => aa.Assembly.GetName().ToString()).Distinct().ToArray();
+                                var me = typeof(System.Linq.Enumerable).GetMethod(nameof(Enumerable.ToList),
+                                    BindingFlags.Public | BindingFlags.Static);
+                                var met = me.GetGenericArguments();
+                                */
+
+                            }
                             return null;
                         }
                     }
@@ -486,28 +530,34 @@ namespace Cs2Py.Compilation
                             var reflectionSearch2 = b.ConstructedFrom.ToDisplayString();
                             if (reflectionSearch != reflectionSearch2)
                                 reflectionSearch = reflectionSearch2;
-                            reflectionSearch =
+                            reflectionSearch     =
                                 reflectionSearch.Substring(0, reflectionSearch.IndexOf("<", StringComparison.Ordinal)) +
                                 "`" + b.Arity;
-                            Type reflected = KnownTypes.Single(i => i.FullName == reflectionSearch);
+                            var reflected = KnownTypes.Single(i => i.FullName == reflectionSearch);
 
-                            Type[] typeArguments = b.TypeArguments.AsEnumerable().Select(Roslyn_ResolveType).ToArray();
+                            var typeArguments = b.TypeArguments.AsEnumerable().Select(q =>
+                            {
+                                var bb = Roslyn_ResolveType(q);
+                                if (bb == null)
+                                    throw new Exception("Unable to resolve type " + q);
+                                return bb;
+                            }).ToArray();
                             var reflected2 = reflected.MakeGenericType(typeArguments);
                             return reflected2;
                         }
 
                         if (b.ContainingType != null)
                         {
-                            var ct = Roslyn_ResolveType(b.ContainingType);
-                            var kt = KnownTypes.Where(i => i.DeclaringType == ct).ToArray();
+                            var ct               = Roslyn_ResolveType(b.ContainingType);
+                            var kt               = KnownTypes.Where(i => i.DeclaringType == ct).ToArray();
                             var reflectionSearch = b.ContainingType.ToDisplayString() + "+" + b.Name;
-                            var reflected = KnownTypes.Single(i => i.FullName == reflectionSearch);
+                            var reflected        = KnownTypes.Single(i => i.FullName == reflectionSearch);
                             return reflected;
                         }
                         else
                         {
                             var reflectionSearch = b.ToDisplayString();
-                            var reflected = KnownTypes.Single(i => i.FullName == reflectionSearch);
+                            var reflected        = KnownTypes.Single(i => i.FullName == reflectionSearch);
                             return reflected;
                         }
                     }
@@ -578,10 +628,12 @@ namespace Cs2Py.Compilation
             = new ConcurrentDictionary<MethodDeclarationSyntax, MethodHeaderInfo>();
 
 
-        private readonly Dictionary<ITypeSymbol, Type> _cacheRoslynResolveType = new Dictionary<ITypeSymbol, Type>();
-        private ITypeSymbol[] _roslynAllNamedTypeSymbols;
-        private string _currentNamespace = string.Empty;
+        private readonly Dictionary<ITypeSymbol, Type> _cacheRoslynResolveType =
+            new Dictionary<ITypeSymbol, Type>();
+
+        private ITypeSymbol[]                      _roslynAllNamedTypeSymbols;
+        private string                             _currentNamespace = string.Empty;
         private Microsoft.CodeAnalysis.Compilation _roslynCompilation;
-        private SemanticModel _roslynModel;
+        private SemanticModel                      _roslynModel;
     }
 }
