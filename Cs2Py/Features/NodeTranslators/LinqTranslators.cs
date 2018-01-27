@@ -6,7 +6,7 @@ using Lang.Python.Numpy;
 
 namespace Cs2Py.NodeTranslators
 {
-    public class LinqTranslators : CsharpMethodCallExpressionTranslatorBase
+    public class LinqTranslators : BaseCsharpMethodCallExpressionTranslator
     {
         public LinqTranslators() : base(100)
         {

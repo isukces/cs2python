@@ -234,5 +234,57 @@ class LinqCodes:
             };
             CheckTranslation(cs, info);
         }
+        
+        
+        [Fact]
+        public void T09_Should_convert_dictionary()
+        {
+            var cs       = @"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace Demo01
+{
+    [Lang.Python.IgnoreNamespaceAttribute]
+    public class Codes
+    {
+         public static void DictionaryTest()
+        {
+            var dictEmpty = new Dictionary<int, string>();
+            Console.WriteLine(dictEmpty.Count);
+            var dictInitialized = new Dictionary<int, string>
+            {
+                [1] = ""one"",
+                [2] = ""two""
+            };
+            dictEmpty = dictInitialized; 
+            dictEmpty[3] = ""three"";
+            dictEmpty.Clear();
+        }
+    }
+}
+";
+            var expected = @"
+class Codes:
+    @staticmethod
+    def DictionaryTest(cls):
+        dictEmpty = dict()
+        print len(dictEmpty)
+        dictInitialized = {1:'one', 2:'two'}
+        dictEmpty = dictInitialized
+        dictEmpty[3] = 'three'
+        dictEmpty.clear()
+";
+            var info     = new Info
+            {
+                Compare = expected,
+                Ref     = new[]
+                {
+                    typeof(Enumerable).Assembly
+                }
+            };
+            CheckTranslation(cs, info);
+        }
     }
 }

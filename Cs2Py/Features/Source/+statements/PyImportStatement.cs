@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cs2Py.Emit;
+using JetBrains.Annotations;
 
 namespace Cs2Py.Source
 {
     public class PyImportStatement : PySourceBase, IPyStatement
     {
-        public PyImportStatement(string module, string alias)
+        public PyImportStatement([NotNull] string module, string alias)
         {
-            Module = module;
+            Module = module ?? throw new ArgumentNullException(nameof(module));
             Alias  = alias;
         }
 

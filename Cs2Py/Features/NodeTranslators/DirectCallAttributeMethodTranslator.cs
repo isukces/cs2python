@@ -7,7 +7,7 @@ using Lang.Python;
 
 namespace Cs2Py.NodeTranslators
 {
-    public class DirectCallAttributeMethodTranslator : CsharpMethodCallExpressionTranslatorBase
+    public class DirectCallAttributeMethodTranslator : BaseCsharpMethodCallExpressionTranslator
     {
         public DirectCallAttributeMethodTranslator() : base(2)
         {

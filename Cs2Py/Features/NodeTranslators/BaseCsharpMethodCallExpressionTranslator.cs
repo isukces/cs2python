@@ -5,9 +5,9 @@ using Cs2Py.CSharp;
 
 namespace Cs2Py.NodeTranslators
 {
-    public abstract class CsharpMethodCallExpressionTranslatorBase : IPyNodeTranslator<CsharpMethodCallExpression>
+    public abstract class BaseCsharpMethodCallExpressionTranslator : IPyNodeTranslator<CsharpMethodCallExpression>
     {
-        protected CsharpMethodCallExpressionTranslatorBase(int priority)
+        protected BaseCsharpMethodCallExpressionTranslator(int priority)
         {
             _priority = priority;
         }

@@ -53,6 +53,15 @@ namespace Cs2Py.CSharp
         Type IValue.ValueType => throw new NotImplementedException();
     }
 
+    partial class FunctionArguments_PseudoValue
+    {
+        public Type ValueType
+        {
+            get { throw new Exception("FunctionArguments is not regular IValue"); }
+        }
+    }
+    
+
     partial class LangType
     {
         public override string ToString()

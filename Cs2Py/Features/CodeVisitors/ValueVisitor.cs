@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Cs2Py.Compilation;
 using Cs2Py.CSharp;
+using Lang.Python;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -93,6 +94,17 @@ namespace Cs2Py.CodeVisitors
         }
 
         // Private Methods 
+        protected override IValue VisitImplicitElementAccess(ImplicitElementAccessSyntax implicitElementAccessSyntax)
+        {
+
+            var arguments = implicitElementAccessSyntax.ArgumentList.Arguments;
+            var conv = arguments.MapToList(q =>
+            {
+                var value = (FunctionArgument)VisitArgument(q);
+                return value;
+            });
+            return new FunctionArguments_PseudoValue(conv.ToArray());
+        }
 
         private static QualifiedNameVisitor.R _Name(NameSyntax node)
         {
@@ -153,6 +165,7 @@ namespace Cs2Py.CodeVisitors
             return Simplify(tmp);
         }
 
+        
         protected override IValue VisitAddAssignmentExpression(BinaryExpressionSyntax node)
         {
             return internalVisit_AssignWithPrefix(node, "+");

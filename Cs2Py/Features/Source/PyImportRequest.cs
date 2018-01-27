@@ -1,10 +1,13 @@
-﻿namespace Cs2Py.Source
+﻿using System;
+using JetBrains.Annotations;
+
+namespace Cs2Py.Source
 {
     public class PyImportRequest
     {
-        public PyImportRequest(string relativeModulePath, string alias = null)
+        public PyImportRequest([NotNull] string relativeModulePath, string alias = null)
         {
-            RelativeModulePath = relativeModulePath;
+            RelativeModulePath = relativeModulePath ?? throw new ArgumentNullException(nameof(relativeModulePath));
             Alias  = alias;
         }
 

@@ -8,15 +8,48 @@ namespace Cs2Py.CodeVisitors
 {
     public class ExpressionSimplifier : PyBaseVisitor<IPyValue>, IPyExpressionSimplifier
     {
-        protected override IPyValue VisitPyIncrementDecrementExpression(PyIncrementDecrementExpression node)
-        {
-            return node.Simplify(this);
-        }
         public ExpressionSimplifier(OptimizeOptions op)
         {
             this.op = op;
         }
-        OptimizeOptions op;
+
+        public static IPyValue[] ExplodeConcats(IPyValue x, string op)
+        {
+            if (x is PyMethodInvokeValue)
+                x = (x as PyMethodInvokeValue).Expression;
+            if (x is PyBinaryOperatorExpression)
+            {
+                var y = x as PyBinaryOperatorExpression;
+                if (y.Operator == op)
+                    return ExplodeConcats(y.Left, op).Union(ExplodeConcats(y.Right, op)).ToArray();
+            }
+
+            return new[] {x};
+        }
+
+        private static IPyValue ReturnSubst(IPyValue old, IPyValue @new)
+        {
+            if (SameCode(old, @new))
+                return old;
+            return @new;
+        }
+
+        private static bool SameCode(IPyValue a, IPyValue b)
+        {
+            var codeA = a == null ? "" : a.GetPyCode(null);
+            var codeB = a == null ? "" : b.GetPyCode(null);
+            return codeA == codeB;
+        }
+        // Private Methods 
+
+        public IPyValue Simplify(IPyValue src)
+        {
+            if (src == null)
+                return null;
+            if (src is PySourceBase)
+                return Visit(src as PySourceBase);
+            return src;
+        }
 
         // Protected Methods 
 
@@ -35,38 +68,6 @@ namespace Cs2Py.CodeVisitors
             return node.Simplify(this);
         }
 
-        public static IPyValue[] ExplodeConcats(IPyValue x, string op)
-        {
-            if (x is PyMethodInvokeValue)
-                x = (x as PyMethodInvokeValue).Expression;
-            if (x is PyBinaryOperatorExpression)
-            {
-                var y = x as PyBinaryOperatorExpression;
-                if (y.Operator == op)
-                    return ExplodeConcats(y.Left, op).Union(ExplodeConcats(y.Right, op)).ToArray();
-            }
-            return new IPyValue[] { x };
-        }
-
-        static bool SameCode(IPyValue a, IPyValue b)
-        {
-            var codeA = a == null ? "" : a.GetPyCode(null);
-            var codeB = a == null ? "" : b.GetPyCode(null);
-            return codeA == codeB;
-        }
-
-        static IPyValue ReturnSubst(IPyValue old, IPyValue @new)
-        {
-            if (SameCode(old, @new))
-                return old;
-            return @new;
-        }
-
-        protected override IPyValue VisitPyThisExpression(PyThisExpression node)
-        {
-            return node;
-        }
-
         protected override IPyValue VisitPyBinaryOperatorExpression(PyBinaryOperatorExpression node)
         {
             switch (node.Operator)
@@ -77,8 +78,6 @@ namespace Cs2Py.CodeVisitors
                     var _right = Simplify(node.Right);
                     var n      = new PyBinaryOperatorExpression(node.Operator, _left, _right);
                     var c      = ExplodeConcats(n, ".").ToList();
-
-
 
                     for (var i = 1; i < c.Count; i++)
                     {
@@ -95,6 +94,7 @@ namespace Cs2Py.CodeVisitors
                                 i--;
                                 continue;
                             }
+
                             var    LCode = PyValues.ToPyCodeValue(LValue);
                             var    RCode = PyValues.ToPyCodeValue(RValue);
                             string left, right;
@@ -106,7 +106,9 @@ namespace Cs2Py.CodeVisitors
                                 continue;
                             }
 
-                            var msg = string.Format("left={0}, right={1} '{2}+{3}'", LValue, RValue, LValue == null ? null : LValue.GetType().FullName, RValue == null ? null : RValue.GetType().FullName);
+                            var msg = string.Format("left={0}, right={1} '{2}+{3}'", LValue, RValue,
+                                LValue == null ? null : LValue.GetType().FullName,
+                                RValue == null ? null : RValue.GetType().FullName);
 
 #if DEBUG
                             throw new NotImplementedException(msg);
@@ -118,6 +120,7 @@ namespace Cs2Py.CodeVisitors
 #endif
                         }
                     }
+
                     var result = c[0];
                     if (c.Count > 1)
                         foreach (var x2 in c.Skip(1))
@@ -145,6 +148,7 @@ namespace Cs2Py.CodeVisitors
                 }
                     break;
             }
+
             return node;
         }
 
@@ -153,9 +157,9 @@ namespace Cs2Py.CodeVisitors
             return node;
         }
 
-        protected override IPyValue VisitPyModuleExpression(PyModuleExpression node)
+        protected override IPyValue VisitPyConditionalExpression(PyConditionalExpression node)
         {
-            return node;
+            return node.Simplify(this);
         }
 
         protected override IPyValue VisitPyConstValue(PyConstValue node)
@@ -168,7 +172,22 @@ namespace Cs2Py.CodeVisitors
             return node;
         }
 
-        
+        protected override IPyValue VisitPyDictionaryCreateExpression(PyDictionaryCreateExpression node)
+        {
+            return node;
+        }
+
+        protected override IPyValue VisitPyElementAccessExpression(PyElementAccessExpression node)
+        {
+            return node.Simplify(this);
+        }
+
+        protected override IPyValue VisitPyIncrementDecrementExpression(PyIncrementDecrementExpression node)
+        {
+            return node.Simplify(this);
+        }
+
+
         protected override IPyValue VisitPyInstanceFieldAccessExpression(PyInstanceFieldAccessExpression node)
         {
             return node;
@@ -177,7 +196,6 @@ namespace Cs2Py.CodeVisitors
         protected override IPyValue VisitPyMethodCallExpression(PyMethodCallExpression node)
         {
             if (node.Name == "_urlencode_" || node.Name == "_htmlspecialchars_")
-            {
                 if (node.Arguments[0].Expression is PyConstValue)
                 {
                     var cv = (node.Arguments[0].Expression as PyConstValue).Value;
@@ -186,17 +204,15 @@ namespace Cs2Py.CodeVisitors
                     if (cv is int)
                         cv = cv.ToString();
                     else if (cv is string)
-                    {
                         if (node.Name == "_urlencode_")
                             cv = HttpUtility.UrlEncode(cv as string);
                         else
                             cv = HttpUtility.HtmlEncode(cv as string);
-                    }
                     else
                         throw new NotSupportedException();
                     return Simplify(new PyConstValue(cv));
                 }
-            }
+
             {
                 var list1 = node.Arguments.Select(Simplify).Cast<PyMethodInvokeValue>().ToList();
                 var to    = node.TargetObject == null ? null : Simplify(node.TargetObject);
@@ -214,53 +230,18 @@ namespace Cs2Py.CodeVisitors
             return node;
         }
 
-
-        IPyValue strip(IPyValue v)
-        {
-            while (v is PyParenthesizedExpression)
-                v = (v as PyParenthesizedExpression).Expression;
-            v     = Simplify(v);
-            return v;
-        }
         protected override IPyValue VisitPyMethodInvokeValue(PyMethodInvokeValue node)
         {
             var nv = strip(node.Expression);
 
             if (PySourceBase.EqualCode(nv, node.Expression))
                 return node;
-            return new PyMethodInvokeValue(nv) { ByRef = node.ByRef };
+            return new PyMethodInvokeValue(nv) {ByRef = node.ByRef};
         }
 
-        protected override IPyValue VisitPyUnaryOperatorExpression(PyUnaryOperatorExpression node)
+        protected override IPyValue VisitPyModuleExpression(PyModuleExpression node)
         {
-            if (node.Operator == "!" && node.Operand is PyBinaryOperatorExpression)
-            {
-                var bin = node.Operand as PyBinaryOperatorExpression;
-                if (bin.Operator == "!==")
-                {
-                    var bin2 = new PyBinaryOperatorExpression("===", bin.Left, bin.Right);
-                    return bin2;
-                }
-                var be = new PyParenthesizedExpression(node.Operand);
-                node   = new PyUnaryOperatorExpression(be, node.Operator);
-                return node;
-            }
-            if (node.Operator == "!" && node.Operand is PyUnaryOperatorExpression)
-            {
-                var bin = node.Operand as PyUnaryOperatorExpression;
-                if (bin.Operator == "!")
-                    return Simplify(bin.Operand);
-            }
             return node;
-        }
-        protected override IPyValue VisitPyElementAccessExpression(PyElementAccessExpression node)
-        {
-            return node.Simplify(this);
-        }
-        protected override IPyValue VisitPyConditionalExpression(PyConditionalExpression node)
-        {
-            return node.Simplify(this);
-
         }
 
         protected override IPyValue VisitPyParenthesizedExpression(PyParenthesizedExpression node)
@@ -274,26 +255,60 @@ namespace Cs2Py.CodeVisitors
                 if (!t.IsConstructorCall)
                     return node.Expression;
             }
-            return node;
-        }
-        protected override IPyValue VisitPyVariableExpression(PyVariableExpression node)
-        {
-            return node;
-        }
-        // Private Methods 
 
-        public IPyValue Simplify(IPyValue src)
-        {
-            if (src == null)
-                return null;
-            if (src is PySourceBase)
-                return Visit(src as PySourceBase);
-            return src;
+            return node;
         }
 
         protected override IPyValue VisitPyPropertyAccessExpression(PyPropertyAccessExpression node)
         {
             return node.Simplify(this);
         }
+
+        protected override IPyValue VisitPyThisExpression(PyThisExpression node)
+        {
+            return node;
+        }
+
+        protected override IPyValue VisitPyUnaryOperatorExpression(PyUnaryOperatorExpression node)
+        {
+            if (node.Operator == "!" && node.Operand is PyBinaryOperatorExpression)
+            {
+                var bin = node.Operand as PyBinaryOperatorExpression;
+                if (bin.Operator == "!==")
+                {
+                    var bin2 = new PyBinaryOperatorExpression("===", bin.Left, bin.Right);
+                    return bin2;
+                }
+
+                var be = new PyParenthesizedExpression(node.Operand);
+                node   = new PyUnaryOperatorExpression(be, node.Operator);
+                return node;
+            }
+
+            if (node.Operator == "!" && node.Operand is PyUnaryOperatorExpression)
+            {
+                var bin = node.Operand as PyUnaryOperatorExpression;
+                if (bin.Operator == "!")
+                    return Simplify(bin.Operand);
+            }
+
+            return node;
+        }
+
+        protected override IPyValue VisitPyVariableExpression(PyVariableExpression node)
+        {
+            return node;
+        }
+
+
+        private IPyValue strip(IPyValue v)
+        {
+            while (v is PyParenthesizedExpression)
+                v = (v as PyParenthesizedExpression).Expression;
+            v     = Simplify(v);
+            return v;
+        }
+
+        private OptimizeOptions op;
     }
 }

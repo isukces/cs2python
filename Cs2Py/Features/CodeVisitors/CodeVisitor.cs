@@ -383,16 +383,26 @@ namespace Cs2Py.CodeVisitors
                     return VisitForEachStatement(node as ForEachStatementSyntax);
                 case SyntaxKind.UsingStatement:
                     return VisitUsingStatement(node as UsingStatementSyntax);
+                case SyntaxKind.ImplicitElementAccess:
+                    return VisitImplicitElementAccess(node as ImplicitElementAccessSyntax);
                 default:
                     throw new NotSupportedException($"Add {GetType()} => {node.Kind()},{node.GetType().Name}");
             }
+        }
+
+        protected virtual T VisitImplicitElementAccess(ImplicitElementAccessSyntax implicitElementAccessSyntax)
+        {
+            if (throwNotImplementedException)
+                throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}",
+                    nameof(VisitImplicitElementAccess), GetType().FullName));
+            return default(T);
         }
 
         protected virtual T VisitAccessorList(AccessorListSyntax node)
         {
             if (throwNotImplementedException)
                 throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}",
-                    "VisitAccessorList", GetType().FullName));
+                    nameof(VisitAccessorList), GetType().FullName));
             return default(T);
         }
 

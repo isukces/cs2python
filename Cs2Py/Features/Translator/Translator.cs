@@ -78,7 +78,8 @@ namespace Cs2Py.Translator
 */
 
             var includePath = req.GetImportPath(currentModule.ModuleName);
-            currentModule.RequiredFiles.Add(new PyImportRequest(includePath));
+            if (!string.IsNullOrEmpty(includePath))
+                currentModule.RequiredFiles.Add(new PyImportRequest(includePath));
         }
 
         // Private Methods 
@@ -230,7 +231,6 @@ namespace Cs2Py.Translator
                 return _state.Principles.GetPyType(netBaseType, true, null);
             }
 
-            
             var pyClass = classTranslationInfo.ExportAsModule
                 ? null
                 : pyModule.FindOrCreateClass(classTranslationInfo.PyName, GetBaseClassName());
@@ -463,7 +463,7 @@ namespace Cs2Py.Translator
 
         private void TranslateMethod(PyCodeModule pyModule, [CanBeNull] PyClassDefinition pyClass, MethodDeclaration md)
         {
-            if (pyClass==null)
+            if (pyClass == null)
                 if (!md.Info.IsStatic)
                     throw new Exception(
                         $"Unable to translate {md.Info} method: Module class can contain only static methods");

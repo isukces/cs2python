@@ -87,7 +87,7 @@ namespace Cs2Py.Source
                 name   = to.GetPyCode(style) + "." + name;
             }
 
-            var code = string.Format(name == "echo" ? "{0} {1}" : "{0}({1})", name, arguments);
+            var code = string.Format(SkipBrackets ? "{0} {1}" : "{0}({1})", name, arguments);
             return code;
         }
 
@@ -146,6 +146,8 @@ namespace Cs2Py.Source
         /// <summary>
         /// </summary>
         public MethodTranslationInfo TranslationInfo { get; private set; }
+
+        public bool SkipBrackets { get; set; }
 
         private string _name = string.Empty;
 

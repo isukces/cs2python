@@ -21,6 +21,8 @@ namespace Cs2Py.CSharp
     MakeInterface("IValue", null, "Type ValueType");	 
     MakeInterface("INamespaceMember", null);
     MakeClass("FunctionArgument", "IValue", "string RefOrOutKeyword", "IValue MyValue", "string ExplicitName");
+    
+    MakeClass("FunctionArguments_PseudoValue", "IValue", "FunctionArgument[] Arguments");
 
     MakeClass("CsharpMethodCallExpression","IValue, IStatement", "MethodInfo MethodInfo", "IValue TargetObject",  "FunctionArgument[] Arguments", "Type[] GenericTypes", "bool IsDelegate");
 	MakeClass("CompilationUnit", "",  "ImportNamespace[] ImportNamespaces", "NamespaceDeclaration[] NamespaceDeclarations");

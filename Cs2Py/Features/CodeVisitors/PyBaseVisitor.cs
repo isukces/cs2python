@@ -38,6 +38,8 @@ namespace Cs2Py.CodeVisitors
                     return VisitPyContinueStatement(node as PyContinueStatement);
                 case PySourceItems.PyDefinedConstExpression:
                     return VisitPyDefinedConstExpression(node as PyDefinedConstExpression);
+                case PySourceItems.PyDictionaryCreateExpression:
+                    return VisitPyDictionaryCreateExpression(node as PyDictionaryCreateExpression);
                 case PySourceItems.PyElementAccessExpression:
                     return VisitPyElementAccessExpression(node as PyElementAccessExpression);
                 case PySourceItems.PyExpressionStatement:
@@ -169,6 +171,13 @@ namespace Cs2Py.CodeVisitors
         {
             if (ThrowNotImplementedException)
                 throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}", "VisitPyDefinedConstExpression", this.GetType().FullName));
+            return default(T);
+        }
+
+        protected virtual T VisitPyDictionaryCreateExpression(PyDictionaryCreateExpression node)
+        {
+            if (ThrowNotImplementedException)
+                throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}", "VisitPyDictionaryCreateExpression", this.GetType().FullName));
             return default(T);
         }
 
@@ -318,6 +327,7 @@ namespace Cs2Py.CodeVisitors
 			if (x.GetType() == typeof(PyConstValue)) return PySourceItems.PyConstValue;
 			if (x.GetType() == typeof(PyContinueStatement)) return PySourceItems.PyContinueStatement;
 			if (x.GetType() == typeof(PyDefinedConstExpression)) return PySourceItems.PyDefinedConstExpression;
+			if (x.GetType() == typeof(PyDictionaryCreateExpression)) return PySourceItems.PyDictionaryCreateExpression;
 			if (x.GetType() == typeof(PyElementAccessExpression)) return PySourceItems.PyElementAccessExpression;
 			if (x.GetType() == typeof(PyExpressionStatement)) return PySourceItems.PyExpressionStatement;
 			if (x.GetType() == typeof(PyForEachStatement)) return PySourceItems.PyForEachStatement;
@@ -354,6 +364,7 @@ namespace Cs2Py.CodeVisitors
 		PyConstValue,
 		PyContinueStatement,
 		PyDefinedConstExpression,
+		PyDictionaryCreateExpression,
 		PyElementAccessExpression,
 		PyExpressionStatement,
 		PyForEachStatement,

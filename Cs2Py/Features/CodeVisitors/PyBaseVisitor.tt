@@ -101,7 +101,8 @@ string[] GetDirectives() {
 		"PyForEachStatement",
 		"PyThisExpression",
 		"PyModuleExpression",
-		"PyUsingStatement"
+		"PyUsingStatement",
+		"PyDictionaryCreateExpression"
 		
     };
 	return x.OrderBy(a=>a).ToArray();

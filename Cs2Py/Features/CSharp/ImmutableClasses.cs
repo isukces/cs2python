@@ -40,6 +40,17 @@ namespace Cs2Py.CSharp
       }
       private string explicitName;
     } // end of FunctionArgument
+    public sealed partial class FunctionArguments_PseudoValue : CSharpBase, IValue {
+      public FunctionArguments_PseudoValue(FunctionArgument[] Arguments){
+        this.arguments = Arguments;
+      }
+      public FunctionArgument[] Arguments {
+        get {
+          return arguments;
+        }
+      }
+      private FunctionArgument[] arguments;
+    } // end of FunctionArguments_PseudoValue
     public sealed partial class CsharpMethodCallExpression : CSharpBase, IValue, IStatement {
       public CsharpMethodCallExpression(MethodInfo MethodInfo, IValue TargetObject, FunctionArgument[] Arguments, Type[] GenericTypes, bool IsDelegate){
         this.methodInfo = MethodInfo;
@@ -1360,6 +1371,7 @@ public class CSharpBase {
         get
         {
             if (this is FunctionArgument) return CSharpBaseKinds.FunctionArgumentKind;
+            if (this is FunctionArguments_PseudoValue) return CSharpBaseKinds.FunctionArguments_PseudoValueKind;
             if (this is CsharpMethodCallExpression) return CSharpBaseKinds.MethodCallExpressionKind;
             if (this is CompilationUnit) return CSharpBaseKinds.CompilationUnitKind;
             if (this is ImportNamespace) return CSharpBaseKinds.ImportNamespaceKind;
@@ -1432,6 +1444,7 @@ public class CSharpBase {
 }
 public enum CSharpBaseKinds {
     FunctionArgumentKind,
+    FunctionArguments_PseudoValueKind,
     MethodCallExpressionKind,
     CompilationUnitKind,
     ImportNamespaceKind,
@@ -1506,6 +1519,8 @@ public class CSharpBaseVisitor<T>: CodeVisitor {
             {
                 case CSharpBaseKinds.FunctionArgumentKind:
                     return VisitFunctionArgument(a as FunctionArgument);
+                case CSharpBaseKinds.FunctionArguments_PseudoValueKind:
+                    return VisitFunctionArguments_PseudoValue(a as FunctionArguments_PseudoValue);
                 case CSharpBaseKinds.MethodCallExpressionKind:
                     return VisitMethodCallExpression(a as CsharpMethodCallExpression);
                 case CSharpBaseKinds.CompilationUnitKind:
@@ -1643,6 +1658,9 @@ public class CSharpBaseVisitor<T>: CodeVisitor {
         }
     protected virtual T VisitFunctionArgument(FunctionArgument src) {
         throw new NotSupportedException(GetType().FullName + " doesn't implement VisitFunctionArgument");
+    }
+    protected virtual T VisitFunctionArguments_PseudoValue(FunctionArguments_PseudoValue src) {
+        throw new NotSupportedException(GetType().FullName + " doesn't implement VisitFunctionArguments_PseudoValue");
     }
     protected virtual T VisitMethodCallExpression(CsharpMethodCallExpression src) {
         throw new NotSupportedException(GetType().FullName + " doesn't implement VisitMethodCallExpression");

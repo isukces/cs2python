@@ -229,7 +229,7 @@ namespace Cs2Py.Translator
 
             {
                 // cti = state.Principles.GetTi(src.Info.ReflectedType);
-                if (cti.IsReflected)
+                // if (cti.IsReflected)
                 {
                     var replacer = _state.FindOneClassReplacer(src.Info.ReflectedType);
                     if (replacer != null)
@@ -243,9 +243,7 @@ namespace Cs2Py.Translator
                             if (translated is IPyValue)
                                 return translated as IPyValue;
                         }
-
-                        throw new Exception(string.Format("Klasa {0} nie umie przetłumaczyć konstruktora {1}",
-                            replacer.ReplaceBy.FullName, replacer.SourceType.FullName));
+                        //throw new Exception(string.Format("Klasa {0} nie umie przetłumaczyć konstruktora {1}",replacer.ReplaceBy.FullName, replacer.SourceType.FullName));
                     }
                 }
             }
