@@ -55,9 +55,19 @@ namespace Demo01
                 [1] = "one",
                 [2] = "two"
             };
-            dictEmpty = dictInitialized; 
+            dictEmpty = dictInitialized;
+            dictEmpty.Remove(1);
             dictEmpty[3] = "three";
             dictEmpty.Clear();
+            var keys = dictEmpty.Keys;
+            var values = dictEmpty.Values;
+            var containsKye = dictEmpty.ContainsKey(3);
+        }
+        
+        public static void DictionaryRemove()
+        {
+            var dictEmpty = new Dictionary<int, string>();            
+            dictEmpty.Remove(1);                    
         }
     }
 }

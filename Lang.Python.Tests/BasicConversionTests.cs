@@ -237,7 +237,49 @@ class LinqCodes:
         
         
         [Fact]
-        public void T09_Should_convert_dictionary()
+        public void T09_Should_convert_dictionary_remove()
+        {
+            /* if 'key' in myDict:
+    del myDict['key'] */
+            var cs       = @"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace Demo01
+{
+    [Lang.Python.IgnoreNamespaceAttribute]
+    public class Codes
+    {
+        public static void DictionaryRemove()
+        {
+            var dictEmpty = new Dictionary<int, string>();            
+            dictEmpty.Remove(1);                    
+        }
+    }
+}
+";
+            var expected = @"
+class Codes:
+    @staticmethod
+    def DictionaryRemove(cls):
+        dictEmpty = dict()
+        del dictEmpty[1]
+";
+            var info     = new Info
+            {
+                Compare = expected,
+                Ref     = new[]
+                {
+                    typeof(Enumerable).Assembly
+                }
+            };
+            CheckTranslation(cs, info);
+        }
+        
+        
+        [Fact]
+        public void T10_Should_convert_dictionary()
         {
             var cs       = @"
 using System;
@@ -260,7 +302,11 @@ namespace Demo01
             };
             dictEmpty = dictInitialized; 
             dictEmpty[3] = ""three"";
+            dictEmpty.Remove(1);
             dictEmpty.Clear();
+            var keys = dictEmpty.Keys;
+            var values = dictEmpty.Values;
+            var containsKye = dictEmpty.ContainsKey(3);
         }
     }
 }
@@ -274,7 +320,11 @@ class Codes:
         dictInitialized = {1:'one', 2:'two'}
         dictEmpty = dictInitialized
         dictEmpty[3] = 'three'
+        del dictEmpty[1]
         dictEmpty.clear()
+        keys = dictEmpty.keys()
+        values = dictEmpty.values()
+        containsKye = dictEmpty.has_key(3) 
 ";
             var info     = new Info
             {

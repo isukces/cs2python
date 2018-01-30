@@ -17,7 +17,7 @@ namespace Cs2Py.NodeTranslators
     {
         // Private Methods 
 
-        private static IPyValue _Delegate(IExternalTranslationContext ctx, CsharpMethodCallExpression src)
+        private static IPyValue TranspileDelegateToPyton(IExternalTranslationContext ctx, CsharpMethodCallExpression src)
         {
             if (src.TargetObject == null)
                 throw new NotSupportedException();
@@ -41,7 +41,7 @@ namespace Cs2Py.NodeTranslators
         public IPyValue TranslateToPython(IExternalTranslationContext ctx, CsharpMethodCallExpression src)
         {
             if (src.IsDelegate)
-                return _Delegate(ctx, src);
+                return TranspileDelegateToPyton(ctx, src);
 
            
             var principles = ctx.GetTranslationInfo();
@@ -56,7 +56,10 @@ namespace Cs2Py.NodeTranslators
             }
 
             ctx.GetTranslationInfo().CheckAccesibility(src);
-            var cti = principles.FindClassTranslationInfo(src.MethodInfo.DeclaringType);
+            var declaringType = src.MethodInfo.DeclaringType;
+            if (declaringType.IsGenericType)
+                declaringType = declaringType.GetGenericTypeDefinition();
+            var cti = principles.FindClassTranslationInfo(declaringType);
             if (cti == null)
                 throw new NotSupportedException();
             var mti = principles.GetOrMakeTranslationInfo(src.MethodInfo);

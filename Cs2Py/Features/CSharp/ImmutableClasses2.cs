@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using Cs2Py.Compilation;
 
 namespace Cs2Py.CSharp
@@ -201,9 +202,35 @@ namespace Cs2Py.CSharp
     {
         public override string ToString()
         {
-            return string.Format("{0}.{1}({2})", methodInfo.DeclaringType.FullName, methodInfo.Name,
+            return string.Format("{0}.{1}({2})", methodInfo.DeclaringType?.FullName, methodInfo.Name,
                 string.Join(", ", arguments.Select(i => i.ToString())));
         }
+
+        public MethodInfo GenericMethodInfo
+        {
+            get
+            {
+                if (methodInfo.IsGenericMethod)
+                    return methodInfo.GetGenericMethodDefinition();
+                return methodInfo;
+            }
+        }
+        public Type GenericDeclaringType
+        {
+            get
+            {
+                var t = methodInfo.DeclaringType;
+                if (t == null)
+                    return null;
+                if (t.IsGenericType)
+                    t = t.GetGenericTypeDefinition();
+                return t;
+            }
+        }
+
+        public string MethodName => methodInfo.Name;
+        
+        
 
         Type IValue.ValueType
         {

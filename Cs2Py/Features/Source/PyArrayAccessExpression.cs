@@ -7,12 +7,12 @@ namespace Cs2Py.Source
     {
         /// <summary>
         ///     Tworzy instancję obiektu
-        ///     <param name="PyArray"></param>
+        ///     <param name="pyArray"></param>
         ///     <param name="index"></param>
         /// </summary>
-        public PyArrayAccessExpression(IPyValue PyArray, IPyValue index)
+        public PyArrayAccessExpression(IPyValue pyArray, IPyValue index)
         {
-            PyArray = PyArray;
+            PyArray = pyArray;
             Index = index;
         }
 

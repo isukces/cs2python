@@ -243,6 +243,7 @@ namespace Cs2Py.Translator
                             if (translated is IPyValue)
                                 return translated as IPyValue;
                         }
+
                         //throw new Exception(string.Format("Klasa {0} nie umie przetłumaczyć konstruktora {1}",replacer.ReplaceBy.FullName, replacer.SourceType.FullName));
                     }
                 }
@@ -534,17 +535,15 @@ namespace Cs2Py.Translator
                                 if (ats.Name == "this")
                                     return pyTargetObject;
 
-                                var method = new PyMethodCallExpression(ats.Name);
+                                var pyMethodCall = new PyMethodCallExpression(ats.Name);
                                 switch (ats.CallType)
                                 {
                                     case MethodCallStyles.Procedural:
-                                        method.Arguments.Add(new PyMethodInvokeValue(pyTargetObject));
-                                        return method;
-                                    //    case MethodCallStyles.:
-                                    //        method.Arguments.Add(new PyMethodInvokeValue(PyTargetObject));
-                                    //        return method;
-                                    //    default:
-                                    //        throw new NotSupportedException();
+                                        pyMethodCall.Arguments.Add(new PyMethodInvokeValue(pyTargetObject));
+                                        return pyMethodCall;
+                                    case MethodCallStyles.Instance:
+                                        pyMethodCall.TargetObject = pyTargetObject;
+                                        return pyMethodCall;
                                 }
 
                                 throw new NotImplementedException();

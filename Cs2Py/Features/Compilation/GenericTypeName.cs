@@ -13,21 +13,30 @@ namespace Cs2Py.Compilation
             Args = args ?? new GenericTypeName[0];
         }
 
-        public string GetGenericName()
-        {
-            var txt = Args.Length > 0 ? $"{Name}`{Args.Length}" : Name;
-            if (DeclaredIn == null)
-                return txt;
-            txt = DeclaredIn?.GetGenericName() + "." + txt;
-            return txt;
-        }
-
         public static GenericTypeName FromString(string x)
         {
             if (string.IsNullOrEmpty(x))
                 return null;
             var parser = new Parser(x);
             return parser.Parse();
+        }
+
+        public static string MakeGenericName(string typeName)
+        {
+            if (!typeName.Contains('<'))
+                return typeName;
+            var tmp    = FromString(typeName);
+            var result = tmp.GetGenericName();
+            return result;
+        }
+
+        public string GetGenericName()
+        {
+            var txt = Args.Length > 0 ? $"{Name}`{Args.Length}" : Name;
+            if (DeclaredIn == null)
+                return txt;
+            txt = DeclaredIn?.GetGenericName() + "+" + txt;
+            return txt;
         }
 
 

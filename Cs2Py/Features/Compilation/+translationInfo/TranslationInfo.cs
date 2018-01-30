@@ -85,8 +85,7 @@ namespace Cs2Py.Compilation
         {
             if ((object)type == null)
                 throw new ArgumentNullException(nameof(type));
-            ClassTranslationInfo cti;
-            if (ClassTranslations.TryGetValue(type, out cti)) return cti;
+            if (ClassTranslations.TryGetValue(type, out var cti)) return cti;
             cti = ClassTranslations[type] = new ClassTranslationInfo(type, this);
             if (OnTranslationInfoCreated != null)
                 OnTranslationInfoCreated(this, new TranslationInfoCreatedEventArgs {ClassTranslation = cti});
@@ -163,7 +162,9 @@ namespace Cs2Py.Compilation
                 type = type.GetGenericTypeDefinition();
             if (ClassTranslations.TryGetValue(type, out var result))
                 return result;
-            throw new Exception("Unable to find translation info for type " + type);
+            result = GetOrMakeTranslationInfo(type);
+            return result;
+            // throw new Exception("Unable to find translation info for type " + type);
         }
 
         public void Log(MessageLevels level, string text)

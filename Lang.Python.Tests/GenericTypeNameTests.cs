@@ -96,7 +96,7 @@ namespace Lang.Python.Tests
             Check(a.DeclaredIn, "System.Collections.Generic.Dictionary", 2);
             Check(a.DeclaredIn.Args[0], "int");
             Check(a.DeclaredIn.Args[1], "string");
-            Assert.Equal("System.Collections.Generic.Dictionary`2.KeyCollection", a.GetGenericName());
+            Assert.Equal("System.Collections.Generic.Dictionary`2+KeyCollection", a.GetGenericName());
         }
     }
 }

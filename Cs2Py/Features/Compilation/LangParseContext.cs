@@ -315,7 +315,7 @@ namespace Cs2Py.Compilation
 
         private void ClearCache()
         {
-            _roslynAllNamedTypeSymbols = null;
+            _roslynAllNamedTypeSymbols = new Lazy<ITypeSymbol[]>(() => Roslyn_GetNamedTypeSymbols(null));
             _cacheRoslynResolveType.Clear();
         }
 
@@ -410,163 +410,9 @@ namespace Cs2Py.Compilation
         }
 
         private Type Roslyn_ResolveType_internal(ITypeSymbol type)
-        {
-            // throw new NotSupportedException(type.ToString());
-
-            // var aaaa = roslynCompilation.GetSpecialType(type.SpecialType);
-            switch (type.SpecialType)
-            {
-                case SpecialType.System_String:
-                    return typeof(string);
-                case SpecialType.System_Double:
-                    return typeof(double);
-                case SpecialType.System_Decimal:
-                    return typeof(decimal);
-                case SpecialType.System_Int16:
-                    return typeof(short);
-                case SpecialType.System_Int32:
-                    return typeof(int);
-                case SpecialType.System_Int64:
-                    return typeof(long);
-                case SpecialType.System_Object:
-                    return typeof(object);
-                case SpecialType.System_Boolean:
-                    return typeof(bool);
-                case SpecialType.System_Char:
-                    return typeof(char);
-                case SpecialType.System_Void:
-                    return typeof(void);
-                case SpecialType.System_Array:
-                    return typeof(Array);
-                case SpecialType.System_DateTime:
-                    return typeof(DateTime);
-                case SpecialType.System_Enum:
-                    return typeof(Enum);
-                case SpecialType.None:
-                {
-                    switch (type.TypeKind)
-                    {
-                        case TypeKind.Array:
-                        {
-                            var arrayTypeSymbol = type as IArrayTypeSymbol;
-                            var elementType     = Roslyn_ResolveType(arrayTypeSymbol.ElementType);
-                            var result          = arrayTypeSymbol.Rank == 1
-                                ? elementType.MakeArrayType()
-                                : elementType.MakeArrayType(arrayTypeSymbol.Rank);
-                            return result;
-                        }
-                        case TypeKind.Error:
-                            return null;
-                        case TypeKind.TypeParameter:
-                        {
-                            var type1    = (ITypeParameterSymbol)type;
-                            var dm = type1.DeclaringMethod;
-                            var typeName = type1.Name;
-                            var a        = KnownTypes.Where(i => i.Name == typeName && i.IsGenericParameter)
-                                .ToArray();
-                            var methodName = dm.Name;
-                            var b          = a.Where(i => i.DeclaringMethod?.Name == methodName).ToArray();
-
-                            MethodInfo mi;
-                            if (b.Length == 1)
-                                return b[0];
-                            {
-                                var whereToSearchMethod  = dm.ContainingType;
-                                var whereToSearchMethod2 = Roslyn_ResolveType(whereToSearchMethod);
-                                var reqParameter = string.Join(",", dm.Parameters.Select(q =>/*q.Type.Name+" "+ */ q.Name));
-                                var mes = whereToSearchMethod2.GetMethods(
-                                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static |
-                                    BindingFlags.Instance).Where(q =>
-                                    {
-                                        if (q.Name != methodName || !q.IsGenericMethod) 
-                                            return false;
-                                        var parameters = q.GetParameters();
-                                        var compare = string.Join(",",
-                                            parameters.Select(w => /*w.ParameterType.Name + " " +*/ w.Name));
-                                        return reqParameter == compare;
-
-                                    })
-                                    .ToArray();
-                                if (mes.Length != 1)
-                                    throw new Exception($"Unable to find method {dm}");
-                                var mesT = mes[0].GetGenericArguments().ToArray();
-                                var mesT1 = mesT.Where(q => q.Name == typeName).ToArray();
-                                if (mesT1.Length == 1)
-                                    return mesT1[0];
-                                throw new Exception($"Unable to find type {typeName} method {dm}");
-                                /*
-                                var whereToSearch2 = Roslyn_ResolveMethod(type1.DeclaringMethod);
-                                
-                           
-
-                                
-                                var asse = KnownTypes.Select(aa => aa.Assembly.GetName().ToString()).Distinct().ToArray();
-                                var me = typeof(System.Linq.Enumerable).GetMethod(nameof(Enumerable.ToList),
-                                    BindingFlags.Public | BindingFlags.Static);
-                                var met = me.GetGenericArguments();
-                                */
-
-                            }
-                            return null;
-                        }
-                    }
-
-                    //var a = type.ToDisplayString();
-                    //var v = roslynCompilation.GlobalNamespace.GetNamespaceMembers().ToArray(); //.GetTypeByMetadataName(a);
-                    //var v5 = v[5].GetTypeMembers();
-                    if (_roslynAllNamedTypeSymbols == null)
-                        _roslynAllNamedTypeSymbols = Roslyn_GetNamedTypeSymbols(null);
-
-                    if (type is INamedTypeSymbol)
-                    {
-                        var b = type as INamedTypeSymbol;
-                        //if (b.ContainingType != null)
-                        //    throw new NotSupportedException();
-                        if (b.IsGenericType)
-                        {
-                            var reflectionSearch = b.ToDisplayString();
-                            // var reflectionSearchMd = b.OriginalDefinition.MetadataName;
-                            // var reflectionSearchXx = b.ConstructUnboundGenericType();
-                            var reflectionSearch2 = b.ConstructedFrom.ToDisplayString();
-                            if (reflectionSearch != reflectionSearch2)
-                                reflectionSearch = reflectionSearch2;
-                            reflectionSearch     =
-                                reflectionSearch.Substring(0, reflectionSearch.IndexOf("<", StringComparison.Ordinal)) +
-                                "`" + b.Arity;
-                            var reflected = KnownTypes.Single(i => i.FullName == reflectionSearch);
-
-                            var typeArguments = b.TypeArguments.AsEnumerable().Select(q =>
-                            {
-                                var bb = Roslyn_ResolveType(q);
-                                if (bb == null)
-                                    throw new Exception("Unable to resolve type " + q);
-                                return bb;
-                            }).ToArray();
-                            var reflected2 = reflected.MakeGenericType(typeArguments);
-                            return reflected2;
-                        }
-
-                        if (b.ContainingType != null)
-                        {
-                            var ct               = Roslyn_ResolveType(b.ContainingType);
-                            var kt               = KnownTypes.Where(i => i.DeclaringType == ct).ToArray();
-                            var reflectionSearch = b.ContainingType.ToDisplayString() + "+" + b.Name;
-                            var reflected        = KnownTypes.Single(i => i.FullName == reflectionSearch);
-                            return reflected;
-                        }
-                        else
-                        {
-                            var reflectionSearch = b.ToDisplayString();
-                            var reflected        = KnownTypes.Single(i => i.FullName == reflectionSearch);
-                            return reflected;
-                        }
-                    }
-
-                    throw new NotSupportedException(type.ToString());
-                }
-                default:
-                    throw new NotSupportedException(type.ToString());
-            }
+        {     
+            var r = new RoslynTypeResolver(KnownTypes, Roslyn_ResolveType, _roslynAllNamedTypeSymbols);
+            return r.Resolve(type);
         }
 
 
@@ -631,7 +477,7 @@ namespace Cs2Py.Compilation
         private readonly Dictionary<ITypeSymbol, Type> _cacheRoslynResolveType =
             new Dictionary<ITypeSymbol, Type>();
 
-        private ITypeSymbol[]                      _roslynAllNamedTypeSymbols;
+        private Lazy<ITypeSymbol[]>                      _roslynAllNamedTypeSymbols;
         private string                             _currentNamespace = string.Empty;
         private Microsoft.CodeAnalysis.Compilation _roslynCompilation;
         private SemanticModel                      _roslynModel;

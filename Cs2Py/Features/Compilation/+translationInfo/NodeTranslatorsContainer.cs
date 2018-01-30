@@ -31,11 +31,12 @@ namespace Cs2Py.Compilation
             List<NodeTranslatorBound> x;
             if (!_items.TryGetValue(typeof(T), out x))
                 return null;
-            var hh = x.OrderBy(GetNodeTranslatorBoundPriority).ToArray();
+            var allTranslators = x.OrderBy(GetNodeTranslatorBoundPriority).ToArray();
             // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var i in hh)
+            for (var index = 0; index < allTranslators.Length; index++)
             {
-                var y = i.Translate(ctx, node);
+                var translator = allTranslators[index];
+                var y          = translator.Translate(ctx, node);
                 if (y != null)
                     return y;
             }
