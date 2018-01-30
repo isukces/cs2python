@@ -79,7 +79,7 @@ namespace Lang.Python.Tensorflow
             return new TfScope(scopename);
         }
 
-        [DirectCall("variable")]
+        [DirectCall("Variable")]
         public static TfVariable<T> Variable<T>(
             [PyName("initial_value")]  T      initialValue,
             [PyName("trainable")]      bool   trainable     = true,
@@ -96,6 +96,20 @@ namespace Lang.Python.Tensorflow
         {
             return new TfVariable<T>(initialValue, trainable, collections, validateShape, cachingDevice,
                 name, variableDef, dtype, expectedShape, importScope, constraint);
+        }
+
+        
+        [PyModule("tensorflow.nn", true, ImportModule ="tensorflow")]
+        [ExportAsPyModule]
+        public class Nn
+        {
+            [DirectCall("relu")]
+            public static Tensor<T> Relu<T>(Tensor<T> src)
+            {
+                throw new System.NotImplementedException();
+            }
+        
+            
         }
     }
 }
