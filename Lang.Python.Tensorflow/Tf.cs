@@ -34,12 +34,12 @@ namespace Lang.Python.Tensorflow
 
         [DirectCall("reduce_mean")]
         public static Tensor<T> ReduceMean<T>(
-            [PyName("input_tensor")]      Tensor<T> inputTensor,
-            [PyName("axis")]              object    axis             = null,
-            [PyName("keepdims")]          bool?     keepdims         = null,
-            [PyName("name")]              string    name             = null,
-            [PyName("reduction_indices")] object    reductionIndices = null,
-            [PyName("keep_dims")]         bool?     keepDims         = null)
+            [PyName("input_tensor")]      Tensor<T>   inputTensor,
+            [PyName("axis")]              int?        axis             = null,
+            [PyName("keepdims")]          bool?       keepdims         = null,
+            [PyName("name")]              string      name             = null,
+            [PyName("reduction_indices")] Deprecated? reductionIndices = null,
+            [PyName("keep_dims")]         bool?       keepDims         = null)
         {
             // https://www.tensorflow.org/api_docs/python/tf/reduce_mean
             throw new NotImplementedException();
@@ -147,7 +147,7 @@ namespace Lang.Python.Tensorflow
             /// <exception cref="NotImplementedException"></exception>
             [DirectCall("sparse_softmax_cross_entropy_with_logits")]
             public static Tensor<double> SparseSoftmaxCrossEntropyWithLogits(
-                [PyName("_sentinel")] object         sentinel = null,
+                [PyName("_sentinel")] Deprecated?    sentinel = null,
                 [PyName("labels")]    Tensor<int>    labels   = null,
                 [PyName("logits")]    Tensor<double> logits   = null,
                 [PyName("name")]      string         name     = null)
@@ -173,7 +173,7 @@ namespace Lang.Python.Tensorflow
             /// <exception cref="NotImplementedException"></exception>
             [DirectCall("sparse_softmax_cross_entropy_with_logits")]
             public static Tensor<double> SparseSoftmaxCrossEntropyWithLogits(
-                [PyName("_sentinel")] object         sentinel = null,
+                [PyName("_sentinel")] Deprecated?    sentinel = null,
                 [PyName("labels")]    Tensor<long>   labels   = null,
                 [PyName("logits")]    Tensor<double> logits   = null,
                 [PyName("name")]      string         name     = null)
@@ -200,7 +200,7 @@ namespace Lang.Python.Tensorflow
             /// <exception cref="NotImplementedException"></exception>
             [DirectCall("sparse_softmax_cross_entropy_with_logits")]
             public static Tensor<float> SparseSoftmaxCrossEntropyWithLogits(
-                [PyName("_sentinel")] object        sentinel = null,
+                [PyName("_sentinel")] Deprecated?   sentinel = null,
                 [PyName("labels")]    Tensor<int>   labels   = null,
                 [PyName("logits")]    Tensor<float> logits   = null,
                 [PyName("name")]      string        name     = null)
@@ -226,7 +226,7 @@ namespace Lang.Python.Tensorflow
             /// <exception cref="NotImplementedException"></exception>
             [DirectCall("sparse_softmax_cross_entropy_with_logits")]
             public static Tensor<float> SparseSoftmaxCrossEntropyWithLogits(
-                [PyName("_sentinel")] object        sentinel = null,
+                [PyName("_sentinel")] Deprecated?   sentinel = null,
                 [PyName("labels")]    Tensor<long>  labels   = null,
                 [PyName("logits")]    Tensor<float> logits   = null,
                 [PyName("name")]      string        name     = null)
