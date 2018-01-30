@@ -18,9 +18,9 @@ namespace Cs2Py.NodeTranslators
         {
             if (!typeof(TfScope).Assembly.Equals(src.MethodInfo.DeclaringType?.Assembly))
                 return null;
-            var mi = src.MethodInfo;
-            if (mi.IsGenericMethod)
-                mi = mi.GetGenericMethodDefinition();
+            var mi = src.GenericMethodInfo;
+            if (mi.GetCustomAttribute<DirectCallAttribute>() != null)
+                return null;
             var name = mi.ToString();
             var dt = mi.DeclaringType;
 

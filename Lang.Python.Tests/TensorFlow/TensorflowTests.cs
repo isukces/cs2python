@@ -9,9 +9,9 @@ namespace Lang.Python.Tests
         [Fact]
         public void T01_Should_create_double_value()
         {
-            Assert.Equal(16, sizeof(decimal));
-            Assert.Equal(8, sizeof(double));
-            Assert.Equal(4, sizeof(float));
+            Assert.Equal(16, sizeof(decimal)); // ?? float128??
+            Assert.Equal(8, sizeof(double)); // float 64
+            Assert.Equal(4, sizeof(float));  // float 32
         }
         
         
@@ -59,7 +59,6 @@ class Demo:
         }
         
         
-          
         [Fact]
         public void T03_Should_convert_tensorflow_code()
         {
@@ -128,6 +127,39 @@ class Demo:
             biases = tensorflow.Variable(tensorflow.zeros([NUM_CLASSES]), name='biases')
             logits = tensorflow.matmul(hidden2, weights) + biases
             return logits
+    
+";
+            CheckTranslation(WrapClass(cs, "Lang.Python.Tensorflow", "System"), new Info
+            {
+                Compare = expected,
+                Ref     = new [] { typeof(Tensorflow.Graph).Assembly}
+            });
+        }
+          
+        [Fact]
+        public void T04_Should_convert_tensorflow_loss_code()
+        {
+            const string cs = @"
+        public static Tensor<double> Loss(Tensor<double> logits, Tensor<int> labels)
+        {
+            var labels2      = Tf.ToInt64(labels);
+            var crossEntropy =
+                Tf.Nn.SparseSoftmaxCrossEntropyWithLogits(logits: logits, labels: labels2, name: ""xentropy"");
+            var loss = Tf.ReduceMean(crossEntropy, name: ""xentropy_mean"");
+            return loss;
+        }
+        ";
+
+            const string expected = @"
+import tensorflow
+class Demo:
+    @staticmethod
+    def Loss(cls, logits, labels):
+        labels2 = tensorflow.to_int64(labels)
+        crossEntropy = tensorflow.nn.sparse_softmax_cross_entropy_with_logits(labels=labels2, logits=logits, name='xentropy')
+        loss = tensorflow.reduce_mean(crossEntropy, name='xentropy_mean')
+        return loss
+    
     
 ";
             CheckTranslation(WrapClass(cs, "Lang.Python.Tensorflow", "System"), new Info

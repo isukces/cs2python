@@ -14,8 +14,8 @@ namespace Demo01
         /// <returns>softmax_linear: Output tensor with the computed logits</returns>
         public static object inference(Tensor<double> images, int hidden1Units, int hidden2Units)
         {
-            const int NUM_CLASSES = 10;
-            const int IMAGE_SIZE  = 28;
+            const int NUM_CLASSES  = 10;
+            const int IMAGE_SIZE   = 28;
             const int IMAGE_PIXELS = IMAGE_SIZE * IMAGE_SIZE;
             // Hidden 1
             Tensor<double> hidden1, hidden2;
@@ -46,10 +46,11 @@ namespace Demo01
                 var weights = Tf.Variable(
                     Tf.TruncatedNormal(new[] {hidden2Units, NUM_CLASSES},
                         stddev: 1.0 / Math.Sqrt(hidden2Units)), name: "weights");
-                var biases = Tf.Variable(Tf.ZerosDouble(new []{NUM_CLASSES}), name : "biases");
+                var biases = Tf.Variable(Tf.ZerosDouble(new[] {NUM_CLASSES}), name: "biases");
                 var logits = Tf.MatMul(hidden2, weights) + biases;
                 return logits;
             }
+
             /*
            *
 
@@ -94,7 +95,7 @@ return logits
             // ReSharper disable once LocalVariableHidesMember
             const int NUM_CLASSES = 10;
             // ReSharper disable once LocalVariableHidesMember
-            const int IMAGE_SIZE  = 28;
+            const int IMAGE_SIZE = 28;
 
             using(var scope = Tf.NameScope("scopeName"))
             {
@@ -105,6 +106,15 @@ return logits
                 var biases  = Tf.Variable(Tf.ZerosDouble(new[] {hidden1Units}), name: "biases");
                 var hidden1 = Tf.Nn.Relu(Tf.MatMul(images, weights) + biases);
             }
+        }
+
+        public static Tensor<double> Loss(Tensor<double> logits, Tensor<int> labels)
+        {
+            var labels2      = Tf.ToInt64(labels);
+            var crossEntropy =
+                Tf.Nn.SparseSoftmaxCrossEntropyWithLogits(logits: logits, labels: labels2, name: "xentropy");
+            var loss = Tf.ReduceMean(crossEntropy, name: "xentropy_mean");
+            return loss;
         }
 
         private const int NUM_CLASSES  = 10;

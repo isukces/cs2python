@@ -26,6 +26,31 @@ namespace Lang.Python.Tensorflow
             throw new NotImplementedException();
         }
 
+        [DirectCall("name_scope")]
+        public static TfScope NameScope(string scopename)
+        {
+            return new TfScope(scopename);
+        }
+
+        [DirectCall("reduce_mean")]
+        public static Tensor<T> ReduceMean<T>(
+            [PyName("input_tensor")]      Tensor<T> inputTensor,
+            [PyName("axis")]              object    axis             = null,
+            [PyName("keepdims")]          bool?     keepdims         = null,
+            [PyName("name")]              string    name             = null,
+            [PyName("reduction_indices")] object    reductionIndices = null,
+            [PyName("keep_dims")]         bool?     keepDims         = null)
+        {
+            // https://www.tensorflow.org/api_docs/python/tf/reduce_mean
+            throw new NotImplementedException();
+        }
+
+        [DirectCall("to_int64")]
+        public static Tensor<long> ToInt64<T>(Tensor<T> x, string name = "ToInt64")
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// </summary>
         /// <param name="shape">A 1-D integer Tensor or Python array. The shape of the output tensor.</param>
@@ -56,29 +81,6 @@ namespace Lang.Python.Tensorflow
             throw new NotImplementedException();
         }
 
-        [DirectCall("zeros")]
-        public static Tensor<T> Zeros<T>(
-            [PyName("shape")] int[]        shape,
-            [PyName("dtype")] PyNumberType dtype,
-            [PyName("name")]  string       name = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        [DirectCall("zeros")]
-        public static Tensor<double> ZerosDouble(
-            [PyName("shape")] int[]  shape,
-            [PyName("name")]  string name = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        [DirectCall("name_scope")]
-        public static TfScope NameScope(string scopename)
-        {
-            return new TfScope(scopename);
-        }
-
         [DirectCall("Variable")]
         public static TfVariable<T> Variable<T>(
             [PyName("initial_value")]  T      initialValue,
@@ -98,18 +100,139 @@ namespace Lang.Python.Tensorflow
                 name, variableDef, dtype, expectedShape, importScope, constraint);
         }
 
-        
-        [PyModule("tensorflow.nn", true, ImportModule ="tensorflow")]
+        [DirectCall("zeros")]
+        public static Tensor<T> Zeros<T>(
+            [PyName("shape")] int[]        shape,
+            [PyName("dtype")] PyNumberType dtype,
+            [PyName("name")]  string       name = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        [DirectCall("zeros")]
+        public static Tensor<double> ZerosDouble(
+            [PyName("shape")] int[]  shape,
+            [PyName("name")]  string name = null)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        [PyModule("tensorflow.nn", true, ImportModule = "tensorflow")]
         [ExportAsPyModule]
         public class Nn
         {
             [DirectCall("relu")]
             public static Tensor<T> Relu<T>(Tensor<T> src)
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
-        
-            
+
+
+            /// <summary>
+            ///     Computes sparse softmax cross entropy between logits and labels.
+            /// </summary>
+            /// <param name="sentinel">Used to prevent positional parameters. Internal, do not use.</param>
+            /// <param name="labels">
+            ///     Tensor of shape [d_0, d_1, ..., d_{r-1}] (where r is rank of labels and result) and dtype int32 or
+            ///     int64. Each entry in labels must be an index in [0, num_classes). Other values will raise an exception when this op
+            ///     is run on CPU, and return NaN for corresponding loss and gradient rows on GPU.
+            /// </param>
+            /// <param name="logits">
+            ///     Unscaled log probabilities of shape [d_0, d_1, ..., d_{r-1}, num_classes] and dtype float32 or
+            ///     float64.
+            /// </param>
+            /// <param name="name">A name for the operation (optional).</param>
+            /// <returns></returns>
+            /// <exception cref="NotImplementedException"></exception>
+            [DirectCall("sparse_softmax_cross_entropy_with_logits")]
+            public static Tensor<double> SparseSoftmaxCrossEntropyWithLogits(
+                [PyName("_sentinel")] object         sentinel = null,
+                [PyName("labels")]    Tensor<int>    labels   = null,
+                [PyName("logits")]    Tensor<double> logits   = null,
+                [PyName("name")]      string         name     = null)
+            {
+                throw new NotImplementedException();
+            }
+
+            /// <summary>
+            ///     Computes sparse softmax cross entropy between logits and labels.
+            /// </summary>
+            /// <param name="sentinel">Used to prevent positional parameters. Internal, do not use.</param>
+            /// <param name="labels">
+            ///     Tensor of shape [d_0, d_1, ..., d_{r-1}] (where r is rank of labels and result) and dtype int32 or
+            ///     int64. Each entry in labels must be an index in [0, num_classes). Other values will raise an exception when this op
+            ///     is run on CPU, and return NaN for corresponding loss and gradient rows on GPU.
+            /// </param>
+            /// <param name="logits">
+            ///     Unscaled log probabilities of shape [d_0, d_1, ..., d_{r-1}, num_classes] and dtype float32 or
+            ///     float64.
+            /// </param>
+            /// <param name="name">A name for the operation (optional).</param>
+            /// <returns></returns>
+            /// <exception cref="NotImplementedException"></exception>
+            [DirectCall("sparse_softmax_cross_entropy_with_logits")]
+            public static Tensor<double> SparseSoftmaxCrossEntropyWithLogits(
+                [PyName("_sentinel")] object         sentinel = null,
+                [PyName("labels")]    Tensor<long>   labels   = null,
+                [PyName("logits")]    Tensor<double> logits   = null,
+                [PyName("name")]      string         name     = null)
+            {
+                throw new NotImplementedException();
+            }
+
+
+            /// <summary>
+            ///     Computes sparse softmax cross entropy between logits and labels.
+            /// </summary>
+            /// <param name="sentinel">Used to prevent positional parameters. Internal, do not use.</param>
+            /// <param name="labels">
+            ///     Tensor of shape [d_0, d_1, ..., d_{r-1}] (where r is rank of labels and result) and dtype int32 or
+            ///     int64. Each entry in labels must be an index in [0, num_classes). Other values will raise an exception when this op
+            ///     is run on CPU, and return NaN for corresponding loss and gradient rows on GPU.
+            /// </param>
+            /// <param name="logits">
+            ///     Unscaled log probabilities of shape [d_0, d_1, ..., d_{r-1}, num_classes] and dtype float32 or
+            ///     float64.
+            /// </param>
+            /// <param name="name">A name for the operation (optional).</param>
+            /// <returns></returns>
+            /// <exception cref="NotImplementedException"></exception>
+            [DirectCall("sparse_softmax_cross_entropy_with_logits")]
+            public static Tensor<float> SparseSoftmaxCrossEntropyWithLogits(
+                [PyName("_sentinel")] object        sentinel = null,
+                [PyName("labels")]    Tensor<int>   labels   = null,
+                [PyName("logits")]    Tensor<float> logits   = null,
+                [PyName("name")]      string        name     = null)
+            {
+                throw new NotImplementedException();
+            }
+
+            /// <summary>
+            ///     Computes sparse softmax cross entropy between logits and labels.
+            /// </summary>
+            /// <param name="sentinel">Used to prevent positional parameters. Internal, do not use.</param>
+            /// <param name="labels">
+            ///     Tensor of shape [d_0, d_1, ..., d_{r-1}] (where r is rank of labels and result) and dtype int32 or
+            ///     int64. Each entry in labels must be an index in [0, num_classes). Other values will raise an exception when this op
+            ///     is run on CPU, and return NaN for corresponding loss and gradient rows on GPU.
+            /// </param>
+            /// <param name="logits">
+            ///     Unscaled log probabilities of shape [d_0, d_1, ..., d_{r-1}, num_classes] and dtype float32 or
+            ///     float64.
+            /// </param>
+            /// <param name="name">A name for the operation (optional).</param>
+            /// <returns></returns>
+            /// <exception cref="NotImplementedException"></exception>
+            [DirectCall("sparse_softmax_cross_entropy_with_logits")]
+            public static Tensor<float> SparseSoftmaxCrossEntropyWithLogits(
+                [PyName("_sentinel")] object        sentinel = null,
+                [PyName("labels")]    Tensor<long>  labels   = null,
+                [PyName("logits")]    Tensor<float> logits   = null,
+                [PyName("name")]      string        name     = null)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
