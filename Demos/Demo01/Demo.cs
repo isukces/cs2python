@@ -69,5 +69,13 @@ namespace Demo01
             var dictEmpty = new Dictionary<int, string>();            
             dictEmpty.Remove(1);                    
         }
+        
+        public static void LocalConst()
+        {
+            const int Number = 1;
+            Console.WriteLine(Number);        
+            const string Text = "some text";
+            Console.WriteLine(Text);
+        }
     }
 }

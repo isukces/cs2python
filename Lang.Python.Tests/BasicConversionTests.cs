@@ -336,5 +336,49 @@ class Codes:
             };
             CheckTranslation(cs, info);
         }
+        
+        
+        [Fact]
+        public void T11_Should_convert_const()
+        {
+            var cs       = @"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace Demo01
+{
+    [Lang.Python.IgnoreNamespaceAttribute]
+    public class Codes
+    {
+        public static void LocalConst()
+        {
+            const int Number = 1;
+            Console.WriteLine(Number);        
+            const string Text = ""some text"";
+            Console.WriteLine(Text);
+        }
+    }
+}
+";
+            var expected = @"
+class Codes:
+    @staticmethod
+    def LocalConst(cls):
+        Number = 1
+        print Number
+        Text = 'some text'
+        print Text
+";
+            var info     = new Info
+            {
+                Compare = expected,
+                Ref     = new[]
+                {
+                    typeof(Enumerable).Assembly
+                }
+            };
+            CheckTranslation(cs, info);
+        }
     }
 }
