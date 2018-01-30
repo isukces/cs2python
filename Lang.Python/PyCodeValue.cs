@@ -9,7 +9,7 @@ namespace Lang.Python
 
         public static PyCodeValue FromBool(bool v)
         {
-            var txt = v ? "true" : "false";
+            var txt = v ? "True" : "False";
             return new PyCodeValue(txt, v, Kinds.Bool);
         }
 

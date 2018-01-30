@@ -57,11 +57,11 @@ namespace Cs2Py.Source
         public override string GetPyCode(PyEmitStyle style)
         {
             var b = style != null && style.Compression != EmitStyleCompression.Beauty;
-            var a = PyValues.ToPyCodeValue(Value, b);
+            PyCodeValue a = PyValues.ToPyCodeValue(Value, b);
             switch (a.Kind)
             {
                 case PyCodeValue.Kinds.Null:
-                    return "null";
+                    return "None";
                 default:
                     return a.PyValue;
             }

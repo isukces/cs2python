@@ -234,8 +234,8 @@ class LinqCodes:
             };
             CheckTranslation(cs, info);
         }
-        
-        
+
+
         [Fact]
         public void T09_Should_convert_dictionary_remove()
         {
@@ -276,8 +276,8 @@ class Codes:
             };
             CheckTranslation(cs, info);
         }
-        
-        
+
+
         [Fact]
         public void T10_Should_convert_dictionary()
         {
@@ -336,8 +336,8 @@ class Codes:
             };
             CheckTranslation(cs, info);
         }
-        
-        
+
+
         [Fact]
         public void T11_Should_convert_const()
         {
@@ -369,6 +369,82 @@ class Codes:
         print Number
         Text = 'some text'
         print Text
+";
+            var info     = new Info
+            {
+                Compare = expected,
+                Ref     = new[]
+                {
+                    typeof(Enumerable).Assembly
+                }
+            };
+            CheckTranslation(cs, info);
+        }
+
+        [Fact]
+        public void T12_Should_convert_null()
+        {
+            var cs       = @"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace Demo01
+{
+    [Lang.Python.IgnoreNamespaceAttribute]
+    public class Codes
+    {
+        public static object Get()
+        {
+            return null;
+        }
+    }
+}
+";
+            var expected = @"
+class Codes:
+    @staticmethod
+    def Get(cls):
+        return None
+";
+            var info     = new Info
+            {
+                Compare = expected,
+                Ref     = new[]
+                {
+                    typeof(Enumerable).Assembly
+                }
+            };
+            CheckTranslation(cs, info);
+        }
+        
+        [Fact]
+        public void T13_Should_convert_true_and_false()
+        {
+            var cs       = @"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace Demo01
+{
+    [Lang.Python.IgnoreNamespaceAttribute]
+    public class Codes
+    {
+        public static bool GetTrue() { return true; }
+        public static bool GetFalse() { return false; }
+    }
+}
+";
+            var expected = @"
+class Codes:
+    @staticmethod
+    def GetTrue(cls):
+        return True
+    
+    @staticmethod
+    def GetFalse(cls):
+        return False
 ";
             var info     = new Info
             {
