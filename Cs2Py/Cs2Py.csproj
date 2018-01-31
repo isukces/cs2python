@@ -63,4 +63,7 @@
       <DependentUpon>PyBaseVisitor.tt</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Features\Helpers" />
+  </ItemGroup>
 </Project>

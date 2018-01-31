@@ -1,4 +1,5 @@
 using System.Linq;
+using Cs2Py;
 using Xunit;
 
 namespace Lang.Python.Tests
@@ -474,7 +475,7 @@ namespace Demo01
 
         public static double AnotherStatic = 12.44;
 
-        // public const double Sum = RoundedPi2 + RoundedPi4;
+        public const double Sum = RoundedPi2 + RoundedPi4;
         
         [PyName(""rounded_pi_2"")] 
         public const double RoundedPi2 = 3.14;
@@ -487,24 +488,11 @@ namespace Demo01
             Console.WriteLine(AnotherStatic);
             Console.WriteLine(RoundedPi2);
             Console.WriteLine(RoundedPi4);
-            // Console.WriteLine(Sum);
         }
     }
 }
 ";
-            var expected = @"
-class ClassWithFieldsDemo:
-    rounded_pi_2 = 3.14
-    RoundedPi4 = 3.1415
-    earth_gravity = 9.81
-    AnotherStatic = 12.44
-    @staticmethod
-    def PrintAll(cls):
-        print(cls.earth_gravity)
-        print(cls.AnotherStatic)
-        print(cls.rounded_pi_2)
-        print(cls.RoundedPi4)
-";
+            var expected = @"";
             var info     = new Info
             {
                 Compare = expected,
@@ -513,7 +501,11 @@ class ClassWithFieldsDemo:
                     typeof(Enumerable).Assembly
                 }
             };
-            CheckTranslation(cs, info);
+            Assert.Throws<InvalidFieldInitializationValueException>(() =>
+            {
+                CheckTranslation(cs, info);
+            });
+
         }
     }
 }

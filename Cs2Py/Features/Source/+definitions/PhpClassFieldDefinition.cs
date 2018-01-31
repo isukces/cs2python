@@ -7,40 +7,42 @@ namespace Cs2Py.Source
 {
     public class PyClassFieldDefinition : IClassMember, ICodeRelated
     {
+        private static void ScanForDangerousCode(IPyValue v)
+        {
+            void Danger()
+            {
+                throw new InvalidFieldInitializationValueException(v);
+            }
+
+            switch (v)
+            {
+                case null:
+                    return;
+                case PyConstValue _:
+                    return;
+                case PyBinaryOperatorExpression b:
+                    ScanForDangerousCode(b.Left);
+                    ScanForDangerousCode(b.Right);
+                    return;
+                case PyClassFieldAccessExpression c:
+                    Danger();
+                    return;
+                default: throw new NotSupportedException(v.GetType().ToString());
+            }
+        }
         // Public Methods 
 
 
         public void Emit(PySourceCodeEmiter emiter, PySourceCodeWriter writer, PyEmitStyle style)
         {
-            /*
-            if (IsConst)
-            {
-                //  const CONSTANT = 'constant value';
-                writer.WriteLnF("const {0} = {1};", Name, ConstValue.GetPyCode(style));
-                return;
-            }
-            */
-
-
             if (ConstValue != null)
             {
                 if (!IsStatic)
                     throw new Exception(
                         "Only static fields with initialization are allowed. Move instance field initialization to constructior.");
+                ScanForDangerousCode(ConstValue);
                 writer.WriteLn(Name + " = " + ConstValue.GetPyCode(style));
             }
-
-            /*
-
-            var a = string.Format("{0}{1} ${2}",
-                Visibility.ToString().ToLower(),
-                IsStatic ? " static" : "",
-                Name
-            );
-            if (ConstValue != null)
-                a += " = " + ConstValue.GetPyCode(style);
-            writer.WriteLn(a + ";");
-            */
         }
 
         public IEnumerable<ICodeRequest> GetCodeRequests()

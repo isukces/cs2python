@@ -54,10 +54,8 @@ namespace Cs2Py.Source
         /// </summary>
         public PyBinaryOperatorExpression(string operator_, IPyValue left, IPyValue right)
         {
-            if (left == null) throw new ArgumentNullException(nameof(left));
-            if (right == null) throw new ArgumentNullException(nameof(right));
-            Left          = left;
-            Right         = right;
+            Left          = left ?? throw new ArgumentNullException(nameof(left));
+            Right         = right ?? throw new ArgumentNullException(nameof(right));
             Operator = operator_;
         }
 

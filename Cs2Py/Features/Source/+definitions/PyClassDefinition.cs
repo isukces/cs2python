@@ -37,6 +37,8 @@ namespace Cs2Py.Source
 
         public void Emit(PySourceCodeEmiter emiter, PySourceCodeWriter writer, PyEmitStyle style)
         {
+            foreach (var i in NestedClasses)
+                i.Emit(emiter, writer, style);
             var saveStyleCurrentClass     = style.CurrentClass;
             var saveStyleCurrentNamespace = style.CurrentNamespace;
             try
@@ -94,5 +96,7 @@ namespace Cs2Py.Source
         public List<PyClassFieldDefinition> Fields { get; set; } = new List<PyClassFieldDefinition>();
 
         private PyQualifiedName _baseTypeName;
+        
+        public List<PyClassDefinition> NestedClasses { get; } = new List<PyClassDefinition>();
     }
 }

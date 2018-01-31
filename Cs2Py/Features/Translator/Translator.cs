@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Cs2Py.CodeVisitors;
 using Cs2Py.Compilation;
 using Cs2Py.CSharp;
@@ -384,9 +385,21 @@ namespace Cs2Py.Translator
                         {
                             if (pyValueTranslator == null)
                                 pyValueTranslator = new PyValueTranslator(_state);
-                            def.ConstValue        = pyValueTranslator.TransValue(item.Value);
-                        }
 
+                            var value = pyValueTranslator.TransValue(item.Value);
+                            /*
+                            if (!(value is PyConstValue))
+                            {
+                                // converts to value
+                                value = ExpressionEvaluator.Evaluate(value);
+                                // dificult to translate-move values to additional class 
+                                // var t = new RefactorByMovingToAnotherClass();
+                                //value = t.ConvertAndRefactor(value);
+                            }
+                          
+                            */                  
+                            def.ConstValue = value;
+                        }
                         pyClass.Fields.Add(def);
                         break;
                     }
