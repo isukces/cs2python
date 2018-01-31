@@ -15,8 +15,15 @@ namespace Cs2Py.Source
         {
             Name = name;
         }
-        // Public Methods 
 
+        public string GetCurrentClassAlias()
+        {
+            var mk = GetPyMethodKind();
+            if (mk == PyMethodKind.ClassStatic)
+                return "cls";
+            return null;
+        }
+        
         public virtual void Emit(PySourceCodeEmiter emiter, PySourceCodeWriter code, PyEmitStyle style)
         {
             // public function addFunction($function, $namespace = '') 
@@ -26,7 +33,7 @@ namespace Cs2Py.Source
             {
                 case PyMethodKind.ClassStatic:
                     code.WriteLn("@staticmethod");
-                    argumentsCode.Insert(0, "cls");
+                    argumentsCode.Insert(0, GetCurrentClassAlias());
                     break;
                 case PyMethodKind.OutOfClass:
                     break;
@@ -38,7 +45,7 @@ namespace Cs2Py.Source
             }
 
             var param = Arguments == null ? "" : string.Join(", ", argumentsCode);
-            code.OpenLnF("def {0}({1}):", Name, param);
+            code.OpenLnF("def {0}({1}):", Name, param);            
             {
                 var g = GetGlobals();
                 if (!string.IsNullOrEmpty(g))
@@ -48,6 +55,7 @@ namespace Cs2Py.Source
             {
                 var g      = PyEmitStyle.xClone(style);
                 g.Brackets = ShowBracketsEnum.Never;
+                g.CurrentMethod = this;
                 statement.Emit(emiter, code, g);
             }
 

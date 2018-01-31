@@ -7,7 +7,9 @@ namespace Cs2Py.Source
     public struct PyQualifiedName : IEquatable<PyQualifiedName>
     {
         private          string _forceName;
+        [Obsolete]
         public const     string ClassnameParent  = "parent";
+        [Obsolete]
         public const     string ClassnameSelf    = "self";
         public const     char   TokenNsSeparator = '\\';
 
@@ -129,8 +131,18 @@ namespace Cs2Py.Source
         {
             if (style == null)
                 return EmitName;
+            
+
             if (this == style.CurrentClass)
-                return ClassnameSelf;
+            {
+                if (style.CurrentMethod == null) 
+                    return EmitName;
+                var alias = style.CurrentMethod.GetCurrentClassAlias();
+                if (alias != null)
+                    return alias;
+                return EmitName;
+            }
+
             if (style.CurrentNamespace == null)
                 return FullName;
             {

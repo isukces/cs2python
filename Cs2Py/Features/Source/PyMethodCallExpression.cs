@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cs2Py.Compilation;
 using Cs2Py.Emit;
@@ -87,7 +88,9 @@ namespace Cs2Py.Source
                 name   = to.GetPyCode(style) + "." + name;
             }
 
-            var code = string.Format(SkipBrackets ? "{0} {1}" : "{0}({1})", name, arguments);
+            // Arguments
+            var skipBrackets = CanSkipBrackets();
+            var code         = string.Format(skipBrackets ? "{0} {1}" : "{0}({1})", name, arguments);
             return code;
         }
 
@@ -100,6 +103,16 @@ namespace Cs2Py.Source
         public override string ToString()
         {
             return GetPyCode(new PyEmitStyle());
+        }
+
+        private bool CanSkipBrackets()
+        {
+            var h = OnSkipBracketRequest;
+            if (h == null)
+                return false;
+            var args = new OnSkipBracketRequestArgs();
+            h(this, args);
+            return args.CanSkipBrackets;
         }
 
         public MethodCallStyles CallType
@@ -147,12 +160,18 @@ namespace Cs2Py.Source
         /// </summary>
         public MethodTranslationInfo TranslationInfo { get; private set; }
 
-        public bool SkipBrackets { get; set; }
 
         private string _name = string.Empty;
 
         private PyQualifiedName _className;
 
         public const string ConstructorMethodName = "*";
+
+        public event Action<PyMethodCallExpression, OnSkipBracketRequestArgs> OnSkipBracketRequest;
+
+        public class OnSkipBracketRequestArgs
+        {
+            public bool CanSkipBrackets { get; set; }
+        }
     }
 }

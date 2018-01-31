@@ -1,5 +1,4 @@
 ﻿using System;
-using Cs2Py.Compilation;
 using Cs2Py.Source;
 
 namespace Cs2Py.Emit
@@ -32,7 +31,8 @@ namespace Cs2Py.Emit
                 Brackets                      = Brackets,
                 UseBracketsEvenIfNotNecessary = UseBracketsEvenIfNotNecessary,
                 CurrentNamespace              = CurrentNamespace,
-                CurrentClass                  = CurrentClass
+                CurrentClass                  = CurrentClass,
+                CurrentMethod                 = CurrentMethod
             };
             return myClone;
         }
@@ -60,5 +60,7 @@ namespace Cs2Py.Emit
         public PyQualifiedName CurrentClass { get; set; }
 
         public EmitStyleCompression Compression { get; set; }
+
+        public PyMethodDefinition CurrentMethod { get; set; }
     }
 }

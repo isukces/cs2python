@@ -14,15 +14,14 @@ namespace Cs2Py.Source
 
         public override string GetPyCode(PyEmitStyle style)
         {
-            return string.Format("{0}::{1}{2}",
+            return string.Format("{0}.{1}",
                 _className.NameForEmit(style),
-                IsConst ? "" : "$",
                 _fieldName);
         }
 
-        public void SetClassName(PyQualifiedName PyClassName, ClassTranslationInfo classTi)
+        public void SetClassName(PyQualifiedName pyClassName, ClassTranslationInfo classTi)
         {
-            _className = PyClassName;
+            _className = pyClassName;
             ClassTi    = classTi;
         }
 

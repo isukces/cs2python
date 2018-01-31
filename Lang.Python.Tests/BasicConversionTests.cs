@@ -456,5 +456,64 @@ class Codes:
             };
             CheckTranslation(cs, info);
         }
+        
+        [Fact]
+        public void T14_Should_convert_static_fields_and_consts()
+        {
+            var cs       = @"
+using System;
+using Lang.Python;
+
+namespace Demo01
+{
+    [IgnoreNamespaceAttribute]
+    public class ClassWithFieldsDemo
+    {
+        [PyName(""earth_gravity"")] 
+        public static double EarthGravity = 9.81;
+
+        public static double AnotherStatic = 12.44;
+
+        // public const double Sum = RoundedPi2 + RoundedPi4;
+        
+        [PyName(""rounded_pi_2"")] 
+        public const double RoundedPi2 = 3.14;
+
+        public const double RoundedPi4 = 3.1415;
+
+        public static void PrintAll()
+        {
+            Console.WriteLine(EarthGravity);
+            Console.WriteLine(AnotherStatic);
+            Console.WriteLine(RoundedPi2);
+            Console.WriteLine(RoundedPi4);
+            // Console.WriteLine(Sum);
+        }
+    }
+}
+";
+            var expected = @"
+class ClassWithFieldsDemo:
+    rounded_pi_2 = 3.14
+    RoundedPi4 = 3.1415
+    earth_gravity = 9.81
+    AnotherStatic = 12.44
+    @staticmethod
+    def PrintAll(cls):
+        print(cls.earth_gravity)
+        print(cls.AnotherStatic)
+        print(cls.rounded_pi_2)
+        print(cls.RoundedPi4)
+";
+            var info     = new Info
+            {
+                Compare = expected,
+                Ref     = new[]
+                {
+                    typeof(Enumerable).Assembly
+                }
+            };
+            CheckTranslation(cs, info);
+        }
     }
 }
