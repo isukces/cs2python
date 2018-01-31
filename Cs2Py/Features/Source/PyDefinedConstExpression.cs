@@ -23,7 +23,7 @@ namespace Cs2Py.Source
         public override IEnumerable<ICodeRequest> GetCodeRequests()
         {
             if (_moduleName != null)
-                yield return new ModuleCodeRequest(_moduleName, "defined const " + DefinedConstName);
+                yield return new DependsOnModuleCodeRequest(_moduleName, "defined const " + DefinedConstName);
         }
 
         public override string GetPyCode(PyEmitStyle style)

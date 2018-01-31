@@ -6,8 +6,6 @@ namespace Cs2Py.Source
 {
     public abstract class PyStatementBase : PySourceBase, IPyStatement
     {
-        #region Static Methods
-
         // Public Methods 
 
         public static IEnumerable<ICodeRequest> GetCodeRequests(params object[] x)
@@ -20,17 +18,12 @@ namespace Cs2Py.Source
             if (x == null)
                 return new ICodeRequest[0];
             var requests = from codeRelated in x.OfType<ICodeRelated>()
-                where codeRelated != null
                 let append = codeRelated.GetCodeRequests()
                 where append != null
                 select append;
             IEnumerable<ICodeRequest> result = new ICodeRequest[0];
             return requests.Aggregate(result, (current, request) => current.Concat(request));
         }
-
-        #endregion Static Methods
-
-        #region Methods
 
         // Public Methods 
 
@@ -91,7 +84,5 @@ namespace Cs2Py.Source
             writer.DecIndent();
 
         }
-
-        #endregion Methods
     }
 }

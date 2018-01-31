@@ -25,7 +25,7 @@ namespace Cs2Py.Source
         {
             var a = PyStatementBase.GetCodeRequests(TargetObject).ToList();
             if (IncludeModule != null)
-                a.Add(new ModuleCodeRequest(IncludeModule, string.Format("instance field {0}", this)));
+                a.Add(new DependsOnModuleCodeRequest(IncludeModule, string.Format("instance field {0}", this)));
             return a;
         }
         // Public Methods 

@@ -75,7 +75,7 @@ namespace Cs2Py.Compilation
 
                 {
                     var fi = new FileInfo(filename);
-                    if (fi.Directory != null) fi.Directory.Create();
+                    fi.Directory?.Create();
                     var codeStr = writer.GetCode();
                     var binary  = Encoding.UTF8.GetBytes(codeStr);
                     File.WriteAllBytes(fi.FullName, binary);
@@ -117,24 +117,20 @@ namespace Cs2Py.Compilation
                 if (BottomCode != null)
                     nsManager.Add(BottomCode.Statements);
                 if (nsManager.Container.Any())
-                {
                     if (nsManager.OnlyOneRootStatement)
                         foreach (var cl in nsManager.Container[0].Items)
                             cl.Emit(emiter, writer, style);
                     else
                         foreach (var ns in nsManager.Container)
                             EmitWithNamespace(ns.Name, emiter, writer, style, ns.Items);
-                }
-
-             
             }
         }
 
-        public PyClassDefinition FindOrCreateClass(PyQualifiedName PyClassName, PyQualifiedName baseClass)
+        public PyClassDefinition FindOrCreateClass(PyQualifiedName pyClassName, PyQualifiedName baseClass)
         {
-            var c = Classes.FirstOrDefault(i => PyClassName == i.Name);
+            var c = Classes.FirstOrDefault(i => pyClassName == i.Name);
             if (c != null) return c;
-            c = new PyClassDefinition(PyClassName, baseClass);
+            c = new PyClassDefinition(pyClassName, baseClass);
             Classes.Add(c);
             return c;
         }
@@ -197,14 +193,9 @@ namespace Cs2Py.Compilation
 
         private IEnumerable<IPyStatement> ConvertRequestedToCode()
         {
-            var result         = new List<IPyStatement>();
-            var alreadyDefined = new List<string>();
-            foreach (PyImportRequest item in RequiredFiles.Distinct())
+            var result = new List<IPyStatement>();
+            foreach (var item in RequiredFiles.Distinct())
             {
-                var code = item.GetPyCode(); //rozróżniam je po wygenerowanym kodzie
-                if (alreadyDefined.Contains(code))
-                    continue;
-                alreadyDefined.Add(code);
                 var req = new PyImportStatement(item.RelativeModulePath, item.Alias);
                 result.Add(req);
             }
@@ -249,19 +240,30 @@ namespace Cs2Py.Compilation
         /// </summary>
         public List<PyClassDefinition> Classes { get; } = new List<PyClassDefinition>();
 
-        /// <summary>
-        ///     Pliki dołączane do require; własność jest tylko do odczytu.
-        /// </summary>
-        public List<PyImportRequest> RequiredFiles { get; } = new List<PyImportRequest>();
+        public IEnumerable<PyImportModuleRequest> RequiredFiles => _requiredFiles.Distinct();
 
         /// <summary>
         ///     Własność jest tylko do odczytu.
         /// </summary>
         public List<KeyValuePair<string, IPyValue>> DefinedConsts { get; } =
             new List<KeyValuePair<string, IPyValue>>();
-        
+
         public List<PyClassMethodDefinition> Methods { get; set; } = new List<PyClassMethodDefinition>();
 
+        /// <summary>
+        ///     Pliki dołączane do require; własność jest tylko do odczytu.
+        /// </summary>
+        private readonly List<PyImportModuleRequest> _requiredFiles = new List<PyImportModuleRequest>();
+
         private string _topComments = "Generated with cs2py";
+
+        public string AddRequiredFile(string includePath, string suggestedAlias)
+        {
+            var current = _requiredFiles.FirstOrDefault(q => q.RelativeModulePath == includePath);
+            if (current != null)
+                return current.Alias;
+            _requiredFiles.Add(new PyImportModuleRequest(includePath, suggestedAlias));
+            return suggestedAlias;
+        }
     }
 }

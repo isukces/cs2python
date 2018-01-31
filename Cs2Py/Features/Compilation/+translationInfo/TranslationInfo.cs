@@ -96,8 +96,7 @@ namespace Cs2Py.Compilation
         {
             if (assembly == null)
                 throw new ArgumentNullException(nameof(assembly));
-            AssemblyTranslationInfo ati;
-            if (AssemblyTranslations.TryGetValue(assembly, out ati)) return ati;
+            if (AssemblyTranslations.TryGetValue(assembly, out var ati)) return ati;
             ati = AssemblyTranslations[assembly] = AssemblyTranslationInfo.FromAssembly(assembly, this);
             if (OnTranslationInfoCreated != null)
                 OnTranslationInfoCreated(this, new TranslationInfoCreatedEventArgs

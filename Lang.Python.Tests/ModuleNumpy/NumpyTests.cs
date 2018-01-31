@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using Lang.Python.Tensorflow;
+using Xunit;
 
 namespace Lang.Python.Tests.ModuleNumpy
 {
@@ -26,8 +27,8 @@ class Demo:
 ";
             CheckTranslation(WrapClass(cs, "Lang.Python.Numpy"), new Info {Compare = expected});
         }
-        
-        
+
+
         [Fact]
         public void T02_Should_convert_double_with_statement()
         {
@@ -52,11 +53,11 @@ class Demo:
             CheckTranslation(WrapClass(cs, "Lang.Python.Tensorflow", "System", "Lang.Python"), new Info
             {
                 Compare = expected,
-                Ref     = new [] { typeof(Lang.Python.Tensorflow.Graph).Assembly}
+                Ref     = new[] {typeof(Graph).Assembly}
             });
         }
-        
-        
+
+
         [Fact]
         public void T03_Should_convert_arange()
         {
@@ -87,9 +88,42 @@ class Demo:
             CheckTranslation(WrapClass(cs, "Lang.Python.Numpy", "System", "Lang.Python"), new Info
             {
                 Compare = expected,
-                Ref     = new [] { typeof(Lang.Python.Tensorflow.Graph).Assembly}
+                Ref     = new[] {typeof(Graph).Assembly}
             });
         }
 
+
+        [Fact]
+        public void T04_Should_import_numpy_module_with_np_alias()
+        {
+            const string cs = @"
+using Lang.Python.Numpy;
+using System;
+using Lang.Python;
+
+[assembly:ImportModuleAs(""numpy"",""np"")]
+namespace Foo {
+
+    [IgnoreNamespaceAttribute]
+    public class Demo{
+        
+        public static void ConvertArange()
+        {
+            var int1 = Np.ARange(5);           
+        }
+        
+    }
+}
+        ";
+
+            const string expected                  = @"
+import numpy as np
+class Demo:
+    @staticmethod
+    def ConvertArange(cls):
+        int1 = np.arange(5)
+";
+            CheckTranslation(cs, new Info {Compare = expected});
+        }
     }
 }

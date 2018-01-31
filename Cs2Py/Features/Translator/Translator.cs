@@ -9,7 +9,6 @@ using Cs2Py.CSharp;
 using Cs2Py.Sandbox;
 using Cs2Py.Source;
 using JetBrains.Annotations;
-using Lang.Python;
 
 namespace Cs2Py.Translator
 {
@@ -28,70 +27,19 @@ namespace Cs2Py.Translator
             Info   = translationState.Principles;
         }
 
-        private static void AppendCodeReq(PyCodeModuleName req, PyCodeModule currentModule)
+
+        private static string AppendImportModuleCodeRequest(PyCodeModuleName import, PyCodeModule targetModule,
+            IModuleAliasResolver                                             aliasResolver)
         {
-            if (req == currentModule.ModuleName)
-                return;
-            /*
-            if (req.Name == PyCodeModuleName.CS2PY_CONFIG_MODULE_NAME)
-            {
-                var pyModule = CurrentConfigModule();
-                req          = pyModule.Name;
-            }
-            */
-
-            /*
-            if (!string.IsNullOrEmpty(req.AssemblyInfo?.IncludePathConstOrVarName))
-            {
-                var isCurrentAssembly = Info.CurrentAssembly == req.AssemblyInfo.Assembly;
-                if (!isCurrentAssembly)
-                {
-                    var tmp = req.AssemblyInfo.IncludePathConstOrVarName;
-                    if (tmp.StartsWith("$"))
-                        throw new NotSupportedException();
-                    // leading slash is not necessary -> config is in global namespace
-                    // but full name is a key in dictionary
-                    var pyModule = CurrentConfigModule();
-                    if (pyModule.DefinedConsts.All(i => i.Key != tmp))
-                        if (Info.KnownConstsValues.TryGetValue(tmp, out var value))
-                        {
-                            if (!value.UseFixedValue)
-                            {
-                                var expression = PathUtil.MakePathValueRelatedToFile(value, Info);
-                                pyModule.DefinedConsts.Add(new KeyValuePair<string, IPyValue>(tmp, expression));
-                            }
-                            else
-                            {
-                                throw new NotImplementedException();
-                            }
-                        }
-                        else
-                        {
-                            
-                            Info.Log(MessageLevels.Error,
-                                string.Format("const {0} defined in {1} has no known value", tmp, pyModule.Name));
-                            pyModule.DefinedConsts.Add(
-                                new KeyValuePair<string, IPyValue>(tmp, new PyConstValue("UNKNOWN")));
-                        }
-                }
-            }
-*/
-
-            var includePath = req.GetImportPath(currentModule.ModuleName);
-            if (!string.IsNullOrEmpty(includePath))
-                currentModule.RequiredFiles.Add(new PyImportRequest(includePath));
+            // returns alias
+            if (import == targetModule.ModuleName)
+                return null;
+            var includePath = import.GetImportPath(targetModule.ModuleName);
+            if (string.IsNullOrEmpty(includePath)) return null;
+            var alias = aliasResolver.FindModuleAlias(import);
+            return targetModule.AddRequiredFile(includePath, alias);
         }
 
-        // Private Methods 
-
-        /*
-                static IPyStatement[] MkArray(IPyStatement x)
-                {
-                    return new IPyStatement[] { x };
-                }
-        */
-
-        // Public Methods 
 
         public void Translate(AssemblySandbox sandbox)
         {
@@ -134,16 +82,6 @@ namespace Cs2Py.Translator
             return result.ToArray();
         }
 
-        private PyCodeModule CurrentConfigModule()
-        {
-            var assemblyTranslationInfo = Info.GetOrMakeTranslationInfo(Info.CurrentAssembly);
-            var pyCodeModuleName        =
-                new PyCodeModuleName(assemblyTranslationInfo.ConfigModuleName, assemblyTranslationInfo.ConfigModuleName,
-                    false);
-            var pyModule = GetOrMakeModuleByName(pyCodeModuleName);
-            return pyModule;
-        }
-        // Private Methods 
 
         /// <summary>
         ///     Gets existing or creates code module for given name
@@ -249,14 +187,7 @@ namespace Cs2Py.Translator
                         .Where(q => q.FullName == fullname)
                         .Select(q => q.ClassDeclaration)
                         .OfType<IClassOrInterface>().ToArray();
-                var members   = srcs.SelectMany(i => i.Members).ToArray();
-                var fileNames = classTranslationInfo.Type.GetCustomAttributes<RequireOnceAttribute>()
-                    .Select(i => i.Filename).Distinct().ToArray();
-                if (fileNames.Any())
-                {
-                    var b = fileNames.Select(u => new PyImportRequest(u)).ToArray();
-                    pyModule.RequiredFiles.AddRange(b);
-                }
+                var members = srcs.SelectMany(i => i.Members).ToArray();
 
                 {
                     var constructors = members.OfType<ConstructorDeclaration>().ToArray();
@@ -293,44 +224,48 @@ namespace Cs2Py.Translator
                     pyModule.BottomCode.Statements.Add(new PyExpressionStatement(callMain));
                 }
             }
+            TranslateClass_AddModuleRequests(classTranslationInfo, pyModule);
+        }
 
+        private void TranslateClass_AddModuleRequests(ClassTranslationInfo classTranslationInfo, PyCodeModule pyModule)
+        {
+            var moduleCodeRequests = new List<DependsOnModuleCodeRequest>();
+            var codeRequests       = (pyModule as ICodeRelated).GetCodeRequests().ToArray();
             {
-                var moduleCodeRequests = new List<ModuleCodeRequest>();
-                var codeRequests       = (pyModule as ICodeRelated).GetCodeRequests().ToArray();
-                {
-                    var classCodeRequests = (from request in codeRequests.OfType<ClassCodeRequest>()
-                            select request.ClassName.FullName)
-                        .Distinct()
-                        .ToArray();
+                var classCodeRequests = (from request in codeRequests.OfType<ClassCodeRequest>()
+                        select request.ClassName.FullName)
+                    .Distinct()
+                    .ToArray();
 
-                    foreach (var req in classCodeRequests)
-                    {
-                        var m = Info.ClassTranslations.Values.Where(i => i.PyName.FullName == req).ToArray();
-                        if (m.Length != 1)
-                            throw new NotSupportedException();
-                        var mm = m[0];
-                        if (mm.DontIncludeModuleForClassMembers)
-                            continue;
-                        var includeModule = mm.IncludeModule;
-                        if (includeModule == null || mm.ModuleName == pyModule.ModuleName)
-                            continue;
-                        var h = new ModuleCodeRequest(includeModule, "class request: " + req);
-                        moduleCodeRequests.Add(h);
-                    }
-                }
+                foreach (var req in classCodeRequests)
                 {
-                    var moduleRequests = (from i in codeRequests.OfType<ModuleCodeRequest>()
-                        where i.ModuleName != null
-                        select i).Union(moduleCodeRequests).ToArray();
-                    var moduleNames = (from mReq in moduleRequests
-                        where mReq.ModuleName != pyModule.ModuleName
-                        let mName = mReq.ModuleName
-                        where mName != null
-                        select mName
-                    ).Distinct().ToArray();
-                    foreach (var i in moduleNames)
-                        AppendCodeReq(i, pyModule);
+                    var m = Info.ClassTranslations.Values.Where(i => i.PyName.FullName == req).ToArray();
+                    if (m.Length != 1)
+                        throw new NotSupportedException();
+                    var mm = m[0];
+                    if (mm.DontIncludeModuleForClassMembers)
+                        continue;
+                    var includeModule = mm.IncludeModule;
+                    if (includeModule == null || mm.ModuleName == pyModule.ModuleName)
+                        continue;
+                    var h = new DependsOnModuleCodeRequest(includeModule, "class request: " + req);
+                    moduleCodeRequests.Add(h);
                 }
+            }
+            {
+                // converts DependsOnModuleCodeRequest
+                var moduleRequests = (from i in codeRequests.OfType<DependsOnModuleCodeRequest>()
+                    where i.ModuleName != null
+                    select i).Concat(moduleCodeRequests).ToArray();
+                if (moduleRequests.Any())
+                    foreach (var mReq in moduleRequests)
+                    {
+                        var ati = Info.GetOrMakeTranslationInfo(classTranslationInfo.Type.Assembly);
+                        if (mReq.ModuleName == null || mReq.ModuleName == pyModule.ModuleName) continue;
+                        var usedAliasWhileImport = AppendImportModuleCodeRequest(mReq.ModuleName, pyModule, ati);
+                        mReq.UseAlias            = usedAliasWhileImport;
+                    }
+ 
             }
         }
 

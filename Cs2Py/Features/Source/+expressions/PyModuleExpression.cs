@@ -14,19 +14,20 @@ namespace Cs2Py.Source
 
         public override IEnumerable<ICodeRequest> GetCodeRequests()
         {
-            return new ICodeRequest[]
-            {
-                new ModuleCodeRequest(ModuleName, Why)
-            };
+            var cr            = new DependsOnModuleCodeRequest(ModuleName, Why);
+            cr.OnAliasChanged += request => UseAlias = request.UseAlias;
+            return new ICodeRequest[] {cr};
         }
-
 
         public override string GetPyCode(PyEmitStyle style)
         {
-            return ModuleName.Name;
+            if (string.IsNullOrEmpty(UseAlias))
+                return ModuleName.Name;
+            return UseAlias;
         }
 
         public PyCodeModuleName ModuleName { get; set; }
         public string           Why        { get; set; }
+        public string           UseAlias   { get; private set; }
     }
 }

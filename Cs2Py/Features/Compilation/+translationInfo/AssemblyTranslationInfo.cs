@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Cs2Py.Source;
 using Lang.Python;
 
 namespace Cs2Py.Compilation
 {
-    public class AssemblyTranslationInfo 
+    public class AssemblyTranslationInfo : IModuleAliasResolver
     {
         public static AssemblyTranslationInfo FromAssembly(Assembly assembly, TranslationInfo translationInfo)
         {
@@ -41,6 +42,21 @@ namespace Cs2Py.Compilation
                     var configModule = assembly.GetCustomAttribute<ConfigModuleAttribute>();
                     if (configModule != null)
                         ati.ConfigModuleName = configModule.Name;
+                }
+                {
+                    var ats = assembly.GetCustomAttributes<ImportModuleAsAttribute>();
+                    foreach (var at in ats)
+                    {
+                        if (ati.ModuleAliases.TryGetValue(at.ModuleName, out var existingAlias))
+                        {
+                            if (existingAlias != at.Alias)
+                                throw new Exception(
+                                    $"Duplicate module alias for {at.ModuleName}: {existingAlias} or {at.Alias}?");
+                            continue;
+                        }
+
+                        ati.ModuleAliases[at.ModuleName] = at.Alias;
+                    }
                 }
             }
             ati.LibraryName             = LibNameFromAssembly(assembly);
@@ -109,6 +125,13 @@ namespace Cs2Py.Compilation
             return tmp;
         }
 
+        public string FindModuleAlias(PyCodeModuleName moduleName)
+        {
+            // implements IModuleAliasResolver method
+            ModuleAliases.TryGetValue(moduleName.Name, out var alias);
+            return alias;
+        }
+
         // Private Methods 
         public override string ToString()
         {
@@ -158,6 +181,8 @@ namespace Cs2Py.Compilation
             get => _configModuleName;
             private set => _configModuleName = (value ?? string.Empty).Trim();
         }
+
+        public Dictionary<string, string> ModuleAliases { get; } = new Dictionary<string, string>();
 
         private string _configModuleName = "cs2Py";
     }

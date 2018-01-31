@@ -14,8 +14,11 @@ namespace Demo01
         /// <returns>softmax_linear: Output tensor with the computed logits</returns>
         public static object inference(Tensor<double> images, int hidden1Units, int hidden2Units)
         {
+            // ReSharper disable once LocalVariableHidesMember
             const int NUM_CLASSES  = 10;
+            // ReSharper disable once LocalVariableHidesMember
             const int IMAGE_SIZE   = 28;
+            // ReSharper disable once LocalVariableHidesMember
             const int IMAGE_PIXELS = IMAGE_SIZE * IMAGE_SIZE;
             // Hidden 1
             Tensor<double> hidden1, hidden2;
