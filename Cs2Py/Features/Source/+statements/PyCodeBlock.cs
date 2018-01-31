@@ -73,13 +73,7 @@ namespace Cs2Py.Source
                     brack = true;
 
             var iStyle = PyEmitStyle.xClone(style, ShowBracketsEnum.Never);
-            if (!brack && bracketStyle != ShowBracketsEnum.Never && Statements.Count == 1)
-            {
-                var tmp = Statements[0];
-                var gf  = tmp.GetStatementEmitInfo(iStyle);
-                if (gf != StatementEmitInfo.NormalSingleStatement)
-                    brack = true;
-            }
+             
 
             if (brack)
                 writer.OpenLn("{");

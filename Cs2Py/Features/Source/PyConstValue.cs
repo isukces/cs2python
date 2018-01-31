@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
+using Cs2Py.CSharp;
 using Cs2Py.Emit;
-using Lang.Python;
 
 namespace Cs2Py.Source
 {
@@ -14,7 +15,7 @@ namespace Cs2Py.Source
         /// </summary>
         public PyConstValue(object value)
         {
-            Value = value;           
+            Value = value;
         }
 
         /// <summary>
@@ -26,6 +27,28 @@ namespace Cs2Py.Source
         {
             Value   = value;
             UseGlue = useGlue;
+        }
+
+        public static IPyValue DefaultForType(LangType type)
+        {
+            return DefaultForType(type.DotnetType);
+        }
+
+        public static IPyValue DefaultForType(Type type)
+        {
+            if (type == typeof(double)) return new PyConstValue(default(double));
+            if (type == typeof(float)) return new PyConstValue(default(float));
+            if (type == typeof(decimal)) return new PyConstValue(default(decimal));
+            if (type == typeof(int)) return new PyConstValue(default(int));
+            if (type == typeof(long)) return new PyConstValue(default(long));
+            if (type == typeof(short)) return new PyConstValue(default(short));
+            if (type == typeof(sbyte)) return new PyConstValue(default(sbyte));
+            if (type == typeof(byte)) return new PyConstValue(default(byte));
+            if (type == typeof(ushort)) return new PyConstValue(default(ushort));
+            if (type == typeof(uint)) return new PyConstValue(default(uint));
+            if (type == typeof(ulong)) return new PyConstValue(default(ulong));
+            if (type == typeof(string)) return new PyConstValue(default(string));
+            throw new NotImplementedException(type.ToString());
         }
         // Public Methods 
 
@@ -47,6 +70,14 @@ namespace Cs2Py.Source
             return "'" + x.Replace("\\", "\\\\").Replace("'", "\\'") + "'";
         }
 
+        private static string FixDecimal(string x)
+        {
+            if (x.Contains(".")) return x;
+            if (x.Contains("e"))
+                return "float(" + x + ")";
+            return x + ".";
+        }
+
         // Public Methods 
 
         public override IEnumerable<ICodeRequest> GetCodeRequests()
@@ -57,16 +88,44 @@ namespace Cs2Py.Source
         public override string GetPyCode(PyEmitStyle style)
         {
             var b = style != null && style.Compression != EmitStyleCompression.Beauty;
-            PyCodeValue a = PyValues.ToPyCodeValue(Value, b);
-            switch (a.Kind)
+
+            //var a = PyValues.ToPyCodeValue(Value, b);
+            switch (Value)
             {
-                case PyCodeValue.Kinds.Null:
-                    return "None";
+                case null: return "None";
+                case int _:
+                case long _:
+                case short _:
+                case sbyte _:
+                    var longValue = Convert.ToInt64(Value);
+                    return longValue.ToString(CultureInfo.InvariantCulture);
+                case uint _:
+                case ulong _:
+                case ushort _:
+                case byte _:
+                    var ulongValue = Convert.ToUInt64(Value);
+                    return ulongValue.ToString(CultureInfo.InvariantCulture);
+                case string stringValue:
+                    return EscapeSingleQuote(stringValue);
+                case bool boolValue:
+                    return boolValue ? "True" : "False";
+                case decimal decimalValue:
+                    return FixDecimal(decimalValue.ToString(CultureInfo.InvariantCulture));
+                case float floatValue:
+                    return FixDecimal(floatValue.ToString(CultureInfo.InvariantCulture));
+                case double doubleValue:
+                    return FixDecimal(doubleValue.ToString(CultureInfo.InvariantCulture));
                 default:
-                    return a.PyValue;
+                {
+                    var t = Value.GetType();
+                    if (t.IsEnum)
+                    {
+                        return EscapeSingleQuote(Value.ToString()); 
+                    }
+                    throw new NotImplementedException(Value.GetType().ToString());
+                }
             }
         }
-
 
         /// <summary>
         /// </summary>

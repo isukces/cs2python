@@ -20,7 +20,7 @@ import numpy
 class Demo:
     @staticmethod
     def CreateNumpyArrays(cls):
-        tmp = numpy.array([1, 2, 3], order='C')
+        tmp = numpy.array([1., 2, 3], order='C')
     
 
 

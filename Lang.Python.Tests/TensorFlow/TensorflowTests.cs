@@ -44,7 +44,7 @@ class Demo:
     def inferenceb(cls, images, hidden1Units):
         IMAGE_PIXELS = 23
         with tensorflow.name_scope('scopeName') as scope:
-            weights = tensorflow.Variable(tensorflow.truncated_normal([IMAGE_PIXELS, hidden1Units], stddev=1 / math.sqrt(IMAGE_PIXELS)), name='weights')
+            weights = tensorflow.Variable(tensorflow.truncated_normal([IMAGE_PIXELS, hidden1Units], stddev=1. / math.sqrt(IMAGE_PIXELS)), name='weights')
             biases = tensorflow.Variable(tensorflow.zeros([hidden1Units]), name='biases')
             hidden1 = tensorflow.nn.relu(tensorflow.matmul(images, weights) + biases)
     
@@ -115,15 +115,15 @@ class Demo:
         IMAGE_SIZE = 28
         IMAGE_PIXELS = IMAGE_SIZE * IMAGE_SIZE
         with tensorflow.name_scope('hidden1') as scope:
-            weights = tensorflow.Variable(tensorflow.truncated_normal([IMAGE_PIXELS, hidden1Units], stddev=1 / math.sqrt(IMAGE_PIXELS)), name='weights')
+            weights = tensorflow.Variable(tensorflow.truncated_normal([IMAGE_PIXELS, hidden1Units], stddev=1. / math.sqrt(IMAGE_PIXELS)), name='weights')
             biases = tensorflow.Variable(tensorflow.zeros([hidden1Units]), name='biases')
             hidden1 = tensorflow.nn.relu(tensorflow.matmul(images, weights) + biases)
         with tensorflow.name_scope('hidden2') as scope:
-            weights = tensorflow.Variable(tensorflow.truncated_normal([hidden1Units, hidden2Units], stddev=1 / math.sqrt(hidden1Units)), name='weights')
+            weights = tensorflow.Variable(tensorflow.truncated_normal([hidden1Units, hidden2Units], stddev=1. / math.sqrt(hidden1Units)), name='weights')
             biases = tensorflow.Variable(tensorflow.zeros([hidden2Units]), name='biases')
             hidden2 = tensorflow.nn.relu(tensorflow.matmul(hidden1, weights) + biases)
         with tensorflow.name_scope('softmax_linear') as scope:
-            weights = tensorflow.Variable(tensorflow.truncated_normal([hidden2Units, NUM_CLASSES], stddev=1 / math.sqrt(hidden2Units)), name='weights')
+            weights = tensorflow.Variable(tensorflow.truncated_normal([hidden2Units, NUM_CLASSES], stddev=1. / math.sqrt(hidden2Units)), name='weights')
             biases = tensorflow.Variable(tensorflow.zeros([NUM_CLASSES]), name='biases')
             logits = tensorflow.matmul(hidden2, weights) + biases
             return logits

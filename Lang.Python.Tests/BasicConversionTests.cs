@@ -114,6 +114,7 @@ namespace Foo {
 Generated with cs2py
 '''
 class Demo:
+    someField = 0
 
 ";
             CheckTranslation(cs, new Info {Compare = expected});
@@ -475,6 +476,69 @@ namespace Demo01
 
         public static double AnotherStatic = 12.44;
 
+        public const double Sum = 3 + 4.0 /2;
+        
+        [PyName(""rounded_pi_2"")] 
+        public const double RoundedPi2 = 3.14;
+
+        public const double RoundedPi4 = 3.1415;
+
+        public static void PrintAll()
+        {
+            Console.WriteLine(EarthGravity);
+            Console.WriteLine(AnotherStatic);
+            Console.WriteLine(RoundedPi2);
+            Console.WriteLine(RoundedPi4);
+        }
+    }
+}
+";
+            var expected = @"
+
+class ClassWithFieldsDemo:
+    Sum = 3 + 4. / 2
+    rounded_pi_2 = 3.14
+    RoundedPi4 = 3.1415
+    earth_gravity = 9.81
+    AnotherStatic = 12.44
+    @staticmethod
+    def PrintAll(cls):
+        print(cls.earth_gravity)
+        print(cls.AnotherStatic)
+        print(cls.rounded_pi_2)
+        print(cls.RoundedPi4)
+    
+
+";
+            var info     = new Info
+            {
+                Compare = expected,
+                Ref     = new[]
+                {
+                    typeof(Enumerable).Assembly
+                }
+            };
+            CheckTranslation(cs, info);
+
+        }
+        
+        [Fact]
+        public void T15_Should_throw_exception_when_illegal_field_initialization()
+        {
+            var cs       = @"
+using System;
+using Lang.Python;
+
+namespace Demo01
+{
+    [IgnoreNamespaceAttribute]
+    public class ClassWithFieldsDemo
+    {
+        [PyName(""earth_gravity"")] 
+        public static double EarthGravity = 9.81;
+
+        public static double AnotherStatic = 12.44;
+
         public const double Sum = RoundedPi2 + RoundedPi4;
         
         [PyName(""rounded_pi_2"")] 
@@ -505,6 +569,69 @@ namespace Demo01
             {
                 CheckTranslation(cs, info);
             });
+
+        }
+        
+        
+        [Fact]
+        public void T16_Should_convert_uninitialised_static_fields()
+        {
+            var cs       = @"
+using System;
+using Lang.Python;
+
+namespace Demo01
+{
+    [IgnoreNamespaceAttribute]
+    public class ClassWithFieldsDemo
+    {
+        public static double f_double;
+        public static float f_float;
+        public static decimal f_decimal;
+        public static int f_int;
+        public static long f_long;
+        public static short f_short;
+        public static sbyte f_sbyte;
+        public static byte f_byte;
+        public static ushort f_ushort;
+        public static uint f_uint;
+        public static ulong f_ulong;
+        public static string f_string;
+
+        public static void PrintAll()
+        {
+            Console.WriteLine(f_double);
+        }
+    }
+}
+";
+            var expected = @"
+class ClassWithFieldsDemo:
+    f_double = 0.
+    f_float = 0.
+    f_decimal = 0.
+    f_int = 0
+    f_long = 0
+    f_short = 0
+    f_sbyte = 0
+    f_byte = 0
+    f_ushort = 0
+    f_uint = 0
+    f_ulong = 0
+    f_string = None
+    @staticmethod
+    def PrintAll(cls):
+        print(cls.f_double)    
+";
+            var info     = new Info
+            {
+                Compare = expected,
+                Ref     = new[]
+                {
+                    typeof(Enumerable).Assembly
+                }
+            };
+            CheckTranslation(cs, info);
 
         }
     }

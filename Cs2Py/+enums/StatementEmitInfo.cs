@@ -3,7 +3,6 @@
     public enum StatementEmitInfo
     {
         NormalSingleStatement,
-        Empty,
-        ManyItemsOrPlainHtml
+        Empty
     }
 }

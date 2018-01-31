@@ -31,12 +31,24 @@ namespace Cs2Py.Compilation
                     return typeof(decimal);
                 case SpecialType.System_Int16:
                     return typeof(short);
+                case SpecialType.System_UInt16:
+                    return typeof(ushort);
                 case SpecialType.System_Int32:
                     return typeof(int);
                 case SpecialType.System_Int64:
                     return typeof(long);
+                case SpecialType.System_UInt32:
+                    return typeof(uint);
+                case SpecialType.System_UInt64:
+                    return typeof(ulong);
+                case SpecialType.System_Single:
+                    return typeof(Single);
                 case SpecialType.System_Object:
                     return typeof(object);
+                case SpecialType.System_SByte:
+                    return typeof(sbyte);
+                case SpecialType.System_Byte:
+                    return typeof(byte);
                 case SpecialType.System_Boolean:
                     return typeof(bool);
                 case SpecialType.System_Char:
@@ -52,7 +64,7 @@ namespace Cs2Py.Compilation
                 case SpecialType.None:
                     return Resolve_None(type);
                 default:
-                    throw new NotSupportedException(type.ToString());
+                    throw new NotSupportedException("SpecialType." + type.SpecialType);
             }
         }
 

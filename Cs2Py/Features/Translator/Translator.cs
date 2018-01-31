@@ -360,7 +360,7 @@ namespace Cs2Py.Translator
                     case FieldTranslationDestionations.NormalField:
                     case FieldTranslationDestionations.ClassConst:
                     {
-                        var def = new PyClassFieldDefinition();
+                        var def = new PyClassFieldDefinition(fti.ScriptName, field.Type.DotnetType);
                         var cti = _state.Principles.GetTi(_state.Principles.CurrentType, true);
                         if (cti.IsArray)
                             continue;
@@ -370,8 +370,7 @@ namespace Cs2Py.Translator
 
                         def.IsConst =
                             fti.Destination ==
-                            FieldTranslationDestionations.ClassConst; // field.Modifiers.Has("const");
-                        def.Name = fti.ScriptName;
+                            FieldTranslationDestionations.ClassConst; // field.Modifiers.Has("const");                      
 
                         def.IsStatic = def.IsConst || field.Modifiers.Has("static");
                         if (field.Modifiers.Has("public"))
@@ -422,7 +421,7 @@ namespace Cs2Py.Translator
             CsharpPropertyDeclaration               propertyDeclaration)
         {
             var pi  = _state.Principles.CurrentType.GetProperty(propertyDeclaration.PropertyName);
-            var pti = PropertyTranslationInfo.FromPropertyInfo(pi);
+            var pti = PropertyTranslationInfo.FromPropertyInfo(pi);            
             if (pti.GetSetByMethod)
             {
                 CsharpPropertyDeclarationAccessor accessor;
@@ -442,9 +441,8 @@ namespace Cs2Py.Translator
             }
             else
             {
-                pyClassDefinition.Fields.Add(new PyClassFieldDefinition
+                pyClassDefinition.Fields.Add(new PyClassFieldDefinition(pti.FieldScriptName, propertyDeclaration.Type.DotnetType)
                 {
-                    Name     = pti.FieldScriptName,
                     IsStatic = pti.IsStatic
                 });
             }
