@@ -6,7 +6,7 @@ namespace Lang.Python.Numpy
 {
     [PyModule("numpy", true)]
     [ExportAsPyModule]
-    public class Np
+    public partial class Np
     {
         [DirectCall("arange")]
         public static List<int> ARange(int stop)
@@ -71,17 +71,23 @@ namespace Lang.Python.Numpy
             return NdArray.Make(obj, copy, order);
         }
 
-        [DirectCall("cos")]
-        public static List<double> Cos(List<double> x)
+        [DirectCall("linSpace")]
+        public NdArray<double> LinSpace(
+            double start,
+            double stop,
+            int num      = 50,
+            bool   endpoint = true
+            /* , retstep=False, dtype=None */)
         {
-            return x.MapToList(Math.Cos);
+            var delta = (start - stop) / (endpoint ? num - 1 : num);
+            var array = new double[num];
+            for (int i = 0; i < num; i++)
+                array[i] = start + i * delta;
+            if (endpoint)
+                array[num - 1] = stop;
+            return Array(array);
         }
-
-        [DirectCall("sin")]
-        public static List<double> Sin(List<double> x)
-        {
-            return x.MapToList(Math.Sin);
-        }
+ 
 
         public static Type Int32 => typeof(int);
     }

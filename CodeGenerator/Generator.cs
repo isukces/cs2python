@@ -1,11 +1,9 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using isukces.code;
-using isukces.code.CodeWrite;
 
 namespace CodeGenerator
 {
-    internal class Generator
+    internal class Generator : BaseGenerator
     {
         private static void DefaultNotSupportedException(CSCodeFormatter c)
         {
@@ -13,11 +11,6 @@ namespace CodeGenerator
             c.IncIndent();
             c.Writeln("throw new NotSupportedException();");
             c.DecIndent();
-        }
-
-        private static string FirstLower(string x)
-        {
-            return x.Substring(0, 1).ToLower() + x.Substring(1);
         }
 
 
@@ -54,15 +47,15 @@ namespace CodeGenerator
         public void GenerateAll()
         {
             GenerateBinaryOperators();
+            GenerateNumpyFunctions();
         }
 
         private void GenerateBinaryOperators()
         {
-            var file    = new CsFile();
+            var file    = CreateFile();
             var subDir  = "Helpers";
             var cl      = file.GetOrCreateClass(Namespace + "." + subDir, "ValueHelper");
             cl.IsStatic = true;
-            file.AddImportNamespace("System");
 
             void Make(string name, string op)
             {
@@ -110,17 +103,15 @@ namespace CodeGenerator
             Make("Sub", "-");
             Make("Mul", "*");
             Make("Div", "/");
-            Save(file, subDir, cl);
+            Save(file, cl, "Cs2Py", "Features", subDir);
         }
 
-        private void Save(CsFile file, string subDir, CsClass cl)
+        private void GenerateNumpyFunctions()
         {
-            var shortName = string.Format("{0}.Auto.cs", cl.Name);
-            var fileName  = Path.Combine(BasePath.FullName, "Cs2Py", "Features", subDir, shortName);
-            file.SaveIfDifferent(fileName);
+            var a = new NumpyGenerator {BasePath = BasePath};
+            a.Generate();
         }
 
-        public DirectoryInfo BasePath  { get; set; }
-        public string        Namespace { get; set; }
+        public string Namespace { get; set; }
     }
 }
