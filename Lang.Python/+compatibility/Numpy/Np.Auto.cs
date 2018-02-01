@@ -67,6 +67,366 @@ namespace Lang.Python.Numpy
             return x.MapToList(PyMath.ACosh);
         }
 
+        [ DirectCall("array") ]
+        public static NdArray1DInt Array(IEnumerable<int> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray1DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray1DDouble Array(IEnumerable<double> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray1DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray1DComplex Array(IEnumerable<Complex> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray1DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray2DInt Array(IEnumerable<IEnumerable<int>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray2DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray2DDouble Array(IEnumerable<IEnumerable<double>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray2DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray2DComplex Array(IEnumerable<IEnumerable<Complex>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray2DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray3DInt Array(IEnumerable<IEnumerable<IEnumerable<int>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray3DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray3DDouble Array(IEnumerable<IEnumerable<IEnumerable<double>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray3DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray3DComplex Array(IEnumerable<IEnumerable<IEnumerable<Complex>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray3DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray4DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray4DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray4DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray4DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray4DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray4DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray5DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray5DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray5DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray5DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray5DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray5DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray6DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray6DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray6DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray6DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray6DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray6DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray7DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray7DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray7DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray7DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray7DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray7DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray8DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray8DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray8DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray8DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray8DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray8DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray9DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray9DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray9DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray9DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray9DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray9DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray10DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray10DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray10DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray10DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray10DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray10DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray11DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray11DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray11DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray11DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray11DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray11DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray12DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray12DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray12DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray12DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray12DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray12DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray13DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray13DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray13DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray13DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray13DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray13DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray14DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray14DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray14DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray14DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray14DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray14DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray15DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray15DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray15DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray15DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray15DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray15DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray16DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray16DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray16DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray16DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray16DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray16DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray17DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray17DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray17DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray17DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray17DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray17DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray18DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray18DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray18DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray18DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray18DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray18DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray19DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray19DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray19DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray19DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray19DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray19DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray20DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray20DInt(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray20DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray20DDouble(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray20DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray20DComplex(obj, copy, order);
+        }
+
         /// <summary>
         /// Trigonometric inverse sine, element-wise
         /// </summary>

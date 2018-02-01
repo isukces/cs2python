@@ -4,6 +4,6 @@
     <TargetFramework>net462</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="isukces.code" Version="1.0.18019.32" />
+    <PackageReference Include="isukces.code" Version="1.0.18032.33" />
   </ItemGroup>
 </Project>

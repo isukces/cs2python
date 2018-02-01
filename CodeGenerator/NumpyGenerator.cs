@@ -38,7 +38,7 @@ rad2deg(x, /[, out, where, casting, order, ...])	Convert angles from radians to 
             yield return new F("Math.Asin", "arcsin").WithDescription("Trigonometric inverse sine, element-wise");
             yield return new F("Math.Acos", "arccos").WithDescription("Trigonometric inverse cosine, element-wise");
             yield return new F("Math.Atan", "arctan").WithDescription("Trigonometric inverse tangent, element-wise");
-            
+
             /*
              
 Hyperbolic functions
@@ -49,15 +49,14 @@ arcsinh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic sine element
 arccosh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic cosine, element-wise.
 arctanh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic tangent element-wise.* 
              */
-            yield return new F("Math."+nameof(Math.Sinh)).WithDescription("Hyperbolic sine, element-wise");
-            yield return new F("Math."+nameof(Math.Cosh)).WithDescription("Hyperbolic cosine, element-wise");
-            yield return new F("Math."+nameof(Math.Tanh)).WithDescription("Hyperbolic tangent, element-wise");
-            
-            
+            yield return new F("Math." + nameof(Math.Sinh)).WithDescription("Hyperbolic sine, element-wise");
+            yield return new F("Math." + nameof(Math.Cosh)).WithDescription("Hyperbolic cosine, element-wise");
+            yield return new F("Math." + nameof(Math.Tanh)).WithDescription("Hyperbolic tangent, element-wise");
+
             yield return new F("PyMath.ASinh", "arcsinh").WithDescription("Inverse hyperbolic sine, element-wise");
             yield return new F("PyMath.ACosh", "arccosh").WithDescription("Inverse hyperbolic cosine, element-wise");
             yield return new F("PyMath.ATanh", "arctanh").WithDescription("Inverse hyperbolic tangent, element-wise");
-            
+
             // yield return new F("Math.Atan2", "arctan2");
         }
 
@@ -79,7 +78,8 @@ arctanh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic tangent elem
             }
         }
 
-        private static void A2(CsClass          cl, string dotnetName, string pyName, string firstVar, string secondVar,
+        private static void A2(CsClass              cl, string dotnetName, string pyName, string firstVar,
+            string                                  secondVar,
             Action<CSCodeFormatter, string, string> code)
         {
             if (pyName == null)
@@ -166,6 +166,7 @@ arctanh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic tangent elem
             return t == "NdArray<double>";
         }
 
+
         public void Generate()
         {
             var file = CreateFile();
@@ -178,9 +179,53 @@ arctanh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic tangent elem
             Add_Degrees(cl);
             Add_Radians(cl);
             Add_Hypot(cl);
+            Add_ArrayMethods(cl);
             var fileName = Path.Combine(BasePath.FullName, "Lang.Python", "+compatibility", "Numpy", cl.GetShortName());
             file.SaveIfDifferent(fileName);
         }
+
+        private void Add_ArrayMethods(CsClass cl)
+        {
+            /* [DirectCall("array")]
+            public static NdArray2D<int> Array(
+                IEnumerable<IEnumerable<int>> obj,
+                bool             copy  = true,
+                NumpyArrayOrder  order = NumpyArrayOrder.K)
+            {
+                return NdArray.Make(obj, copy, order);
+            }*/
+
+            var f = CreateFile();
+            f.AddImportNamespace("System.Collections.Generic");
+            for (var dimension = 1; dimension <= MaxDim; dimension++)
+            {
+                var cl2 = f.GetOrCreateClass("Lang.Python.Numpy", $"NdArray{dimension}D<T>");
+                {
+                    cl2.BaseClass = "NdArray<T>";
+                    var co        = cl2.AddConstructor();
+                    NdArrayLevel2Generator.WithAddParams(co, "T", dimension);
+                }
+
+                foreach (var wrappedType in NumpyArrayWrappedTypes)
+                {
+                    var classLevel2 = NdArrayLevel2Generator.Generate(f, dimension, wrappedType);
+                    var resultType = classLevel2.Name;
+                    var m          = cl.AddMethod("Array", resultType)
+                        .WithDirectCall("array")
+                        .WithStatic()
+                        .WithBody($"return new {resultType}(obj, copy, order);");
+                    NdArrayLevel2Generator.WithAddParams(m, wrappedType, dimension);
+                }
+            }
+
+            var fileName = Path.Combine(BasePath.FullName, "Lang.Python", "+compatibility", "Numpy", "NdArray.Auto.cs");
+            f.SaveIfDifferent(fileName);
+        }
+
+
+        private static readonly string[] NumpyArrayWrappedTypes = "int,double,Complex".Split(',');
+
+        public const int MaxDim = 20;
 
         internal struct F
         {

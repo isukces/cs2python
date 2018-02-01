@@ -44,35 +44,8 @@ namespace Lang.Python.Numpy
             return result;
         }
 
-        [DirectCall("array")]
-        public static NdArray<int> Array(
-            IEnumerable<int> obj,
-            bool             copy  = true,
-            NumpyArrayOrder  order = NumpyArrayOrder.K)
-        {
-            return NdArray.Make(obj, copy, order);
-        }
-
-        [DirectCall("array")]
-        public static NdArray<double> Array(
-            IEnumerable<double> obj,
-            bool                copy  = true,
-            NumpyArrayOrder     order = NumpyArrayOrder.K)
-        {
-            return NdArray.Make(obj, copy, order);
-        }
-
-        [DirectCall("array")]
-        public static NdArray<Complex> Array(
-            IEnumerable<Complex> obj,
-            bool                 copy  = true,
-            NumpyArrayOrder      order = NumpyArrayOrder.K)
-        {
-            return NdArray.Make(obj, copy, order);
-        }
-
         [DirectCall("linSpace")]
-        public NdArray<double> LinSpace(
+        public NdArray1D<double> LinSpace(
             double start,
             double stop,
             int num      = 50,
@@ -80,7 +53,7 @@ namespace Lang.Python.Numpy
             /* , retstep=False, dtype=None */)
         {
             var delta = (start - stop) / (endpoint ? num - 1 : num);
-            var array = new double[num];
+            double[] array = new double[num];
             for (int i = 0; i < num; i++)
                 array[i] = start + i * delta;
             if (endpoint)

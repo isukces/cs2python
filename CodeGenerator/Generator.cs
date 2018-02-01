@@ -47,7 +47,8 @@ namespace CodeGenerator
         public void GenerateAll()
         {
             GenerateBinaryOperators();
-            GenerateNumpyFunctions();
+            new NumpyGenerator {BasePath = BasePath}.Generate();            
+            // new NumpyGenerator {BasePath = BasePath}.Generate();
         }
 
         private void GenerateBinaryOperators()
@@ -106,11 +107,7 @@ namespace CodeGenerator
             Save(file, cl, "Cs2Py", "Features", subDir);
         }
 
-        private void GenerateNumpyFunctions()
-        {
-            var a = new NumpyGenerator {BasePath = BasePath};
-            a.Generate();
-        }
+       
 
         public string Namespace { get; set; }
     }
