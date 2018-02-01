@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Lang.Python.Numpy
+﻿namespace Lang.Python.Numpy
 {
     /*
     public enum NumpyDataType
@@ -17,7 +15,7 @@ namespace Lang.Python.Numpy
     /// </summary>
     [PyName("numpy.ndarray")]
     public class NdArray
-    {       
+    {
     }
 
     public abstract class NdArray<T> : NdArray
@@ -29,9 +27,6 @@ namespace Lang.Python.Numpy
         }
         */
 
-        protected NdArray()
-        {
-        }
+        protected T[] InternalData;
     }
-     
 }

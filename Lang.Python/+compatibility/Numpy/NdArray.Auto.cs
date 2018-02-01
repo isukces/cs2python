@@ -57,6 +57,21 @@ namespace Lang.Python.Numpy
 
     }
 
+    public class NdArray1DBool : NdArray1D<bool>
+    {
+        public NdArray1DBool(IEnumerable<bool> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     public class NdArray2D<T> : NdArray<T>
     {
         public NdArray2D(IEnumerable<IEnumerable<T>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
@@ -104,6 +119,21 @@ namespace Lang.Python.Numpy
 
         [ DirectCall("mean") ]
         public Complex Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public class NdArray2DBool : NdArray2D<bool>
+    {
+        public NdArray2DBool(IEnumerable<IEnumerable<bool>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
         {
             throw new NotImplementedException();
         }
@@ -163,6 +193,21 @@ namespace Lang.Python.Numpy
 
     }
 
+    public class NdArray3DBool : NdArray3D<bool>
+    {
+        public NdArray3DBool(IEnumerable<IEnumerable<IEnumerable<bool>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     public class NdArray4D<T> : NdArray<T>
     {
         public NdArray4D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
@@ -210,6 +255,21 @@ namespace Lang.Python.Numpy
 
         [ DirectCall("mean") ]
         public Complex Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public class NdArray4DBool : NdArray4D<bool>
+    {
+        public NdArray4DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
         {
             throw new NotImplementedException();
         }
@@ -269,6 +329,21 @@ namespace Lang.Python.Numpy
 
     }
 
+    public class NdArray5DBool : NdArray5D<bool>
+    {
+        public NdArray5DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     public class NdArray6D<T> : NdArray<T>
     {
         public NdArray6D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
@@ -316,6 +391,21 @@ namespace Lang.Python.Numpy
 
         [ DirectCall("mean") ]
         public Complex Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public class NdArray6DBool : NdArray6D<bool>
+    {
+        public NdArray6DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
         {
             throw new NotImplementedException();
         }
@@ -375,6 +465,21 @@ namespace Lang.Python.Numpy
 
     }
 
+    public class NdArray7DBool : NdArray7D<bool>
+    {
+        public NdArray7DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     public class NdArray8D<T> : NdArray<T>
     {
         public NdArray8D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
@@ -422,6 +527,21 @@ namespace Lang.Python.Numpy
 
         [ DirectCall("mean") ]
         public Complex Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public class NdArray8DBool : NdArray8D<bool>
+    {
+        public NdArray8DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
         {
             throw new NotImplementedException();
         }
@@ -481,6 +601,21 @@ namespace Lang.Python.Numpy
 
     }
 
+    public class NdArray9DBool : NdArray9D<bool>
+    {
+        public NdArray9DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     public class NdArray10D<T> : NdArray<T>
     {
         public NdArray10D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
@@ -528,6 +663,21 @@ namespace Lang.Python.Numpy
 
         [ DirectCall("mean") ]
         public Complex Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public class NdArray10DBool : NdArray10D<bool>
+    {
+        public NdArray10DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
         {
             throw new NotImplementedException();
         }
@@ -587,6 +737,21 @@ namespace Lang.Python.Numpy
 
     }
 
+    public class NdArray11DBool : NdArray11D<bool>
+    {
+        public NdArray11DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     public class NdArray12D<T> : NdArray<T>
     {
         public NdArray12D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
@@ -634,6 +799,21 @@ namespace Lang.Python.Numpy
 
         [ DirectCall("mean") ]
         public Complex Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public class NdArray12DBool : NdArray12D<bool>
+    {
+        public NdArray12DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
         {
             throw new NotImplementedException();
         }
@@ -693,6 +873,21 @@ namespace Lang.Python.Numpy
 
     }
 
+    public class NdArray13DBool : NdArray13D<bool>
+    {
+        public NdArray13DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     public class NdArray14D<T> : NdArray<T>
     {
         public NdArray14D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
@@ -740,6 +935,21 @@ namespace Lang.Python.Numpy
 
         [ DirectCall("mean") ]
         public Complex Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public class NdArray14DBool : NdArray14D<bool>
+    {
+        public NdArray14DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
         {
             throw new NotImplementedException();
         }
@@ -799,6 +1009,21 @@ namespace Lang.Python.Numpy
 
     }
 
+    public class NdArray15DBool : NdArray15D<bool>
+    {
+        public NdArray15DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     public class NdArray16D<T> : NdArray<T>
     {
         public NdArray16D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
@@ -846,6 +1071,21 @@ namespace Lang.Python.Numpy
 
         [ DirectCall("mean") ]
         public Complex Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public class NdArray16DBool : NdArray16D<bool>
+    {
+        public NdArray16DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
         {
             throw new NotImplementedException();
         }
@@ -905,6 +1145,21 @@ namespace Lang.Python.Numpy
 
     }
 
+    public class NdArray17DBool : NdArray17D<bool>
+    {
+        public NdArray17DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     public class NdArray18D<T> : NdArray<T>
     {
         public NdArray18D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
@@ -952,6 +1207,21 @@ namespace Lang.Python.Numpy
 
         [ DirectCall("mean") ]
         public Complex Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public class NdArray18DBool : NdArray18D<bool>
+    {
+        public NdArray18DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
         {
             throw new NotImplementedException();
         }
@@ -1011,6 +1281,21 @@ namespace Lang.Python.Numpy
 
     }
 
+    public class NdArray19DBool : NdArray19D<bool>
+    {
+        public NdArray19DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     public class NdArray20D<T> : NdArray<T>
     {
         public NdArray20D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
@@ -1058,6 +1343,21 @@ namespace Lang.Python.Numpy
 
         [ DirectCall("mean") ]
         public Complex Mean()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public class NdArray20DBool : NdArray20D<bool>
+    {
+        public NdArray20DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+            : base(obj, copy, order)
+        {
+        }
+
+        [ DirectCall("mean") ]
+        public double Mean()
         {
             throw new NotImplementedException();
         }

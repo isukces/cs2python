@@ -86,6 +86,12 @@ namespace Lang.Python.Numpy
         }
 
         [ DirectCall("array") ]
+        public static NdArray1DBool Array(IEnumerable<bool> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray1DBool(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
         public static NdArray2DInt Array(IEnumerable<IEnumerable<int>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray2DInt(obj, copy, order);
@@ -101,6 +107,12 @@ namespace Lang.Python.Numpy
         public static NdArray2DComplex Array(IEnumerable<IEnumerable<Complex>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray2DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray2DBool Array(IEnumerable<IEnumerable<bool>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray2DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
@@ -122,6 +134,12 @@ namespace Lang.Python.Numpy
         }
 
         [ DirectCall("array") ]
+        public static NdArray3DBool Array(IEnumerable<IEnumerable<IEnumerable<bool>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray3DBool(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
         public static NdArray4DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray4DInt(obj, copy, order);
@@ -137,6 +155,12 @@ namespace Lang.Python.Numpy
         public static NdArray4DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray4DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray4DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray4DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
@@ -158,6 +182,12 @@ namespace Lang.Python.Numpy
         }
 
         [ DirectCall("array") ]
+        public static NdArray5DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray5DBool(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
         public static NdArray6DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray6DInt(obj, copy, order);
@@ -173,6 +203,12 @@ namespace Lang.Python.Numpy
         public static NdArray6DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray6DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray6DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray6DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
@@ -194,6 +230,12 @@ namespace Lang.Python.Numpy
         }
 
         [ DirectCall("array") ]
+        public static NdArray7DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray7DBool(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
         public static NdArray8DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray8DInt(obj, copy, order);
@@ -209,6 +251,12 @@ namespace Lang.Python.Numpy
         public static NdArray8DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray8DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray8DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray8DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
@@ -230,6 +278,12 @@ namespace Lang.Python.Numpy
         }
 
         [ DirectCall("array") ]
+        public static NdArray9DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray9DBool(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
         public static NdArray10DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray10DInt(obj, copy, order);
@@ -245,6 +299,12 @@ namespace Lang.Python.Numpy
         public static NdArray10DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray10DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray10DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray10DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
@@ -266,6 +326,12 @@ namespace Lang.Python.Numpy
         }
 
         [ DirectCall("array") ]
+        public static NdArray11DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray11DBool(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
         public static NdArray12DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray12DInt(obj, copy, order);
@@ -281,6 +347,12 @@ namespace Lang.Python.Numpy
         public static NdArray12DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray12DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray12DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray12DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
@@ -302,6 +374,12 @@ namespace Lang.Python.Numpy
         }
 
         [ DirectCall("array") ]
+        public static NdArray13DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray13DBool(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
         public static NdArray14DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray14DInt(obj, copy, order);
@@ -317,6 +395,12 @@ namespace Lang.Python.Numpy
         public static NdArray14DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray14DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray14DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray14DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
@@ -338,6 +422,12 @@ namespace Lang.Python.Numpy
         }
 
         [ DirectCall("array") ]
+        public static NdArray15DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray15DBool(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
         public static NdArray16DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray16DInt(obj, copy, order);
@@ -353,6 +443,12 @@ namespace Lang.Python.Numpy
         public static NdArray16DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray16DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray16DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray16DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
@@ -374,6 +470,12 @@ namespace Lang.Python.Numpy
         }
 
         [ DirectCall("array") ]
+        public static NdArray17DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray17DBool(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
         public static NdArray18DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray18DInt(obj, copy, order);
@@ -389,6 +491,12 @@ namespace Lang.Python.Numpy
         public static NdArray18DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray18DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray18DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray18DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
@@ -410,6 +518,12 @@ namespace Lang.Python.Numpy
         }
 
         [ DirectCall("array") ]
+        public static NdArray19DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray19DBool(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
         public static NdArray20DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray20DInt(obj, copy, order);
@@ -425,6 +539,12 @@ namespace Lang.Python.Numpy
         public static NdArray20DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray20DComplex(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray20DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray20DBool(obj, copy, order);
         }
 
         /// <summary>

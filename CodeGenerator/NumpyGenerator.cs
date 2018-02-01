@@ -223,7 +223,7 @@ arctanh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic tangent elem
         }
 
 
-        private static readonly string[] NumpyArrayWrappedTypes = "int,double,Complex".Split(',');
+        private static readonly string[] NumpyArrayWrappedTypes = "int,double,Complex,bool".Split(',');
 
         public const int MaxDim = 20;
 
