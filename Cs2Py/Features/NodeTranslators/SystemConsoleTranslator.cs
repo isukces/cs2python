@@ -21,15 +21,17 @@ namespace Cs2Py.NodeTranslators
                     {
                         var v                       = ctx.TranslateValue(info.CallArguments[0].MyValue);
                         var result                  = new PyMethodCallExpression(null, "print", v);
+                        // In Python 3, print is a function, whereas it used to be a statement in previous versions.
+                        /*
                         result.OnSkipBracketRequest += (mce, args) =>
                         {
                             args.CanSkipBrackets = GeneralRulesForMetodBrackets.Bla(mce);
                         };
+                        */
                         return result;
                     }
 
                 var mn = src.MethodInfo.ToString();
-
                 throw new NotImplementedException(mn);
             }
 

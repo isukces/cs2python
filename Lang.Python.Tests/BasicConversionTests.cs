@@ -318,7 +318,7 @@ class Codes:
     @staticmethod
     def DictionaryTest(cls):
         dictEmpty = dict()
-        print len(dictEmpty)
+        print(len(dictEmpty))
         dictInitialized = {1:'one', 2:'two'}
         dictEmpty = dictInitialized
         dictEmpty[3] = 'three'
@@ -368,9 +368,9 @@ class Codes:
     @staticmethod
     def LocalConst(cls):
         Number = 1
-        print Number
+        print(Number)
         Text = 'some text'
-        print Text
+        print(Text)
 ";
             var info     = new Info
             {
