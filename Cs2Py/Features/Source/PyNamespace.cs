@@ -28,8 +28,8 @@ namespace Cs2Py.Source
         /// <returns><c>true</c> jeśli obiekty są równe</returns>
         public static bool operator ==(PyNamespace left, PyNamespace right)
         {
-            if (left == (object)null && right == (object)null) return true;
-            if (left == (object)null || right == (object)null) return false;
+            if (ReferenceEquals(left, null) && ReferenceEquals(right, null)) return true;
+            if (ReferenceEquals(left, null) || ReferenceEquals(right, null)) return false;
             return left._name == right._name;
         }
 

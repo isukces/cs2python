@@ -47,10 +47,15 @@ namespace CodeGenerator
 
         private void Add_Mean()
         {
-            var m = _class.AddMethod("Mean", _wrappedType == "Complex" ? _wrappedType : "double")
-                .WithBody("throw new NotImplementedException();");
+            // return a.Average();
+            var calc = IsComplex || IsBool ? "GetMean(InternalData)" : "InternalData.Average()";
+            var m    = _class.AddMethod("Mean", IsComplex ? _wrappedType : "double")
+                .WithBody($"return {calc};");
             m.Attributes.Add(new CsAttribute("DirectCall").WithArgument("mean"));
         }
+
+        private bool IsComplex => _wrappedType == "Complex";
+        private bool IsBool => _wrappedType == "bool";
 
         private readonly int     _dimension;
         private readonly string  _wrappedType;

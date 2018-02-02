@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace Lang.Python.Numpy
@@ -22,7 +23,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -37,7 +38,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -52,7 +53,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -67,7 +68,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -90,7 +91,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -105,7 +106,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -120,7 +121,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -135,7 +136,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -158,7 +159,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -173,7 +174,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -188,7 +189,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -203,7 +204,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -226,7 +227,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -241,7 +242,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -256,7 +257,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -271,7 +272,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -294,7 +295,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -309,7 +310,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -324,7 +325,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -339,7 +340,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -362,7 +363,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -377,7 +378,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -392,7 +393,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -407,7 +408,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -430,7 +431,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -445,7 +446,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -460,7 +461,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -475,7 +476,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -498,7 +499,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -513,7 +514,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -528,7 +529,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -543,7 +544,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -566,7 +567,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -581,7 +582,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -596,7 +597,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -611,7 +612,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -634,7 +635,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -649,7 +650,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -664,7 +665,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -679,7 +680,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -702,7 +703,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -717,7 +718,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -732,7 +733,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -747,7 +748,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -770,7 +771,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -785,7 +786,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -800,7 +801,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -815,7 +816,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -838,7 +839,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -853,7 +854,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -868,7 +869,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -883,7 +884,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -906,7 +907,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -921,7 +922,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -936,7 +937,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -951,7 +952,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -974,7 +975,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -989,7 +990,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -1004,7 +1005,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -1019,7 +1020,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -1042,7 +1043,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -1057,7 +1058,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -1072,7 +1073,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -1087,7 +1088,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -1110,7 +1111,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -1125,7 +1126,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -1140,7 +1141,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -1155,7 +1156,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -1178,7 +1179,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -1193,7 +1194,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -1208,7 +1209,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -1223,7 +1224,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -1246,7 +1247,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -1261,7 +1262,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -1276,7 +1277,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -1291,7 +1292,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -1314,7 +1315,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -1329,7 +1330,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return InternalData.Average();
         }
 
     }
@@ -1344,7 +1345,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public Complex Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }
@@ -1359,7 +1360,7 @@ namespace Lang.Python.Numpy
         [ DirectCall("mean") ]
         public double Mean()
         {
-            throw new NotImplementedException();
+            return GetMean(InternalData);
         }
 
     }

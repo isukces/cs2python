@@ -1,4 +1,6 @@
-﻿namespace Lang.Python.Numpy
+﻿using System.Linq;
+
+namespace Lang.Python.Numpy
 {
     /*
     public enum NumpyDataType
@@ -20,12 +22,19 @@
 
     public abstract class NdArray<T> : NdArray
     {
-        /*
-        // numpy.array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
-        public NdArray(IEnumerable<T> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        protected static Complex GetMean(Complex[] a)
         {
+            if (a.Length == 0) return Complex.Zero;
+            var sum = a.Aggregate(Complex.Zero, (current, i) => current + i);
+            return sum / a.Length;
         }
-        */
+
+        protected static double GetMean(bool[] a)
+        {
+            if (a.Length == 0)
+                return 0;
+            return a.Count(q => q) / (double)a.Length;
+        }
 
         protected T[] InternalData;
     }

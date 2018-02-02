@@ -121,5 +121,6 @@ namespace Lang.Python
 
         public double Re { get; }
         public double Im { get; }
+        public static Complex Zero => new Complex();
     }
 }

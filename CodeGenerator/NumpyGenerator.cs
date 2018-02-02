@@ -197,6 +197,7 @@ arctanh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic tangent elem
 
             var f = CreateFile();
             f.AddImportNamespace("System.Collections.Generic");
+            f.AddImportNamespace("System.Linq");
             for (var dimension = 1; dimension <= MaxDim; dimension++)
             {
                 var cl2 = f.GetOrCreateClass("Lang.Python.Numpy", $"NdArray{dimension}D<T>");
