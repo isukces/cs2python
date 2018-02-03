@@ -33,8 +33,8 @@ namespace Demo01
         public static void CreateNumpyArrays()
         {
             var list = new[] {1, 2, 3};
-            var tmp  = Np.Array(new[] {1.0, 2, 3});
-            var tmp2 = Np.Array(new[] {1.0, 2, 3}, order: NumpyArrayOrder.C);
+            var tmp  = Np.Array1(new[] {1.0, 2, 3});
+            var tmp2 = Np.Array1(new[] {1.0, 2, 3}, order: NumpyArrayOrder.C);
         }
 
         public static void DoubleWithDemo()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using isukces.code;
@@ -60,95 +61,66 @@ arctanh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic tangent elem
             // yield return new F("Math.Atan2", "arctan2");
         }
 
-        private static void A1(CsClass cl, string dotnetName, string pyName, Action<CSCodeFormatter, string> code,
-            Action<CsMethod>           pp = null)
-        {
-            if (pyName == null)
-                pyName = dotnetName.ToLower();
-            foreach (var type in GetListTypes(cl))
-            {
-                var cf = new CSCodeFormatter();
-                code(cf, type);
-                var m = cl.AddMethod(dotnetName, "List<double>")
-                    .WithBody(cf)
-                    .WithStatic()
-                    .WithDirectCall(pyName);
-                m.AddParam("x", type);
-                pp?.Invoke(m);
-            }
-        }
-
-        private static void A2(CsClass              cl, string dotnetName, string pyName, string firstVar,
-            string                                  secondVar,
-            Action<CSCodeFormatter, string, string> code)
-        {
-            if (pyName == null)
-                pyName = dotnetName.ToLower();
-            foreach (var typeX in GetListTypes(cl))
-            foreach (var typeY in GetListTypes(cl))
-            {
-                var cf = new CSCodeFormatter();
-                code(cf, typeY, typeX);
-                var m = cl.AddMethod(dotnetName, "List<double>")
-                    .WithBody(cf)
-                    .WithStatic()
-                    .WithDirectCall(pyName);
-                m.AddParam(firstVar,  typeY);
-                m.AddParam(secondVar, typeX);
-            }
-        }
-
         private static void Add_Atan2(CsClass cl)
         {
-            A2(cl, nameof(Math.Atan2), "arctan2", "y", "x",
+            TwoArgs(cl, nameof(Math.Atan2), "arctan2", "y", "x",
                 (cf, type1, type2) =>
                 {
                     var xx = IsNdArray(type2) ? "x.AsEnumerable()" : "x";
                     var yy = IsNdArray(type1) ? "y.AsEnumerable()" : "y";
                     cf.Writeln("return " + xx + ".Zip(" + yy +
-                               ", (a, b) => new {X = a, Y = b}).MapToList(q => Math.Atan2(q.Y, q.X));");
+                               ", (a, b) => new {X = a, Y = b}).PyMap(q => Math.Atan2(q.Y, q.X));");
                 });
         }
 
 
-        private static void Add_Degrees(CsClass cl)
+        private static void Add_Degrees_Radians(CsClass cl)
         {
-            A1(cl, "Degrees", null, (cf, type) =>
+            for (var i = 0; i < 2; i++)
             {
-                cf.Writeln("const double mul = 180.0 / Math.PI;");
-                cf.Writeln("return x.MapToList(value => value * mul);");
-            });
+                var c = i == 0
+                    ? "const double mul = 180.0 / Math.PI;"
+                    : "const double mul = Math.PI / 180.0;";
+                OneArg(cl, i == 0 ? "Degrees" : "Radians", null, q =>
+                {
+                    var cf = new CodeFormatter();
+                    cf.Writeln(c);
+                    var map = q.Map("# * mul");
+                    cf.Writeln("return " + map + ";");
+                    q.Make(cf.Text);
+                });
+            }
         }
 
         private static void Add_Hypot(CsClass cl)
         {
-            A2(cl, "Hypot", null, "x", "y",
+            TwoArgs(cl, "Hypot", null, "x", "y",
                 (cf, type1, type2) =>
                 {
                     var xx = IsNdArray(type1) ? "x.AsEnumerable()" : "x";
                     var yy = IsNdArray(type2) ? "y.AsEnumerable()" : "y";
                     cf.Writeln(
                         "return " + xx + ".Zip(" + yy +
-                        ", (a, b) => new {X = a, Y = b}).MapToList(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));");
+                        ", (a, b) => new {X = a, Y = b}).PyMap(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));");
                 });
         }
 
-        private static void Add_Radians(CsClass cl)
-        {
-            A1(cl, "Radians", null, (cf, type) =>
-            {
-                var xx = IsNdArray(type) ? "x.AsEnumerable()" : "x";
-                cf.Writeln("const double mul = Math.PI / 180.0;");
-                cf.Writeln("return " + xx + ".MapToList(value => value * mul);");
-            });
-        }
 
         private static void Add_SingleArgumentFunctions(CsClass cl)
         {
             foreach (var i in GetSinleArgumentFunctions())
-                A1(cl, i.DotnetName, i.PyName,
-                    (cf, type) => { cf.Writeln($"return x.MapToList({i.Implementation});"); },
-                    m => m.Description = i.Description);
+                OneArg(cl, i.DotnetName, i.PyName,
+                    q =>
+                    {
+                        var im  = i.Implementation;
+                        var cf  = new CodeFormatter();
+                        var lambda = $"{im}(#)";                                            
+                        var map = q.Map(lambda);
+                       
+                        cf.Writeln("return " + map + ";");
+                        var m         = q.Make(cf.Text);
+                        m.Description = i.Description;
+                    });
         }
 
         private static IEnumerable<string> GetListTypes(CsClass cl)
@@ -161,9 +133,70 @@ arctanh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic tangent elem
             };
         }
 
+        private static IEnumerable<string> GetListTypes2(CsClass cl)
+        {
+            return new[]
+            {
+                "IList",
+                "IEnumerable",
+                "NdArray"
+            };
+        }
+
         private static bool IsNdArray(string t)
         {
             return t == "NdArray<double>";
+        }
+
+        private static void OneArg(CsClass cl, string dotnetName, string pyName, Action<OneArgMethodGenerator> gen)
+        {
+            if (pyName == null)
+                pyName = dotnetName.ToLower();
+            foreach (var wrapped in "double,int".Split(','))
+                for (var dim = 0; dim < MaxDim; dim++)
+                {
+                    if (dim == 0 && wrapped == "int")
+                        continue;
+                    foreach (var type in GetListTypes2(cl))
+                    {
+                        if (type == "NdArray")
+                        {
+                            if (wrapped == "int") continue; // we have implicit operator
+                        }
+                        var o = new OneArgMethodGenerator(dotnetName, pyName, cl)
+                        {
+                            TInput     = wrapped,
+                            TOutput    = "double",
+                            Collection = dim == 0 ? null : type,
+                            Dimension  = dim
+                        };
+                        gen(o);
+                        if (dim == 0)
+                            break;
+                    }
+                    
+                }
+        }
+
+        private static void TwoArgs(CsClass         cl, string dotnetName, string pyName, string firstVar,
+            string                                  secondVar,
+            Action<CSCodeFormatter, string, string> code)
+        {
+            if (pyName == null)
+                pyName = dotnetName.ToLower();
+            foreach (var typeX in GetListTypes(cl))
+            foreach (var typeY in GetListTypes(cl))
+            {
+                var cf = new CSCodeFormatter();
+                code(cf, typeY, typeX);
+                var m = cl.AddMethod(dotnetName, "PyList<double>")
+                    .WithBody(cf)
+                    .WithStatic()
+                    .WithBodyComment($"Generated by {nameof(NumpyGenerator)}.{nameof(TwoArgs)}")
+                    .WithDirectCall(pyName);
+                m.AddParam(firstVar,  typeY);
+                m.AddParam(secondVar, typeX);
+            }
         }
 
 
@@ -172,12 +205,12 @@ arctanh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic tangent elem
             var file = CreateFile();
             file.AddImportNamespace(typeof(List<int>).Namespace);
             file.AddImportNamespace("System.Linq");
+            file.AddImportNamespace("Lang.Python.Numpy");
             var cl       = file.GetOrCreateClass("Lang.Python.Numpy", "Np");
             cl.IsPartial = true;
             Add_SingleArgumentFunctions(cl);
             Add_Atan2(cl);
-            Add_Degrees(cl);
-            Add_Radians(cl);
+            Add_Degrees_Radians(cl);
             Add_Hypot(cl);
             Add_ArrayMethods(cl);
             var fileName = Path.Combine(BasePath.FullName, "Lang.Python", "+compatibility", "Numpy", cl.GetShortName());
@@ -200,22 +233,33 @@ arctanh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic tangent elem
             f.AddImportNamespace("System.Linq");
             for (var dimension = 1; dimension <= MaxDim; dimension++)
             {
-                var cl2 = f.GetOrCreateClass("Lang.Python.Numpy", $"NdArray{dimension}D<T>");
-                {
-                    cl2.BaseClass = "NdArray<T>";
-                    var co        = cl2.AddConstructor();
-                    NdArrayLevel2Generator.WithAddParams(co, "T", dimension);
-                }
-
+                NdArrayLevel1Generator.Generate(f, dimension);
                 foreach (var wrappedType in NumpyArrayWrappedTypes)
                 {
                     var classLevel2 = NdArrayLevel2Generator.Generate(f, dimension, wrappedType);
-                    var resultType = classLevel2.Name;
-                    var m          = cl.AddMethod("Array", resultType)
+                    var resultType  = classLevel2.Name;
+                    var m           = cl.AddMethod("Array"+dimension, resultType)
                         .WithDirectCall("array")
                         .WithStatic()
+                        .WithBodyComment($"Generated by {nameof(NumpyGenerator)}.{nameof(Add_ArrayMethods)}/1")
                         .WithBody($"return new {resultType}(obj, copy, order);");
                     NdArrayLevel2Generator.WithAddParams(m, wrappedType, dimension);
+                }
+
+                // other types
+                {
+                    const string wrappedType = "T";
+                    // var          classLevel2 = NdArrayLevel2Generator.Generate(f, dimension, wrappedType);
+                    foreach (var i in new[] {true })
+                    {
+                        var resultType = $"NdArray{dimension}D<T>";
+                        var m          = cl.AddMethod("Array" + (i ? $"{dimension}" : "") + "<T>", resultType)
+                            .WithDirectCall("array")
+                            .WithStatic()
+                            .WithBodyComment($"Generated by {nameof(NumpyGenerator)}.{nameof(Add_ArrayMethods)}/2")
+                            .WithBody($"return new {resultType}(obj, copy, order);");
+                        NdArrayLevel2Generator.WithAddParams(m, wrappedType, dimension);
+                    }
                 }
             }
 
@@ -226,7 +270,7 @@ arctanh(x, /[, out, where, casting, order, ...])	Inverse hyperbolic tangent elem
 
         private static readonly string[] NumpyArrayWrappedTypes = "int,double,Complex,bool".Split(',');
 
-        public const int MaxDim = 20;
+        public const int MaxDim = 5;
 
         internal struct F
         {

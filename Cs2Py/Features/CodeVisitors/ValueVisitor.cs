@@ -98,7 +98,7 @@ namespace Cs2Py.CodeVisitors
         {
 
             var arguments = implicitElementAccessSyntax.ArgumentList.Arguments;
-            var conv = arguments.MapToList(q =>
+            var conv = arguments.PyMap(q =>
             {
                 var value = (FunctionArgument)VisitArgument(q);
                 return value;

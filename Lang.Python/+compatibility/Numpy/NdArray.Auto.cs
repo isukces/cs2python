@@ -9,6 +9,18 @@ namespace Lang.Python.Numpy
     {
         public NdArray1D(IEnumerable<T> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
+            InternalData = obj.ToIListCastOrConvert();
+        }
+
+        internal NdArray1D(IList<T> internalData, NdArrayShapeInfo shapeInfo)
+        {
+            InternalData = internalData; ShapeInfo = shapeInfo;
+        }
+
+        public NdArray1D<TOut> Map<TOut>(Func<T, TOut> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray1D<TOut>(q, ShapeInfo);
         }
 
     }
@@ -20,10 +32,26 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray1DInt(IList<int> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
+        public NdArray1DDouble Map(Func<int, double> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray1DDouble(q, ShapeInfo);
+        }
+
         [ DirectCall("mean") ]
         public double Mean()
         {
             return InternalData.Average();
+        }
+
+        public static implicit operator NdArray2DDouble(NdArray1DInt x)
+        {
+            return new NdArray2DDouble(x.InternalData.IntToDouble(), x.ShapeInfo);
         }
 
     }
@@ -33,6 +61,17 @@ namespace Lang.Python.Numpy
         public NdArray1DDouble(IEnumerable<double> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
             : base(obj, copy, order)
         {
+        }
+
+        internal NdArray1DDouble(IList<double> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
+        public NdArray1DDouble Map(Func<double, double> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray1DDouble(q, ShapeInfo);
         }
 
         [ DirectCall("mean") ]
@@ -47,6 +86,11 @@ namespace Lang.Python.Numpy
     {
         public NdArray1DComplex(IEnumerable<Complex> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
             : base(obj, copy, order)
+        {
+        }
+
+        internal NdArray1DComplex(IList<Complex> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
         {
         }
 
@@ -65,6 +109,11 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray1DBool(IList<bool> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
         [ DirectCall("mean") ]
         public double Mean()
         {
@@ -79,6 +128,17 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray2D(IList<T> internalData, NdArrayShapeInfo shapeInfo)
+        {
+            InternalData = internalData; ShapeInfo = shapeInfo;
+        }
+
+        public NdArray2D<TOut> Map<TOut>(Func<T, TOut> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray2D<TOut>(q, ShapeInfo);
+        }
+
     }
 
     public class NdArray2DInt : NdArray2D<int>
@@ -88,10 +148,26 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray2DInt(IList<int> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
+        public NdArray2DDouble Map(Func<int, double> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray2DDouble(q, ShapeInfo);
+        }
+
         [ DirectCall("mean") ]
         public double Mean()
         {
             return InternalData.Average();
+        }
+
+        public static implicit operator NdArray2DDouble(NdArray2DInt x)
+        {
+            return new NdArray2DDouble(x.InternalData.IntToDouble(), x.ShapeInfo);
         }
 
     }
@@ -101,6 +177,17 @@ namespace Lang.Python.Numpy
         public NdArray2DDouble(IEnumerable<IEnumerable<double>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
             : base(obj, copy, order)
         {
+        }
+
+        internal NdArray2DDouble(IList<double> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
+        public NdArray2DDouble Map(Func<double, double> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray2DDouble(q, ShapeInfo);
         }
 
         [ DirectCall("mean") ]
@@ -115,6 +202,11 @@ namespace Lang.Python.Numpy
     {
         public NdArray2DComplex(IEnumerable<IEnumerable<Complex>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
             : base(obj, copy, order)
+        {
+        }
+
+        internal NdArray2DComplex(IList<Complex> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
         {
         }
 
@@ -133,6 +225,11 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray2DBool(IList<bool> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
         [ DirectCall("mean") ]
         public double Mean()
         {
@@ -147,6 +244,17 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray3D(IList<T> internalData, NdArrayShapeInfo shapeInfo)
+        {
+            InternalData = internalData; ShapeInfo = shapeInfo;
+        }
+
+        public NdArray3D<TOut> Map<TOut>(Func<T, TOut> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray3D<TOut>(q, ShapeInfo);
+        }
+
     }
 
     public class NdArray3DInt : NdArray3D<int>
@@ -156,10 +264,26 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray3DInt(IList<int> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
+        public NdArray3DDouble Map(Func<int, double> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray3DDouble(q, ShapeInfo);
+        }
+
         [ DirectCall("mean") ]
         public double Mean()
         {
             return InternalData.Average();
+        }
+
+        public static implicit operator NdArray2DDouble(NdArray3DInt x)
+        {
+            return new NdArray2DDouble(x.InternalData.IntToDouble(), x.ShapeInfo);
         }
 
     }
@@ -169,6 +293,17 @@ namespace Lang.Python.Numpy
         public NdArray3DDouble(IEnumerable<IEnumerable<IEnumerable<double>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
             : base(obj, copy, order)
         {
+        }
+
+        internal NdArray3DDouble(IList<double> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
+        public NdArray3DDouble Map(Func<double, double> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray3DDouble(q, ShapeInfo);
         }
 
         [ DirectCall("mean") ]
@@ -183,6 +318,11 @@ namespace Lang.Python.Numpy
     {
         public NdArray3DComplex(IEnumerable<IEnumerable<IEnumerable<Complex>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
             : base(obj, copy, order)
+        {
+        }
+
+        internal NdArray3DComplex(IList<Complex> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
         {
         }
 
@@ -201,6 +341,11 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray3DBool(IList<bool> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
         [ DirectCall("mean") ]
         public double Mean()
         {
@@ -215,6 +360,17 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray4D(IList<T> internalData, NdArrayShapeInfo shapeInfo)
+        {
+            InternalData = internalData; ShapeInfo = shapeInfo;
+        }
+
+        public NdArray4D<TOut> Map<TOut>(Func<T, TOut> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray4D<TOut>(q, ShapeInfo);
+        }
+
     }
 
     public class NdArray4DInt : NdArray4D<int>
@@ -224,10 +380,26 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray4DInt(IList<int> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
+        public NdArray4DDouble Map(Func<int, double> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray4DDouble(q, ShapeInfo);
+        }
+
         [ DirectCall("mean") ]
         public double Mean()
         {
             return InternalData.Average();
+        }
+
+        public static implicit operator NdArray2DDouble(NdArray4DInt x)
+        {
+            return new NdArray2DDouble(x.InternalData.IntToDouble(), x.ShapeInfo);
         }
 
     }
@@ -237,6 +409,17 @@ namespace Lang.Python.Numpy
         public NdArray4DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
             : base(obj, copy, order)
         {
+        }
+
+        internal NdArray4DDouble(IList<double> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
+        public NdArray4DDouble Map(Func<double, double> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray4DDouble(q, ShapeInfo);
         }
 
         [ DirectCall("mean") ]
@@ -251,6 +434,11 @@ namespace Lang.Python.Numpy
     {
         public NdArray4DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
             : base(obj, copy, order)
+        {
+        }
+
+        internal NdArray4DComplex(IList<Complex> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
         {
         }
 
@@ -269,6 +457,11 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray4DBool(IList<bool> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
         [ DirectCall("mean") ]
         public double Mean()
         {
@@ -283,6 +476,17 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray5D(IList<T> internalData, NdArrayShapeInfo shapeInfo)
+        {
+            InternalData = internalData; ShapeInfo = shapeInfo;
+        }
+
+        public NdArray5D<TOut> Map<TOut>(Func<T, TOut> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray5D<TOut>(q, ShapeInfo);
+        }
+
     }
 
     public class NdArray5DInt : NdArray5D<int>
@@ -292,10 +496,26 @@ namespace Lang.Python.Numpy
         {
         }
 
+        internal NdArray5DInt(IList<int> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
+        public NdArray5DDouble Map(Func<int, double> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray5DDouble(q, ShapeInfo);
+        }
+
         [ DirectCall("mean") ]
         public double Mean()
         {
             return InternalData.Average();
+        }
+
+        public static implicit operator NdArray2DDouble(NdArray5DInt x)
+        {
+            return new NdArray2DDouble(x.InternalData.IntToDouble(), x.ShapeInfo);
         }
 
     }
@@ -305,6 +525,17 @@ namespace Lang.Python.Numpy
         public NdArray5DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
             : base(obj, copy, order)
         {
+        }
+
+        internal NdArray5DDouble(IList<double> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
+        {
+        }
+
+        public NdArray5DDouble Map(Func<double, double> map)
+        {
+            var q = InternalData.PyMap(map);
+            return new NdArray5DDouble(q, ShapeInfo);
         }
 
         [ DirectCall("mean") ]
@@ -319,6 +550,11 @@ namespace Lang.Python.Numpy
     {
         public NdArray5DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
             : base(obj, copy, order)
+        {
+        }
+
+        internal NdArray5DComplex(IList<Complex> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
         {
         }
 
@@ -337,1023 +573,8 @@ namespace Lang.Python.Numpy
         {
         }
 
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray6D<T> : NdArray<T>
-    {
-        public NdArray6D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray6DInt : NdArray6D<int>
-    {
-        public NdArray6DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray6DDouble : NdArray6D<double>
-    {
-        public NdArray6DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray6DComplex : NdArray6D<Complex>
-    {
-        public NdArray6DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray6DBool : NdArray6D<bool>
-    {
-        public NdArray6DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray7D<T> : NdArray<T>
-    {
-        public NdArray7D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray7DInt : NdArray7D<int>
-    {
-        public NdArray7DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray7DDouble : NdArray7D<double>
-    {
-        public NdArray7DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray7DComplex : NdArray7D<Complex>
-    {
-        public NdArray7DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray7DBool : NdArray7D<bool>
-    {
-        public NdArray7DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray8D<T> : NdArray<T>
-    {
-        public NdArray8D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray8DInt : NdArray8D<int>
-    {
-        public NdArray8DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray8DDouble : NdArray8D<double>
-    {
-        public NdArray8DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray8DComplex : NdArray8D<Complex>
-    {
-        public NdArray8DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray8DBool : NdArray8D<bool>
-    {
-        public NdArray8DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray9D<T> : NdArray<T>
-    {
-        public NdArray9D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray9DInt : NdArray9D<int>
-    {
-        public NdArray9DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray9DDouble : NdArray9D<double>
-    {
-        public NdArray9DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray9DComplex : NdArray9D<Complex>
-    {
-        public NdArray9DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray9DBool : NdArray9D<bool>
-    {
-        public NdArray9DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray10D<T> : NdArray<T>
-    {
-        public NdArray10D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray10DInt : NdArray10D<int>
-    {
-        public NdArray10DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray10DDouble : NdArray10D<double>
-    {
-        public NdArray10DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray10DComplex : NdArray10D<Complex>
-    {
-        public NdArray10DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray10DBool : NdArray10D<bool>
-    {
-        public NdArray10DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray11D<T> : NdArray<T>
-    {
-        public NdArray11D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray11DInt : NdArray11D<int>
-    {
-        public NdArray11DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray11DDouble : NdArray11D<double>
-    {
-        public NdArray11DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray11DComplex : NdArray11D<Complex>
-    {
-        public NdArray11DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray11DBool : NdArray11D<bool>
-    {
-        public NdArray11DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray12D<T> : NdArray<T>
-    {
-        public NdArray12D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray12DInt : NdArray12D<int>
-    {
-        public NdArray12DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray12DDouble : NdArray12D<double>
-    {
-        public NdArray12DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray12DComplex : NdArray12D<Complex>
-    {
-        public NdArray12DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray12DBool : NdArray12D<bool>
-    {
-        public NdArray12DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray13D<T> : NdArray<T>
-    {
-        public NdArray13D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray13DInt : NdArray13D<int>
-    {
-        public NdArray13DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray13DDouble : NdArray13D<double>
-    {
-        public NdArray13DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray13DComplex : NdArray13D<Complex>
-    {
-        public NdArray13DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray13DBool : NdArray13D<bool>
-    {
-        public NdArray13DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray14D<T> : NdArray<T>
-    {
-        public NdArray14D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray14DInt : NdArray14D<int>
-    {
-        public NdArray14DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray14DDouble : NdArray14D<double>
-    {
-        public NdArray14DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray14DComplex : NdArray14D<Complex>
-    {
-        public NdArray14DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray14DBool : NdArray14D<bool>
-    {
-        public NdArray14DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray15D<T> : NdArray<T>
-    {
-        public NdArray15D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray15DInt : NdArray15D<int>
-    {
-        public NdArray15DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray15DDouble : NdArray15D<double>
-    {
-        public NdArray15DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray15DComplex : NdArray15D<Complex>
-    {
-        public NdArray15DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray15DBool : NdArray15D<bool>
-    {
-        public NdArray15DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray16D<T> : NdArray<T>
-    {
-        public NdArray16D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray16DInt : NdArray16D<int>
-    {
-        public NdArray16DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray16DDouble : NdArray16D<double>
-    {
-        public NdArray16DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray16DComplex : NdArray16D<Complex>
-    {
-        public NdArray16DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray16DBool : NdArray16D<bool>
-    {
-        public NdArray16DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray17D<T> : NdArray<T>
-    {
-        public NdArray17D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray17DInt : NdArray17D<int>
-    {
-        public NdArray17DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray17DDouble : NdArray17D<double>
-    {
-        public NdArray17DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray17DComplex : NdArray17D<Complex>
-    {
-        public NdArray17DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray17DBool : NdArray17D<bool>
-    {
-        public NdArray17DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray18D<T> : NdArray<T>
-    {
-        public NdArray18D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray18DInt : NdArray18D<int>
-    {
-        public NdArray18DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray18DDouble : NdArray18D<double>
-    {
-        public NdArray18DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray18DComplex : NdArray18D<Complex>
-    {
-        public NdArray18DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray18DBool : NdArray18D<bool>
-    {
-        public NdArray18DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray19D<T> : NdArray<T>
-    {
-        public NdArray19D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray19DInt : NdArray19D<int>
-    {
-        public NdArray19DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray19DDouble : NdArray19D<double>
-    {
-        public NdArray19DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray19DComplex : NdArray19D<Complex>
-    {
-        public NdArray19DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray19DBool : NdArray19D<bool>
-    {
-        public NdArray19DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray20D<T> : NdArray<T>
-    {
-        public NdArray20D(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-        }
-
-    }
-
-    public class NdArray20DInt : NdArray20D<int>
-    {
-        public NdArray20DInt(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray20DDouble : NdArray20D<double>
-    {
-        public NdArray20DDouble(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public double Mean()
-        {
-            return InternalData.Average();
-        }
-
-    }
-
-    public class NdArray20DComplex : NdArray20D<Complex>
-    {
-        public NdArray20DComplex(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
-        {
-        }
-
-        [ DirectCall("mean") ]
-        public Complex Mean()
-        {
-            return GetMean(InternalData);
-        }
-
-    }
-
-    public class NdArray20DBool : NdArray20D<bool>
-    {
-        public NdArray20DBool(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-            : base(obj, copy, order)
+        internal NdArray5DBool(IList<bool> internalData, NdArrayShapeInfo shapeInfo)
+            : base(internalData, shapeInfo)
         {
         }
 

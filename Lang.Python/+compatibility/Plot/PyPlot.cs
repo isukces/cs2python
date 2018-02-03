@@ -8,7 +8,7 @@ namespace Lang.Python.Plot
     public class PyPlot
     {
         [DirectCall("plot")]
-        public static List<Line2D> Plot(List<double> x, List<double> y)
+        public static List<Line2D> Plot(IList<double> x, IList<double> y)
         {
             throw new NotImplementedException();
         }

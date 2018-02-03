@@ -12,18 +12,26 @@ namespace Lang.Python
             throw new NotImplementedException();
         }
 
-        public static List<TOut> MapToList<TIn, TOut>(this NdArray<TIn> items, Func<TIn, TOut> func)
+        public static IList<double> IntToDouble(this IList<int> l)
+        {
+            var r = new double[l.Count];
+            for (int i = 0; i < l.Count; i++)
+                r[i] = l[i];
+            return r;
+        }
+
+        public static List<TOut> PyMap<TIn, TOut>(this NdArray<TIn> items, Func<TIn, TOut> func)
         {
             throw new NotImplementedException();
         }
 
 
-        public static List<TOut> MapToList<TIn, TOut>(this IEnumerable<TIn> items, Func<TIn, TOut> func)
+        public static PyList<TOut> PyMap<TIn, TOut>(this IEnumerable<TIn> items, Func<TIn, TOut> func)
         {
-            return MapToList(items.ToArray(), func);
+            return PyMap(items.ToArray(), func);
         }
 
-        public static List<TOut> MapToList<TIn, TOut>(this IReadOnlyList<TIn> items, Func<TIn, TOut> func)
+        public static PyList<TOut> PyMap<TIn, TOut>(this IReadOnlyList<TIn> items, Func<TIn, TOut> func)
         {
             var result = new List<TOut>(items.Count);
             for (var index = 0; index < items.Count; index++)
@@ -32,7 +40,12 @@ namespace Lang.Python
                 result.Add(func(i));
             }
 
-            return result;
+            return new PyList<TOut>(result);
+        }
+
+        public static IList<T> ToIListCastOrConvert<T>(this IEnumerable<T> x)
+        {
+            return x is IList<T> list ? list : x.ToList();
         }
     }
 }

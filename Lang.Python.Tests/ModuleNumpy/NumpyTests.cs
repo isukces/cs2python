@@ -11,7 +11,7 @@ namespace Lang.Python.Tests.ModuleNumpy
             const string cs = @"
         public static void CreateNumpyArrays()
         {
-            var tmp = Np.Array(new[] {1.0, 2, 3}, order: NumpyArrayOrder.C);
+            var tmp = Np.Array1(new[] {1.0, 2, 3}, order: NumpyArrayOrder.C);
         }
         ";
 

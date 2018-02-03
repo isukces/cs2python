@@ -58,7 +58,7 @@ namespace Lang.Python.Numpy
                 array[i] = start + i * delta;
             if (endpoint)
                 array[num - 1] = stop;
-            return Array(array);
+            return Array1(array);
         }
  
 

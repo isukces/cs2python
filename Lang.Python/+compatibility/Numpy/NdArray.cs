@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Lang.Python.Numpy
 {
@@ -22,20 +23,21 @@ namespace Lang.Python.Numpy
 
     public abstract class NdArray<T> : NdArray
     {
-        protected static Complex GetMean(Complex[] a)
+        protected static Complex GetMean(IList<Complex> a)
         {
-            if (a.Length == 0) return Complex.Zero;
+            if (a.Count == 0) return Complex.Zero;
             var sum = a.Aggregate(Complex.Zero, (current, i) => current + i);
-            return sum / a.Length;
+            return sum / a.Count;
         }
 
-        protected static double GetMean(bool[] a)
+        protected static double GetMean(IList<bool> a)
         {
-            if (a.Length == 0)
+            if (a.Count == 0)
                 return 0;
-            return a.Count(q => q) / (double)a.Length;
+            return a.Count(q => q) / (double)a.Count;
         }
 
-        protected T[] InternalData;
+        internal IList<T> InternalData { get; set; }
+        internal NdArrayShapeInfo ShapeInfo{ get; set; }
     }
 }

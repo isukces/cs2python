@@ -5,7 +5,4 @@
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="+compatibility\PyPlot" />
-  </ItemGroup>
 </Project>

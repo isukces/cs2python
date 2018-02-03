@@ -64,7 +64,7 @@ namespace Cs2Py.Source
         /// <summary>
         ///     Sprawdza, czy wskazany obiekt jest równy bieżącemu
         /// </summary>
-        /// <param name="obj">obiekt do porównania z obiektem bieżącym</param>
+        /// <param name="other">obiekt do porównania z obiektem bieżącym</param>
         /// <returns><c>true</c> jeśli wskazany obiekt jest równy bieżącemu; w przeciwnym wypadku<c>false</c></returns>
         public bool Equals(PyNamespace other)
         {
@@ -74,7 +74,7 @@ namespace Cs2Py.Source
         /// <summary>
         ///     Sprawdza, czy wskazany obiekt jest równy bieżącemu
         /// </summary>
-        /// <param name="obj">obiekt do porównania z obiektem bieżącym</param>
+        /// <param name="other">obiekt do porównania z obiektem bieżącym</param>
         /// <returns><c>true</c> jeśli wskazany obiekt jest równy bieżącemu; w przeciwnym wypadku<c>false</c></returns>
         public override bool Equals(object other)
         {

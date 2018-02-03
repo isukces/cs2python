@@ -1,3 +1,4 @@
+using Lang.Python.Numpy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arccos") ]
-        public static List<double> Acos(IList<double> x)
+        public static double Acos(double x)
         {
-            return x.MapToList(Math.Acos);
+            return Math.Acos(x);
         }
 
         /// <summary>
@@ -22,9 +23,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arccos") ]
-        public static List<double> Acos(IEnumerable<double> x)
+        public static PyList<double> Acos(IList<double> x)
         {
-            return x.MapToList(Math.Acos);
+            return x.PyMap(value => Math.Acos(value));
         }
 
         /// <summary>
@@ -32,9 +33,189 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arccos") ]
-        public static List<double> Acos(NdArray<double> x)
+        public static PyList<double> Acos(IEnumerable<double> x)
         {
-            return x.MapToList(Math.Acos);
+            return x.PyMap(value => Math.Acos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static NdArray1DDouble Acos(NdArray1DDouble x)
+        {
+            return x.Map(value => Math.Acos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<PyList<double>> Acos(IList<IList<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Acos(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<PyList<double>> Acos(IEnumerable<IEnumerable<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Acos(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static NdArray2DDouble Acos(NdArray2DDouble x)
+        {
+            return x.Map(value => Math.Acos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<PyList<PyList<double>>> Acos(IList<IList<IList<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Acos(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<PyList<PyList<double>>> Acos(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Acos(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static NdArray3DDouble Acos(NdArray3DDouble x)
+        {
+            return x.Map(value => Math.Acos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Acos(IList<IList<IList<IList<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Acos(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Acos(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Acos(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static NdArray4DDouble Acos(NdArray4DDouble x)
+        {
+            return x.Map(value => Math.Acos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<double> Acos(IList<int> x)
+        {
+            return x.PyMap(value => Math.Acos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<double> Acos(IEnumerable<int> x)
+        {
+            return x.PyMap(value => Math.Acos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<PyList<double>> Acos(IList<IList<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Acos(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<PyList<double>> Acos(IEnumerable<IEnumerable<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Acos(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<PyList<PyList<double>>> Acos(IList<IList<IList<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Acos(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<PyList<PyList<double>>> Acos(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Acos(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Acos(IList<IList<IList<IList<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Acos(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccos") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Acos(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Acos(value)))));
         }
 
         /// <summary>
@@ -42,9 +223,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arccosh") ]
-        public static List<double> ACosh(IList<double> x)
+        public static double ACosh(double x)
         {
-            return x.MapToList(PyMath.ACosh);
+            return PyMath.ACosh(x);
         }
 
         /// <summary>
@@ -52,9 +233,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arccosh") ]
-        public static List<double> ACosh(IEnumerable<double> x)
+        public static PyList<double> ACosh(IList<double> x)
         {
-            return x.MapToList(PyMath.ACosh);
+            return x.PyMap(value => PyMath.ACosh(value));
         }
 
         /// <summary>
@@ -62,489 +243,339 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arccosh") ]
-        public static List<double> ACosh(NdArray<double> x)
+        public static PyList<double> ACosh(IEnumerable<double> x)
         {
-            return x.MapToList(PyMath.ACosh);
+            return x.PyMap(value => PyMath.ACosh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static NdArray1DDouble ACosh(NdArray1DDouble x)
+        {
+            return x.Map(value => PyMath.ACosh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<PyList<double>> ACosh(IList<IList<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => PyMath.ACosh(value)));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<PyList<double>> ACosh(IEnumerable<IEnumerable<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => PyMath.ACosh(value)));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static NdArray2DDouble ACosh(NdArray2DDouble x)
+        {
+            return x.Map(value => PyMath.ACosh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<PyList<PyList<double>>> ACosh(IList<IList<IList<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ACosh(value))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<PyList<PyList<double>>> ACosh(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ACosh(value))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static NdArray3DDouble ACosh(NdArray3DDouble x)
+        {
+            return x.Map(value => PyMath.ACosh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> ACosh(IList<IList<IList<IList<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ACosh(value)))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> ACosh(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ACosh(value)))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static NdArray4DDouble ACosh(NdArray4DDouble x)
+        {
+            return x.Map(value => PyMath.ACosh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<double> ACosh(IList<int> x)
+        {
+            return x.PyMap(value => PyMath.ACosh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<double> ACosh(IEnumerable<int> x)
+        {
+            return x.PyMap(value => PyMath.ACosh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<PyList<double>> ACosh(IList<IList<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => PyMath.ACosh(value)));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<PyList<double>> ACosh(IEnumerable<IEnumerable<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => PyMath.ACosh(value)));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<PyList<PyList<double>>> ACosh(IList<IList<IList<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ACosh(value))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<PyList<PyList<double>>> ACosh(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ACosh(value))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> ACosh(IList<IList<IList<IList<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ACosh(value)))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arccosh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> ACosh(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ACosh(value)))));
         }
 
         [ DirectCall("array") ]
-        public static NdArray1DInt Array(IEnumerable<int> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray1DInt Array1(IEnumerable<int> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray1DInt(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray1DDouble Array(IEnumerable<double> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray1DDouble Array1(IEnumerable<double> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray1DDouble(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray1DComplex Array(IEnumerable<Complex> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray1DComplex Array1(IEnumerable<Complex> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray1DComplex(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray1DBool Array(IEnumerable<bool> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray1DBool Array1(IEnumerable<bool> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray1DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray2DInt Array(IEnumerable<IEnumerable<int>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray1D<T> Array1<T>(IEnumerable<T> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray1D<T>(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray2DInt Array2(IEnumerable<IEnumerable<int>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray2DInt(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray2DDouble Array(IEnumerable<IEnumerable<double>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray2DDouble Array2(IEnumerable<IEnumerable<double>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray2DDouble(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray2DComplex Array(IEnumerable<IEnumerable<Complex>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray2DComplex Array2(IEnumerable<IEnumerable<Complex>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray2DComplex(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray2DBool Array(IEnumerable<IEnumerable<bool>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray2DBool Array2(IEnumerable<IEnumerable<bool>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray2DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray3DInt Array(IEnumerable<IEnumerable<IEnumerable<int>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray2D<T> Array2<T>(IEnumerable<IEnumerable<T>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray2D<T>(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray3DInt Array3(IEnumerable<IEnumerable<IEnumerable<int>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray3DInt(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray3DDouble Array(IEnumerable<IEnumerable<IEnumerable<double>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray3DDouble Array3(IEnumerable<IEnumerable<IEnumerable<double>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray3DDouble(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray3DComplex Array(IEnumerable<IEnumerable<IEnumerable<Complex>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray3DComplex Array3(IEnumerable<IEnumerable<IEnumerable<Complex>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray3DComplex(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray3DBool Array(IEnumerable<IEnumerable<IEnumerable<bool>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray3DBool Array3(IEnumerable<IEnumerable<IEnumerable<bool>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray3DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray4DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray3D<T> Array3<T>(IEnumerable<IEnumerable<IEnumerable<T>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray3D<T>(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray4DInt Array4(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray4DInt(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray4DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray4DDouble Array4(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray4DDouble(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray4DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray4DComplex Array4(IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray4DComplex(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray4DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray4DBool Array4(IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray4DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray5DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray4D<T> Array4<T>(IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        {
+            return new NdArray4D<T>(obj, copy, order);
+        }
+
+        [ DirectCall("array") ]
+        public static NdArray5DInt Array5(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray5DInt(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray5DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray5DDouble Array5(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray5DDouble(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray5DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray5DComplex Array5(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray5DComplex(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray5DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray5DBool Array5(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
             return new NdArray5DBool(obj, copy, order);
         }
 
         [ DirectCall("array") ]
-        public static NdArray6DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
+        public static NdArray5D<T> Array5<T>(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<T>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
         {
-            return new NdArray6DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray6DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray6DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray6DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray6DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray6DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray6DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray7DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray7DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray7DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray7DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray7DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray7DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray7DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray7DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray8DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray8DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray8DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray8DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray8DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray8DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray8DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray8DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray9DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray9DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray9DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray9DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray9DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray9DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray9DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray9DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray10DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray10DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray10DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray10DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray10DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray10DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray10DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray10DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray11DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray11DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray11DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray11DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray11DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray11DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray11DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray11DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray12DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray12DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray12DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray12DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray12DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray12DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray12DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray12DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray13DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray13DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray13DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray13DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray13DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray13DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray13DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray13DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray14DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray14DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray14DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray14DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray14DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray14DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray14DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray14DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray15DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray15DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray15DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray15DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray15DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray15DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray15DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray15DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray16DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray16DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray16DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray16DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray16DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray16DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray16DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray16DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray17DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray17DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray17DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray17DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray17DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray17DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray17DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray17DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray18DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray18DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray18DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray18DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray18DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray18DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray18DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray18DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray19DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray19DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray19DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray19DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray19DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray19DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray19DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray19DBool(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray20DInt Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray20DInt(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray20DDouble Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray20DDouble(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray20DComplex Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<Complex>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray20DComplex(obj, copy, order);
-        }
-
-        [ DirectCall("array") ]
-        public static NdArray20DBool Array(IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<IEnumerable<bool>>>>>>>>>>>>>>>>>>>> obj, bool copy = true, NumpyArrayOrder order = NumpyArrayOrder.K)
-        {
-            return new NdArray20DBool(obj, copy, order);
+            return new NdArray5D<T>(obj, copy, order);
         }
 
         /// <summary>
@@ -552,9 +583,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arcsin") ]
-        public static List<double> Asin(IList<double> x)
+        public static double Asin(double x)
         {
-            return x.MapToList(Math.Asin);
+            return Math.Asin(x);
         }
 
         /// <summary>
@@ -562,9 +593,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arcsin") ]
-        public static List<double> Asin(IEnumerable<double> x)
+        public static PyList<double> Asin(IList<double> x)
         {
-            return x.MapToList(Math.Asin);
+            return x.PyMap(value => Math.Asin(value));
         }
 
         /// <summary>
@@ -572,9 +603,189 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arcsin") ]
-        public static List<double> Asin(NdArray<double> x)
+        public static PyList<double> Asin(IEnumerable<double> x)
         {
-            return x.MapToList(Math.Asin);
+            return x.PyMap(value => Math.Asin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static NdArray1DDouble Asin(NdArray1DDouble x)
+        {
+            return x.Map(value => Math.Asin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<PyList<double>> Asin(IList<IList<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Asin(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<PyList<double>> Asin(IEnumerable<IEnumerable<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Asin(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static NdArray2DDouble Asin(NdArray2DDouble x)
+        {
+            return x.Map(value => Math.Asin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<PyList<PyList<double>>> Asin(IList<IList<IList<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Asin(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<PyList<PyList<double>>> Asin(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Asin(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static NdArray3DDouble Asin(NdArray3DDouble x)
+        {
+            return x.Map(value => Math.Asin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Asin(IList<IList<IList<IList<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Asin(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Asin(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Asin(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static NdArray4DDouble Asin(NdArray4DDouble x)
+        {
+            return x.Map(value => Math.Asin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<double> Asin(IList<int> x)
+        {
+            return x.PyMap(value => Math.Asin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<double> Asin(IEnumerable<int> x)
+        {
+            return x.PyMap(value => Math.Asin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<PyList<double>> Asin(IList<IList<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Asin(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<PyList<double>> Asin(IEnumerable<IEnumerable<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Asin(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<PyList<PyList<double>>> Asin(IList<IList<IList<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Asin(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<PyList<PyList<double>>> Asin(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Asin(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Asin(IList<IList<IList<IList<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Asin(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsin") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Asin(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Asin(value)))));
         }
 
         /// <summary>
@@ -582,9 +793,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arcsinh") ]
-        public static List<double> ASinh(IList<double> x)
+        public static double ASinh(double x)
         {
-            return x.MapToList(PyMath.ASinh);
+            return PyMath.ASinh(x);
         }
 
         /// <summary>
@@ -592,9 +803,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arcsinh") ]
-        public static List<double> ASinh(IEnumerable<double> x)
+        public static PyList<double> ASinh(IList<double> x)
         {
-            return x.MapToList(PyMath.ASinh);
+            return x.PyMap(value => PyMath.ASinh(value));
         }
 
         /// <summary>
@@ -602,9 +813,189 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arcsinh") ]
-        public static List<double> ASinh(NdArray<double> x)
+        public static PyList<double> ASinh(IEnumerable<double> x)
         {
-            return x.MapToList(PyMath.ASinh);
+            return x.PyMap(value => PyMath.ASinh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static NdArray1DDouble ASinh(NdArray1DDouble x)
+        {
+            return x.Map(value => PyMath.ASinh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<PyList<double>> ASinh(IList<IList<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => PyMath.ASinh(value)));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<PyList<double>> ASinh(IEnumerable<IEnumerable<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => PyMath.ASinh(value)));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static NdArray2DDouble ASinh(NdArray2DDouble x)
+        {
+            return x.Map(value => PyMath.ASinh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<PyList<PyList<double>>> ASinh(IList<IList<IList<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ASinh(value))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<PyList<PyList<double>>> ASinh(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ASinh(value))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static NdArray3DDouble ASinh(NdArray3DDouble x)
+        {
+            return x.Map(value => PyMath.ASinh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> ASinh(IList<IList<IList<IList<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ASinh(value)))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> ASinh(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ASinh(value)))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static NdArray4DDouble ASinh(NdArray4DDouble x)
+        {
+            return x.Map(value => PyMath.ASinh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<double> ASinh(IList<int> x)
+        {
+            return x.PyMap(value => PyMath.ASinh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<double> ASinh(IEnumerable<int> x)
+        {
+            return x.PyMap(value => PyMath.ASinh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<PyList<double>> ASinh(IList<IList<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => PyMath.ASinh(value)));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<PyList<double>> ASinh(IEnumerable<IEnumerable<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => PyMath.ASinh(value)));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<PyList<PyList<double>>> ASinh(IList<IList<IList<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ASinh(value))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<PyList<PyList<double>>> ASinh(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ASinh(value))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> ASinh(IList<IList<IList<IList<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ASinh(value)))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arcsinh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> ASinh(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ASinh(value)))));
         }
 
         /// <summary>
@@ -612,9 +1003,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arctan") ]
-        public static List<double> Atan(IList<double> x)
+        public static double Atan(double x)
         {
-            return x.MapToList(Math.Atan);
+            return Math.Atan(x);
         }
 
         /// <summary>
@@ -622,9 +1013,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arctan") ]
-        public static List<double> Atan(IEnumerable<double> x)
+        public static PyList<double> Atan(IList<double> x)
         {
-            return x.MapToList(Math.Atan);
+            return x.PyMap(value => Math.Atan(value));
         }
 
         /// <summary>
@@ -632,63 +1023,243 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arctan") ]
-        public static List<double> Atan(NdArray<double> x)
+        public static PyList<double> Atan(IEnumerable<double> x)
         {
-            return x.MapToList(Math.Atan);
+            return x.PyMap(value => Math.Atan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static NdArray1DDouble Atan(NdArray1DDouble x)
+        {
+            return x.Map(value => Math.Atan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<PyList<double>> Atan(IList<IList<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Atan(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<PyList<double>> Atan(IEnumerable<IEnumerable<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Atan(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static NdArray2DDouble Atan(NdArray2DDouble x)
+        {
+            return x.Map(value => Math.Atan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<PyList<PyList<double>>> Atan(IList<IList<IList<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Atan(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<PyList<PyList<double>>> Atan(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Atan(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static NdArray3DDouble Atan(NdArray3DDouble x)
+        {
+            return x.Map(value => Math.Atan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Atan(IList<IList<IList<IList<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Atan(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Atan(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Atan(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static NdArray4DDouble Atan(NdArray4DDouble x)
+        {
+            return x.Map(value => Math.Atan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<double> Atan(IList<int> x)
+        {
+            return x.PyMap(value => Math.Atan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<double> Atan(IEnumerable<int> x)
+        {
+            return x.PyMap(value => Math.Atan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<PyList<double>> Atan(IList<IList<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Atan(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<PyList<double>> Atan(IEnumerable<IEnumerable<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Atan(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<PyList<PyList<double>>> Atan(IList<IList<IList<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Atan(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<PyList<PyList<double>>> Atan(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Atan(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Atan(IList<IList<IList<IList<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Atan(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctan") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Atan(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Atan(value)))));
         }
 
         [ DirectCall("arctan2") ]
-        public static List<double> Atan2(IList<double> y, IList<double> x)
+        public static PyList<double> Atan2(IList<double> y, IList<double> x)
         {
-            return x.Zip(y, (a, b) => new {X = a, Y = b}).MapToList(q => Math.Atan2(q.Y, q.X));
+            return x.Zip(y, (a, b) => new {X = a, Y = b}).PyMap(q => Math.Atan2(q.Y, q.X));
         }
 
         [ DirectCall("arctan2") ]
-        public static List<double> Atan2(IEnumerable<double> y, IList<double> x)
+        public static PyList<double> Atan2(IEnumerable<double> y, IList<double> x)
         {
-            return x.Zip(y, (a, b) => new {X = a, Y = b}).MapToList(q => Math.Atan2(q.Y, q.X));
+            return x.Zip(y, (a, b) => new {X = a, Y = b}).PyMap(q => Math.Atan2(q.Y, q.X));
         }
 
         [ DirectCall("arctan2") ]
-        public static List<double> Atan2(NdArray<double> y, IList<double> x)
+        public static PyList<double> Atan2(NdArray<double> y, IList<double> x)
         {
-            return x.Zip(y.AsEnumerable(), (a, b) => new {X = a, Y = b}).MapToList(q => Math.Atan2(q.Y, q.X));
+            return x.Zip(y.AsEnumerable(), (a, b) => new {X = a, Y = b}).PyMap(q => Math.Atan2(q.Y, q.X));
         }
 
         [ DirectCall("arctan2") ]
-        public static List<double> Atan2(IList<double> y, IEnumerable<double> x)
+        public static PyList<double> Atan2(IList<double> y, IEnumerable<double> x)
         {
-            return x.Zip(y, (a, b) => new {X = a, Y = b}).MapToList(q => Math.Atan2(q.Y, q.X));
+            return x.Zip(y, (a, b) => new {X = a, Y = b}).PyMap(q => Math.Atan2(q.Y, q.X));
         }
 
         [ DirectCall("arctan2") ]
-        public static List<double> Atan2(IEnumerable<double> y, IEnumerable<double> x)
+        public static PyList<double> Atan2(IEnumerable<double> y, IEnumerable<double> x)
         {
-            return x.Zip(y, (a, b) => new {X = a, Y = b}).MapToList(q => Math.Atan2(q.Y, q.X));
+            return x.Zip(y, (a, b) => new {X = a, Y = b}).PyMap(q => Math.Atan2(q.Y, q.X));
         }
 
         [ DirectCall("arctan2") ]
-        public static List<double> Atan2(NdArray<double> y, IEnumerable<double> x)
+        public static PyList<double> Atan2(NdArray<double> y, IEnumerable<double> x)
         {
-            return x.Zip(y.AsEnumerable(), (a, b) => new {X = a, Y = b}).MapToList(q => Math.Atan2(q.Y, q.X));
+            return x.Zip(y.AsEnumerable(), (a, b) => new {X = a, Y = b}).PyMap(q => Math.Atan2(q.Y, q.X));
         }
 
         [ DirectCall("arctan2") ]
-        public static List<double> Atan2(IList<double> y, NdArray<double> x)
+        public static PyList<double> Atan2(IList<double> y, NdArray<double> x)
         {
-            return x.AsEnumerable().Zip(y, (a, b) => new {X = a, Y = b}).MapToList(q => Math.Atan2(q.Y, q.X));
+            return x.AsEnumerable().Zip(y, (a, b) => new {X = a, Y = b}).PyMap(q => Math.Atan2(q.Y, q.X));
         }
 
         [ DirectCall("arctan2") ]
-        public static List<double> Atan2(IEnumerable<double> y, NdArray<double> x)
+        public static PyList<double> Atan2(IEnumerable<double> y, NdArray<double> x)
         {
-            return x.AsEnumerable().Zip(y, (a, b) => new {X = a, Y = b}).MapToList(q => Math.Atan2(q.Y, q.X));
+            return x.AsEnumerable().Zip(y, (a, b) => new {X = a, Y = b}).PyMap(q => Math.Atan2(q.Y, q.X));
         }
 
         [ DirectCall("arctan2") ]
-        public static List<double> Atan2(NdArray<double> y, NdArray<double> x)
+        public static PyList<double> Atan2(NdArray<double> y, NdArray<double> x)
         {
-            return x.AsEnumerable().Zip(y.AsEnumerable(), (a, b) => new {X = a, Y = b}).MapToList(q => Math.Atan2(q.Y, q.X));
+            return x.AsEnumerable().Zip(y.AsEnumerable(), (a, b) => new {X = a, Y = b}).PyMap(q => Math.Atan2(q.Y, q.X));
         }
 
         /// <summary>
@@ -696,9 +1267,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arctanh") ]
-        public static List<double> ATanh(IList<double> x)
+        public static double ATanh(double x)
         {
-            return x.MapToList(PyMath.ATanh);
+            return PyMath.ATanh(x);
         }
 
         /// <summary>
@@ -706,9 +1277,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arctanh") ]
-        public static List<double> ATanh(IEnumerable<double> x)
+        public static PyList<double> ATanh(IList<double> x)
         {
-            return x.MapToList(PyMath.ATanh);
+            return x.PyMap(value => PyMath.ATanh(value));
         }
 
         /// <summary>
@@ -716,9 +1287,189 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("arctanh") ]
-        public static List<double> ATanh(NdArray<double> x)
+        public static PyList<double> ATanh(IEnumerable<double> x)
         {
-            return x.MapToList(PyMath.ATanh);
+            return x.PyMap(value => PyMath.ATanh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static NdArray1DDouble ATanh(NdArray1DDouble x)
+        {
+            return x.Map(value => PyMath.ATanh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<PyList<double>> ATanh(IList<IList<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => PyMath.ATanh(value)));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<PyList<double>> ATanh(IEnumerable<IEnumerable<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => PyMath.ATanh(value)));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static NdArray2DDouble ATanh(NdArray2DDouble x)
+        {
+            return x.Map(value => PyMath.ATanh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<PyList<PyList<double>>> ATanh(IList<IList<IList<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ATanh(value))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<PyList<PyList<double>>> ATanh(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ATanh(value))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static NdArray3DDouble ATanh(NdArray3DDouble x)
+        {
+            return x.Map(value => PyMath.ATanh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> ATanh(IList<IList<IList<IList<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ATanh(value)))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> ATanh(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ATanh(value)))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static NdArray4DDouble ATanh(NdArray4DDouble x)
+        {
+            return x.Map(value => PyMath.ATanh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<double> ATanh(IList<int> x)
+        {
+            return x.PyMap(value => PyMath.ATanh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<double> ATanh(IEnumerable<int> x)
+        {
+            return x.PyMap(value => PyMath.ATanh(value));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<PyList<double>> ATanh(IList<IList<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => PyMath.ATanh(value)));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<PyList<double>> ATanh(IEnumerable<IEnumerable<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => PyMath.ATanh(value)));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<PyList<PyList<double>>> ATanh(IList<IList<IList<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ATanh(value))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<PyList<PyList<double>>> ATanh(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ATanh(value))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> ATanh(IList<IList<IList<IList<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ATanh(value)))));
+        }
+
+        /// <summary>
+        /// Inverse hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("arctanh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> ATanh(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => PyMath.ATanh(value)))));
         }
 
         /// <summary>
@@ -726,9 +1477,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("cos") ]
-        public static List<double> Cos(IList<double> x)
+        public static double Cos(double x)
         {
-            return x.MapToList(Math.Cos);
+            return Math.Cos(x);
         }
 
         /// <summary>
@@ -736,9 +1487,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("cos") ]
-        public static List<double> Cos(IEnumerable<double> x)
+        public static PyList<double> Cos(IList<double> x)
         {
-            return x.MapToList(Math.Cos);
+            return x.PyMap(value => Math.Cos(value));
         }
 
         /// <summary>
@@ -746,9 +1497,189 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("cos") ]
-        public static List<double> Cos(NdArray<double> x)
+        public static PyList<double> Cos(IEnumerable<double> x)
         {
-            return x.MapToList(Math.Cos);
+            return x.PyMap(value => Math.Cos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static NdArray1DDouble Cos(NdArray1DDouble x)
+        {
+            return x.Map(value => Math.Cos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<PyList<double>> Cos(IList<IList<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Cos(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<PyList<double>> Cos(IEnumerable<IEnumerable<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Cos(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static NdArray2DDouble Cos(NdArray2DDouble x)
+        {
+            return x.Map(value => Math.Cos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<PyList<PyList<double>>> Cos(IList<IList<IList<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cos(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<PyList<PyList<double>>> Cos(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cos(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static NdArray3DDouble Cos(NdArray3DDouble x)
+        {
+            return x.Map(value => Math.Cos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Cos(IList<IList<IList<IList<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cos(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Cos(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cos(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static NdArray4DDouble Cos(NdArray4DDouble x)
+        {
+            return x.Map(value => Math.Cos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<double> Cos(IList<int> x)
+        {
+            return x.PyMap(value => Math.Cos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<double> Cos(IEnumerable<int> x)
+        {
+            return x.PyMap(value => Math.Cos(value));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<PyList<double>> Cos(IList<IList<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Cos(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<PyList<double>> Cos(IEnumerable<IEnumerable<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Cos(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<PyList<PyList<double>>> Cos(IList<IList<IList<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cos(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<PyList<PyList<double>>> Cos(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cos(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Cos(IList<IList<IList<IList<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cos(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric cosine element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cos") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Cos(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cos(value)))));
         }
 
         /// <summary>
@@ -756,9 +1687,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("cosh") ]
-        public static List<double> Cosh(IList<double> x)
+        public static double Cosh(double x)
         {
-            return x.MapToList(Math.Cosh);
+            return Math.Cosh(x);
         }
 
         /// <summary>
@@ -766,9 +1697,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("cosh") ]
-        public static List<double> Cosh(IEnumerable<double> x)
+        public static PyList<double> Cosh(IList<double> x)
         {
-            return x.MapToList(Math.Cosh);
+            return x.PyMap(value => Math.Cosh(value));
         }
 
         /// <summary>
@@ -776,105 +1707,537 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("cosh") ]
-        public static List<double> Cosh(NdArray<double> x)
+        public static PyList<double> Cosh(IEnumerable<double> x)
         {
-            return x.MapToList(Math.Cosh);
+            return x.PyMap(value => Math.Cosh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static NdArray1DDouble Cosh(NdArray1DDouble x)
+        {
+            return x.Map(value => Math.Cosh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<PyList<double>> Cosh(IList<IList<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Cosh(value)));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<PyList<double>> Cosh(IEnumerable<IEnumerable<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Cosh(value)));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static NdArray2DDouble Cosh(NdArray2DDouble x)
+        {
+            return x.Map(value => Math.Cosh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<PyList<PyList<double>>> Cosh(IList<IList<IList<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cosh(value))));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<PyList<PyList<double>>> Cosh(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cosh(value))));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static NdArray3DDouble Cosh(NdArray3DDouble x)
+        {
+            return x.Map(value => Math.Cosh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Cosh(IList<IList<IList<IList<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cosh(value)))));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Cosh(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cosh(value)))));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static NdArray4DDouble Cosh(NdArray4DDouble x)
+        {
+            return x.Map(value => Math.Cosh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<double> Cosh(IList<int> x)
+        {
+            return x.PyMap(value => Math.Cosh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<double> Cosh(IEnumerable<int> x)
+        {
+            return x.PyMap(value => Math.Cosh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<PyList<double>> Cosh(IList<IList<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Cosh(value)));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<PyList<double>> Cosh(IEnumerable<IEnumerable<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Cosh(value)));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<PyList<PyList<double>>> Cosh(IList<IList<IList<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cosh(value))));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<PyList<PyList<double>>> Cosh(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cosh(value))));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Cosh(IList<IList<IList<IList<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cosh(value)))));
+        }
+
+        /// <summary>
+        /// Hyperbolic cosine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("cosh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Cosh(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Cosh(value)))));
         }
 
         [ DirectCall("degrees") ]
-        public static List<double> Degrees(IList<double> x)
+        public static double Degrees(double x)
         {
             const double mul = 180.0 / Math.PI;
-            return x.MapToList(value => value * mul);
+            return x * mul;
         }
 
         [ DirectCall("degrees") ]
-        public static List<double> Degrees(IEnumerable<double> x)
+        public static PyList<double> Degrees(IList<double> x)
         {
             const double mul = 180.0 / Math.PI;
-            return x.MapToList(value => value * mul);
+            return x.PyMap(value => value * mul);
         }
 
         [ DirectCall("degrees") ]
-        public static List<double> Degrees(NdArray<double> x)
+        public static PyList<double> Degrees(IEnumerable<double> x)
         {
             const double mul = 180.0 / Math.PI;
-            return x.MapToList(value => value * mul);
+            return x.PyMap(value => value * mul);
+        }
+
+        [ DirectCall("degrees") ]
+        public static NdArray1DDouble Degrees(NdArray1DDouble x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.Map(value => value * mul);
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<PyList<double>> Degrees(IList<IList<double>> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(q1 => q1.PyMap(value => value * mul));
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<PyList<double>> Degrees(IEnumerable<IEnumerable<double>> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(q1 => q1.PyMap(value => value * mul));
+        }
+
+        [ DirectCall("degrees") ]
+        public static NdArray2DDouble Degrees(NdArray2DDouble x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.Map(value => value * mul);
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<PyList<PyList<double>>> Degrees(IList<IList<IList<double>>> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul)));
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<PyList<PyList<double>>> Degrees(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul)));
+        }
+
+        [ DirectCall("degrees") ]
+        public static NdArray3DDouble Degrees(NdArray3DDouble x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.Map(value => value * mul);
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Degrees(IList<IList<IList<IList<double>>>> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul))));
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Degrees(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul))));
+        }
+
+        [ DirectCall("degrees") ]
+        public static NdArray4DDouble Degrees(NdArray4DDouble x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.Map(value => value * mul);
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<double> Degrees(IList<int> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(value => value * mul);
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<double> Degrees(IEnumerable<int> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(value => value * mul);
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<PyList<double>> Degrees(IList<IList<int>> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(q1 => q1.PyMap(value => value * mul));
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<PyList<double>> Degrees(IEnumerable<IEnumerable<int>> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(q1 => q1.PyMap(value => value * mul));
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<PyList<PyList<double>>> Degrees(IList<IList<IList<int>>> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul)));
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<PyList<PyList<double>>> Degrees(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul)));
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Degrees(IList<IList<IList<IList<int>>>> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul))));
+        }
+
+        [ DirectCall("degrees") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Degrees(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            const double mul = 180.0 / Math.PI;
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul))));
         }
 
         [ DirectCall("hypot") ]
-        public static List<double> Hypot(IList<double> x, IList<double> y)
+        public static PyList<double> Hypot(IList<double> x, IList<double> y)
         {
-            return x.Zip(y, (a, b) => new {X = a, Y = b}).MapToList(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
+            return x.Zip(y, (a, b) => new {X = a, Y = b}).PyMap(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
         }
 
         [ DirectCall("hypot") ]
-        public static List<double> Hypot(IEnumerable<double> x, IList<double> y)
+        public static PyList<double> Hypot(IEnumerable<double> x, IList<double> y)
         {
-            return x.Zip(y, (a, b) => new {X = a, Y = b}).MapToList(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
+            return x.Zip(y, (a, b) => new {X = a, Y = b}).PyMap(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
         }
 
         [ DirectCall("hypot") ]
-        public static List<double> Hypot(NdArray<double> x, IList<double> y)
+        public static PyList<double> Hypot(NdArray<double> x, IList<double> y)
         {
-            return x.AsEnumerable().Zip(y, (a, b) => new {X = a, Y = b}).MapToList(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
+            return x.AsEnumerable().Zip(y, (a, b) => new {X = a, Y = b}).PyMap(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
         }
 
         [ DirectCall("hypot") ]
-        public static List<double> Hypot(IList<double> x, IEnumerable<double> y)
+        public static PyList<double> Hypot(IList<double> x, IEnumerable<double> y)
         {
-            return x.Zip(y, (a, b) => new {X = a, Y = b}).MapToList(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
+            return x.Zip(y, (a, b) => new {X = a, Y = b}).PyMap(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
         }
 
         [ DirectCall("hypot") ]
-        public static List<double> Hypot(IEnumerable<double> x, IEnumerable<double> y)
+        public static PyList<double> Hypot(IEnumerable<double> x, IEnumerable<double> y)
         {
-            return x.Zip(y, (a, b) => new {X = a, Y = b}).MapToList(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
+            return x.Zip(y, (a, b) => new {X = a, Y = b}).PyMap(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
         }
 
         [ DirectCall("hypot") ]
-        public static List<double> Hypot(NdArray<double> x, IEnumerable<double> y)
+        public static PyList<double> Hypot(NdArray<double> x, IEnumerable<double> y)
         {
-            return x.AsEnumerable().Zip(y, (a, b) => new {X = a, Y = b}).MapToList(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
+            return x.AsEnumerable().Zip(y, (a, b) => new {X = a, Y = b}).PyMap(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
         }
 
         [ DirectCall("hypot") ]
-        public static List<double> Hypot(IList<double> x, NdArray<double> y)
+        public static PyList<double> Hypot(IList<double> x, NdArray<double> y)
         {
-            return x.Zip(y.AsEnumerable(), (a, b) => new {X = a, Y = b}).MapToList(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
+            return x.Zip(y.AsEnumerable(), (a, b) => new {X = a, Y = b}).PyMap(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
         }
 
         [ DirectCall("hypot") ]
-        public static List<double> Hypot(IEnumerable<double> x, NdArray<double> y)
+        public static PyList<double> Hypot(IEnumerable<double> x, NdArray<double> y)
         {
-            return x.Zip(y.AsEnumerable(), (a, b) => new {X = a, Y = b}).MapToList(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
+            return x.Zip(y.AsEnumerable(), (a, b) => new {X = a, Y = b}).PyMap(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
         }
 
         [ DirectCall("hypot") ]
-        public static List<double> Hypot(NdArray<double> x, NdArray<double> y)
+        public static PyList<double> Hypot(NdArray<double> x, NdArray<double> y)
         {
-            return x.AsEnumerable().Zip(y.AsEnumerable(), (a, b) => new {X = a, Y = b}).MapToList(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
+            return x.AsEnumerable().Zip(y.AsEnumerable(), (a, b) => new {X = a, Y = b}).PyMap(q => Math.Sqrt(q.Y * q.Y + q.X * q.X));
         }
 
         [ DirectCall("radians") ]
-        public static List<double> Radians(IList<double> x)
+        public static double Radians(double x)
         {
             const double mul = Math.PI / 180.0;
-            return x.MapToList(value => value * mul);
+            return x * mul;
         }
 
         [ DirectCall("radians") ]
-        public static List<double> Radians(IEnumerable<double> x)
+        public static PyList<double> Radians(IList<double> x)
         {
             const double mul = Math.PI / 180.0;
-            return x.MapToList(value => value * mul);
+            return x.PyMap(value => value * mul);
         }
 
         [ DirectCall("radians") ]
-        public static List<double> Radians(NdArray<double> x)
+        public static PyList<double> Radians(IEnumerable<double> x)
         {
             const double mul = Math.PI / 180.0;
-            return x.AsEnumerable().MapToList(value => value * mul);
+            return x.PyMap(value => value * mul);
+        }
+
+        [ DirectCall("radians") ]
+        public static NdArray1DDouble Radians(NdArray1DDouble x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.Map(value => value * mul);
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<PyList<double>> Radians(IList<IList<double>> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(q1 => q1.PyMap(value => value * mul));
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<PyList<double>> Radians(IEnumerable<IEnumerable<double>> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(q1 => q1.PyMap(value => value * mul));
+        }
+
+        [ DirectCall("radians") ]
+        public static NdArray2DDouble Radians(NdArray2DDouble x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.Map(value => value * mul);
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<PyList<PyList<double>>> Radians(IList<IList<IList<double>>> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul)));
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<PyList<PyList<double>>> Radians(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul)));
+        }
+
+        [ DirectCall("radians") ]
+        public static NdArray3DDouble Radians(NdArray3DDouble x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.Map(value => value * mul);
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Radians(IList<IList<IList<IList<double>>>> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul))));
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Radians(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul))));
+        }
+
+        [ DirectCall("radians") ]
+        public static NdArray4DDouble Radians(NdArray4DDouble x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.Map(value => value * mul);
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<double> Radians(IList<int> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(value => value * mul);
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<double> Radians(IEnumerable<int> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(value => value * mul);
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<PyList<double>> Radians(IList<IList<int>> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(q1 => q1.PyMap(value => value * mul));
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<PyList<double>> Radians(IEnumerable<IEnumerable<int>> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(q1 => q1.PyMap(value => value * mul));
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<PyList<PyList<double>>> Radians(IList<IList<IList<int>>> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul)));
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<PyList<PyList<double>>> Radians(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul)));
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Radians(IList<IList<IList<IList<int>>>> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul))));
+        }
+
+        [ DirectCall("radians") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Radians(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            const double mul = Math.PI / 180.0;
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => value * mul))));
         }
 
         /// <summary>
@@ -882,9 +2245,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("sin") ]
-        public static List<double> Sin(IList<double> x)
+        public static double Sin(double x)
         {
-            return x.MapToList(Math.Sin);
+            return Math.Sin(x);
         }
 
         /// <summary>
@@ -892,9 +2255,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("sin") ]
-        public static List<double> Sin(IEnumerable<double> x)
+        public static PyList<double> Sin(IList<double> x)
         {
-            return x.MapToList(Math.Sin);
+            return x.PyMap(value => Math.Sin(value));
         }
 
         /// <summary>
@@ -902,9 +2265,189 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("sin") ]
-        public static List<double> Sin(NdArray<double> x)
+        public static PyList<double> Sin(IEnumerable<double> x)
         {
-            return x.MapToList(Math.Sin);
+            return x.PyMap(value => Math.Sin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static NdArray1DDouble Sin(NdArray1DDouble x)
+        {
+            return x.Map(value => Math.Sin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<PyList<double>> Sin(IList<IList<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Sin(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<PyList<double>> Sin(IEnumerable<IEnumerable<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Sin(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static NdArray2DDouble Sin(NdArray2DDouble x)
+        {
+            return x.Map(value => Math.Sin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<PyList<PyList<double>>> Sin(IList<IList<IList<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sin(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<PyList<PyList<double>>> Sin(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sin(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static NdArray3DDouble Sin(NdArray3DDouble x)
+        {
+            return x.Map(value => Math.Sin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Sin(IList<IList<IList<IList<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sin(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Sin(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sin(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static NdArray4DDouble Sin(NdArray4DDouble x)
+        {
+            return x.Map(value => Math.Sin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<double> Sin(IList<int> x)
+        {
+            return x.PyMap(value => Math.Sin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<double> Sin(IEnumerable<int> x)
+        {
+            return x.PyMap(value => Math.Sin(value));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<PyList<double>> Sin(IList<IList<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Sin(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<PyList<double>> Sin(IEnumerable<IEnumerable<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Sin(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<PyList<PyList<double>>> Sin(IList<IList<IList<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sin(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<PyList<PyList<double>>> Sin(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sin(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Sin(IList<IList<IList<IList<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sin(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sin") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Sin(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sin(value)))));
         }
 
         /// <summary>
@@ -912,9 +2455,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("sinh") ]
-        public static List<double> Sinh(IList<double> x)
+        public static double Sinh(double x)
         {
-            return x.MapToList(Math.Sinh);
+            return Math.Sinh(x);
         }
 
         /// <summary>
@@ -922,9 +2465,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("sinh") ]
-        public static List<double> Sinh(IEnumerable<double> x)
+        public static PyList<double> Sinh(IList<double> x)
         {
-            return x.MapToList(Math.Sinh);
+            return x.PyMap(value => Math.Sinh(value));
         }
 
         /// <summary>
@@ -932,9 +2475,189 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("sinh") ]
-        public static List<double> Sinh(NdArray<double> x)
+        public static PyList<double> Sinh(IEnumerable<double> x)
         {
-            return x.MapToList(Math.Sinh);
+            return x.PyMap(value => Math.Sinh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static NdArray1DDouble Sinh(NdArray1DDouble x)
+        {
+            return x.Map(value => Math.Sinh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<PyList<double>> Sinh(IList<IList<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Sinh(value)));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<PyList<double>> Sinh(IEnumerable<IEnumerable<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Sinh(value)));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static NdArray2DDouble Sinh(NdArray2DDouble x)
+        {
+            return x.Map(value => Math.Sinh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<PyList<PyList<double>>> Sinh(IList<IList<IList<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sinh(value))));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<PyList<PyList<double>>> Sinh(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sinh(value))));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static NdArray3DDouble Sinh(NdArray3DDouble x)
+        {
+            return x.Map(value => Math.Sinh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Sinh(IList<IList<IList<IList<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sinh(value)))));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Sinh(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sinh(value)))));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static NdArray4DDouble Sinh(NdArray4DDouble x)
+        {
+            return x.Map(value => Math.Sinh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<double> Sinh(IList<int> x)
+        {
+            return x.PyMap(value => Math.Sinh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<double> Sinh(IEnumerable<int> x)
+        {
+            return x.PyMap(value => Math.Sinh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<PyList<double>> Sinh(IList<IList<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Sinh(value)));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<PyList<double>> Sinh(IEnumerable<IEnumerable<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Sinh(value)));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<PyList<PyList<double>>> Sinh(IList<IList<IList<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sinh(value))));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<PyList<PyList<double>>> Sinh(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sinh(value))));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Sinh(IList<IList<IList<IList<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sinh(value)))));
+        }
+
+        /// <summary>
+        /// Hyperbolic sine, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("sinh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Sinh(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Sinh(value)))));
         }
 
         /// <summary>
@@ -942,9 +2665,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("tan") ]
-        public static List<double> Tan(IList<double> x)
+        public static double Tan(double x)
         {
-            return x.MapToList(Math.Tan);
+            return Math.Tan(x);
         }
 
         /// <summary>
@@ -952,9 +2675,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("tan") ]
-        public static List<double> Tan(IEnumerable<double> x)
+        public static PyList<double> Tan(IList<double> x)
         {
-            return x.MapToList(Math.Tan);
+            return x.PyMap(value => Math.Tan(value));
         }
 
         /// <summary>
@@ -962,9 +2685,189 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("tan") ]
-        public static List<double> Tan(NdArray<double> x)
+        public static PyList<double> Tan(IEnumerable<double> x)
         {
-            return x.MapToList(Math.Tan);
+            return x.PyMap(value => Math.Tan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static NdArray1DDouble Tan(NdArray1DDouble x)
+        {
+            return x.Map(value => Math.Tan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<PyList<double>> Tan(IList<IList<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Tan(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<PyList<double>> Tan(IEnumerable<IEnumerable<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Tan(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static NdArray2DDouble Tan(NdArray2DDouble x)
+        {
+            return x.Map(value => Math.Tan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<PyList<PyList<double>>> Tan(IList<IList<IList<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tan(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<PyList<PyList<double>>> Tan(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tan(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static NdArray3DDouble Tan(NdArray3DDouble x)
+        {
+            return x.Map(value => Math.Tan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Tan(IList<IList<IList<IList<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tan(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Tan(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tan(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static NdArray4DDouble Tan(NdArray4DDouble x)
+        {
+            return x.Map(value => Math.Tan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<double> Tan(IList<int> x)
+        {
+            return x.PyMap(value => Math.Tan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<double> Tan(IEnumerable<int> x)
+        {
+            return x.PyMap(value => Math.Tan(value));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<PyList<double>> Tan(IList<IList<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Tan(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<PyList<double>> Tan(IEnumerable<IEnumerable<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Tan(value)));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<PyList<PyList<double>>> Tan(IList<IList<IList<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tan(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<PyList<PyList<double>>> Tan(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tan(value))));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Tan(IList<IList<IList<IList<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tan(value)))));
+        }
+
+        /// <summary>
+        /// Trigonometric tangent element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tan") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Tan(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tan(value)))));
         }
 
         /// <summary>
@@ -972,9 +2875,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("tanh") ]
-        public static List<double> Tanh(IList<double> x)
+        public static double Tanh(double x)
         {
-            return x.MapToList(Math.Tanh);
+            return Math.Tanh(x);
         }
 
         /// <summary>
@@ -982,9 +2885,9 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("tanh") ]
-        public static List<double> Tanh(IEnumerable<double> x)
+        public static PyList<double> Tanh(IList<double> x)
         {
-            return x.MapToList(Math.Tanh);
+            return x.PyMap(value => Math.Tanh(value));
         }
 
         /// <summary>
@@ -992,9 +2895,189 @@ namespace Lang.Python.Numpy
         /// </summary>
         /// <param name="x"></param>
         [ DirectCall("tanh") ]
-        public static List<double> Tanh(NdArray<double> x)
+        public static PyList<double> Tanh(IEnumerable<double> x)
         {
-            return x.MapToList(Math.Tanh);
+            return x.PyMap(value => Math.Tanh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static NdArray1DDouble Tanh(NdArray1DDouble x)
+        {
+            return x.Map(value => Math.Tanh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<PyList<double>> Tanh(IList<IList<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Tanh(value)));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<PyList<double>> Tanh(IEnumerable<IEnumerable<double>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Tanh(value)));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static NdArray2DDouble Tanh(NdArray2DDouble x)
+        {
+            return x.Map(value => Math.Tanh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<PyList<PyList<double>>> Tanh(IList<IList<IList<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tanh(value))));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<PyList<PyList<double>>> Tanh(IEnumerable<IEnumerable<IEnumerable<double>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tanh(value))));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static NdArray3DDouble Tanh(NdArray3DDouble x)
+        {
+            return x.Map(value => Math.Tanh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Tanh(IList<IList<IList<IList<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tanh(value)))));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Tanh(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tanh(value)))));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static NdArray4DDouble Tanh(NdArray4DDouble x)
+        {
+            return x.Map(value => Math.Tanh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<double> Tanh(IList<int> x)
+        {
+            return x.PyMap(value => Math.Tanh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<double> Tanh(IEnumerable<int> x)
+        {
+            return x.PyMap(value => Math.Tanh(value));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<PyList<double>> Tanh(IList<IList<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Tanh(value)));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<PyList<double>> Tanh(IEnumerable<IEnumerable<int>> x)
+        {
+            return x.PyMap(q1 => q1.PyMap(value => Math.Tanh(value)));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<PyList<PyList<double>>> Tanh(IList<IList<IList<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tanh(value))));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<PyList<PyList<double>>> Tanh(IEnumerable<IEnumerable<IEnumerable<int>>> x)
+        {
+            return x.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tanh(value))));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Tanh(IList<IList<IList<IList<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tanh(value)))));
+        }
+
+        /// <summary>
+        /// Hyperbolic tangent, element-wise
+        /// </summary>
+        /// <param name="x"></param>
+        [ DirectCall("tanh") ]
+        public static PyList<PyList<PyList<PyList<double>>>> Tanh(IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> x)
+        {
+            return x.PyMap(q3 => q3.PyMap(q2 => q2.PyMap(q1 => q1.PyMap(value => Math.Tanh(value)))));
         }
 
     }

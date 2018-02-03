@@ -225,7 +225,7 @@ namespace Cs2Py.Compilation
 
             public GenericTypeName GetGenericTypeName()
             {
-                var a          = Args.MapToList(q => q.GetGenericTypeName());
+                PyList<GenericTypeName> a          = Args.PyMap(q => q.GetGenericTypeName());
                 var declaredin = DeclaredIn?.GetGenericTypeName();
                 return new GenericTypeName(Name.Replace(" ", ""), a.ToArray())
                 {
