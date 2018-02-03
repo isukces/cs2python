@@ -31,14 +31,9 @@ namespace Cs2Py.Compilation
                 return;
             style.CurrentNamespace = ns;
             try
-            {
-                if (ns.IsRoot)
-                    writer.OpenLn("namespace {");
-                else
-                    writer.OpenLnF("namespace {0} {{", ns.Name.Substring(1));
+            {               
                 foreach (var cl in inNamespace)
                     cl.Emit(emiter, writer, style);
-                writer.CloseLn("}");
             }
             finally
             {

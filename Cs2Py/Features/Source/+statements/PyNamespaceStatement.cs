@@ -23,12 +23,7 @@ namespace Cs2Py.Source
 
         public void Emit(PySourceCodeEmiter emiter, PySourceCodeWriter writer, PyEmitStyle style)
         {
-            if (Name.IsRoot)
-                writer.OpenLn("namespace {");
-            else
-                writer.OpenLnF("namespace {0} {{", Name);
             Code.Emit(emiter, writer, style);
-            writer.CloseLn("}");
         }
 
         public IEnumerable<ICodeRequest> GetCodeRequests()
