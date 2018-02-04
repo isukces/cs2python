@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -25,10 +24,10 @@ namespace Cs2Py.CodeVisitors
 
         private static IValue _Make_DotnetMethodCall(MethodBase mi, IValue                targetObject,
             FunctionArgument[]                                  functionArguments, Type[] genericTypes)
-        {          
+        {
             FunctionArgument[] ResolveExtensionMethod()
             {
-                if (!(mi is MethodInfo methodInfo) || !methodInfo.IsExtensionMethod()) 
+                if (!(mi is MethodInfo methodInfo) || !methodInfo.IsExtensionMethod())
                     return functionArguments;
                 if (targetObject == null)
                     throw new NotSupportedException();
@@ -39,8 +38,6 @@ namespace Cs2Py.CodeVisitors
                 list.Insert(0, fa);
                 return list.ToArray();
             }
-
-          
 
             if (mi == null)
                 throw new ArgumentNullException(nameof(mi));
@@ -56,10 +53,9 @@ namespace Cs2Py.CodeVisitors
                     genericTypes = genericArguments;
                 if (genericTypes == null || genericTypes.Length != genericArguments.Length)
                 {
-                    var a = new GenericTypesResolver(mi, functionArguments);
+                    var a        = new GenericTypesResolver(mi, functionArguments);
                     genericTypes = a.Find();
-                  
-                }                
+                }
             }
             else
             {
@@ -94,22 +90,23 @@ namespace Cs2Py.CodeVisitors
             return result;
         }
 
-        // Private Methods 
-        protected override IValue VisitImplicitElementAccess(ImplicitElementAccessSyntax implicitElementAccessSyntax)
-        {
-
-            var arguments = implicitElementAccessSyntax.ArgumentList.Arguments;
-            var conv = arguments.PyMap(q =>
-            {
-                var value = (FunctionArgument)VisitArgument(q);
-                return value;
-            });
-            return new FunctionArguments_PseudoValue(conv.ToArray());
-        }
-
         private static QualifiedNameVisitor.R _Name(NameSyntax node)
         {
             return new QualifiedNameVisitor().Visit(node);
+        }
+
+        private static string SafeTypeToString(Type q)
+        {
+            try
+            {
+                return q.FullName;
+            }
+            catch
+            {
+                return q.Name;
+            }
+
+            ;
         }
 
         private static IValue Simplify(IValue src)
@@ -166,7 +163,7 @@ namespace Cs2Py.CodeVisitors
             return Simplify(tmp);
         }
 
-        
+
         protected override IValue VisitAddAssignmentExpression([NotNull] AssignmentExpressionSyntax node)
         {
             return internalVisit_AssignWithPrefix(node, "+");
@@ -189,7 +186,7 @@ namespace Cs2Py.CodeVisitors
             //if (eti.Type.ToString().Contains("Date"))
             //    System.Diagnostics.Debug.WriteLine("{0} => {1}, {2}", eti.Type, eti.ConvertedType, eti.ImplicitConversion);
             var g                = node.RefOrOutKeyword.ValueText;
-            var name = node.NameColon?.Name?.Identifier.Text;
+            var name             = node.NameColon?.Name?.Identifier.Text;
             var functionArgument = new FunctionArgument(g, v, name);
             return Simplify(functionArgument);
         }
@@ -232,20 +229,6 @@ namespace Cs2Py.CodeVisitors
 
             var type = GetType().MakeArrayType(1);
             return new ArrayCreateExpression(type, tmp);
-        }
-
-        private static string SafeTypeToString(Type q)
-        {
-            try
-            {
-                return q.FullName;
-            }
-            catch
-            {
-                return q.Name;
-            }
-
-            ;
         }
 
         protected override IValue VisitArrayType(ArrayTypeSyntax node)
@@ -548,6 +531,18 @@ namespace Cs2Py.CodeVisitors
             return Visit(node.Initializer);
         }
 
+        // Private Methods 
+        protected override IValue VisitImplicitElementAccess(ImplicitElementAccessSyntax implicitElementAccessSyntax)
+        {
+            var arguments = implicitElementAccessSyntax.ArgumentList.Arguments;
+            var conv      = arguments.PyMap(q =>
+            {
+                var value = (FunctionArgument)VisitArgument(q);
+                return value;
+            });
+            return new FunctionArguments_PseudoValue(conv.ToArray());
+        }
+
         protected override IValue VisitInvocationExpression(InvocationExpressionSyntax node)
         {
             // var si = ModelExtensions.GetSymbolInfo(context.RoslynModel, node);
@@ -656,6 +651,11 @@ namespace Cs2Py.CodeVisitors
         protected override IValue VisitModuloExpression(BinaryExpressionSyntax node)
         {
             return internalVisit_BinaryExpressionSyntax(node, "%");
+        }
+
+        protected override IValue VisitMultiplyAssignmentExpression(AssignmentExpressionSyntax node)
+        {
+            return internalVisit_AssignWithPrefix(node, "*");
         }
 
         protected override IValue VisitMultiplyExpression(BinaryExpressionSyntax node)
@@ -834,7 +834,7 @@ namespace Cs2Py.CodeVisitors
             if (node == null) throw new ArgumentNullException(nameof(node));
             return internalVisit_AssignWithPrefix(node, string.Empty);
         }
- 
+
 
         protected override IValue VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
         {
@@ -1101,7 +1101,8 @@ namespace Cs2Py.CodeVisitors
             return a;
         }
 
-        private IValue internalVisit_AssignWithPrefix([NotNull]AssignmentExpressionSyntax node, string optionalOperator)
+        private IValue internalVisit_AssignWithPrefix([NotNull] AssignmentExpressionSyntax node,
+            string                                                                         optionalOperator)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
@@ -1113,7 +1114,7 @@ namespace Cs2Py.CodeVisitors
             var a = new CsharpAssignExpression(l, r, optionalOperator);
             return Simplify(a);
         }
- 
+
         private IValue InternalVisitTextIdentifier(string identifier)
         {
             var t = context.MatchTypes(identifier, 0);

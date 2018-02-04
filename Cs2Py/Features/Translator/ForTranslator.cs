@@ -47,15 +47,15 @@ namespace Cs2Py.Translator
                                     if (controlVariable.Equals(b.Left))
                                         return isMinus ? Minus(b.Right) : b.Right;
                                     if (controlVariable.Equals(b.Right))
-                                    {
-                                        if (!isMinus) return b.Left;
-                                    }
+                                        if (!isMinus)
+                                            return b.Left;
                                 }
                             }
                         }
-                            break;                                
+                            break;
                     }
-                    break;                 
+
+                    break;
             }
 
             return null;
@@ -94,6 +94,64 @@ namespace Cs2Py.Translator
             }
 
             return null;
+        }
+
+        /// <summary>
+        ///     try to resolve simple case like for(int i=0; i<10; i++)
+        /// </summary>
+        private static IPyStatement[] TrySimpleForLoop(
+            PyAssignExpression[] pyDeclarations,
+            IPyStatement[]       incrementors,
+            IPyValue             condition,
+            IPyStatement         statement)
+        {
+            if (pyDeclarations.Length != 1 || incrementors.Length != 1)
+                return null;
+            var dec = pyDeclarations[0];
+            if (!(dec.Left is PyVariableExpression controlVariable))
+                return null;
+            if (!(condition is PyBinaryOperatorExpression binCondition)) return null;
+            binCondition = VariableOnLeft(binCondition, controlVariable.VariableName);
+
+            var loopIncrement = FindIncrement(controlVariable, incrementors[0]);
+            if (loopIncrement == null)
+                return null;
+
+            var loopStart = pyDeclarations[0].Right;
+
+            IPyStatement[] Q(object incrementValue)
+            {
+                var range          = new PyMethodCallExpression("range");
+                var isOneIncrement = ValueHelper.EqualsNumericOne(incrementValue) ?? false;
+                if (!IsConstZero(loopStart) || !isOneIncrement)
+                    range.Arguments.Add(new PyMethodInvokeValue(loopStart));
+                range.Arguments.Add(new PyMethodInvokeValue(binCondition.Right));
+                if (!isOneIncrement)
+                    range.Arguments.Add(
+                        new PyMethodInvokeValue(new PyConstValue(incrementValue)));
+                var foreachStatement =
+                    new PyForEachStatement(controlVariable.VariableName, range, statement);
+                return new IPyStatement[] {foreachStatement};
+            }
+
+            if (loopIncrement is PyConstValue constLoopIncrement)
+                switch (binCondition.Operator)
+                {
+                    case "<":
+                    {
+                        if (ValueHelper.IsGreaterThanZero(constLoopIncrement.Value) ?? false)
+                            return Q(constLoopIncrement.Value);
+                    }
+                        break;
+                    case ">":
+                    {
+                        if (ValueHelper.IsLowerThanZero(constLoopIncrement.Value) ?? false)
+                            return Q(constLoopIncrement.Value);
+                    }
+                        break;
+                }
+            var result = new PyForStatement(pyDeclarations.ToArray(), condition, statement, incrementors);
+            return new IPyStatement[] {result};
         }
 
         private static PyBinaryOperatorExpression VariableOnLeft(PyBinaryOperatorExpression e, string name)
@@ -135,56 +193,21 @@ namespace Cs2Py.Translator
             var candidate       = TrySimpleForLoop(pyDeclarationsA, incrementors, condition, statement);
             if (candidate != null)
                 return candidate;
+            // convert to while loop
+            {
+                var s = new List<IPyStatement>();
+                foreach (var i in pyDeclarationsA)
+                    s.Add(new PyExpressionStatement(i));
 
-            throw new NotImplementedException();
-            // var result = new PyForStatement(pyDeclarationsA, condition, statement, incrementors);
-            // return MakeArray(result);
-        }
+                var block = new PyCodeBlock();
+                block.Statements.Add(statement);
+                foreach (var i in incrementors)
+                    block.Statements.Add(i);
 
-        /// <summary>
-        ///     try to resolve simple case like for(int i=0; i<10; i++)
-        /// </summary>
-        private IPyStatement[] TrySimpleForLoop(
-            PyAssignExpression[] pyDeclarations,
-            IPyStatement[]       incrementors,
-            IPyValue             condition,
-            IPyStatement         statement)
-        {
-            if (pyDeclarations.Length != 1 || incrementors.Length != 1)
-                return null;
-            var dec = pyDeclarations[0];
-            if (!(dec.Left is PyVariableExpression controlVariable))
-                return null;
-            if (!(condition is PyBinaryOperatorExpression binCondition)) return null;
-            binCondition = VariableOnLeft(binCondition, controlVariable.VariableName);
-
-            var loopIncrement = FindIncrement(controlVariable, incrementors[0]);
-            if (loopIncrement == null)
-                return null;
-
-            var loopStart = pyDeclarations[0].Right;
-
-            // var isLessOrEqual = binCondition.Operator == "<=";
-            if (binCondition.Operator == "<")
-                if (loopIncrement is PyConstValue constLoopIncrement)
-                {
-                    var range = new PyMethodCallExpression("range");
-                    if (ValueHelper.IsGreaterThanZero(constLoopIncrement.Value) ?? false)
-                    {
-                        var isOneIncrement = ValueHelper.EqualsNumericOne(constLoopIncrement.Value) ?? false;
-                        if (!IsConstZero(loopStart) || !isOneIncrement)
-                            range.Arguments.Add(new PyMethodInvokeValue(loopStart));
-                        range.Arguments.Add(new PyMethodInvokeValue(binCondition.Right));
-                        if (!isOneIncrement)
-                            range.Arguments.Add(
-                                new PyMethodInvokeValue(new PyConstValue(constLoopIncrement.Value)));
-                        var foreachStatement = new PyForEachStatement(controlVariable.VariableName, range, statement);
-                        return new IPyStatement[] {foreachStatement};
-                    }
-                }
-
-            var result = new PyForStatement(pyDeclarations.ToArray(), condition, statement, incrementors);
-            return new IPyStatement[] {result};
+                var wl = new PyWhileStatement(condition, block);
+                s.Add(wl);
+                return s.ToArray();
+            }
         }
 
         private readonly IStatementTranslator _translator;

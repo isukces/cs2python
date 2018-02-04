@@ -174,22 +174,125 @@ class DemoClass:
                 Assert.Equal(result.Value, expected);
             }
 
-            TestExpr(new PyIncrementDecrementExpression(variable, true,  false),  1);
-            TestExpr(new PyIncrementDecrementExpression(variable, false, false),  -1);
-            
+            TestExpr(new PyIncrementDecrementExpression(variable, true,  false), 1);
+            TestExpr(new PyIncrementDecrementExpression(variable, false, false), -1);
+
             TestExpr(new PyAssignExpression(variable, new PyConstValue(3),   "+"), 3);
             TestExpr(new PyAssignExpression(variable, new PyConstValue(3.7), "+"), 3.7);
             TestExpr(new PyAssignExpression(variable, new PyConstValue(3),   "-"), -3);
             TestExpr(new PyAssignExpression(variable, new PyConstValue(3.7), "-"), -3.7);
-            
-            
-            TestExpr(new PyAssignExpression(variable, new PyBinaryOperatorExpression("+", variable, new PyConstValue(3))), 3);
-            TestExpr(new PyAssignExpression(variable, new PyBinaryOperatorExpression("+", variable, new PyConstValue(3.7))), 3.7);
-            TestExpr(new PyAssignExpression(variable, new PyBinaryOperatorExpression("+", new PyConstValue(3), variable)),   3);
-            TestExpr(new PyAssignExpression(variable, new PyBinaryOperatorExpression("+", new PyConstValue(3.7), variable)), 3.7);
-            
-            TestExpr(new PyAssignExpression(variable, new PyBinaryOperatorExpression("-", variable, new PyConstValue(3))),   -3);
-            TestExpr(new PyAssignExpression(variable, new PyBinaryOperatorExpression("-", variable, new PyConstValue(3.7))), -3.7);
+
+            TestExpr(
+                new PyAssignExpression(variable, new PyBinaryOperatorExpression("+", variable, new PyConstValue(3))),
+                3);
+            TestExpr(
+                new PyAssignExpression(variable, new PyBinaryOperatorExpression("+", variable, new PyConstValue(3.7))),
+                3.7);
+            TestExpr(
+                new PyAssignExpression(variable, new PyBinaryOperatorExpression("+", new PyConstValue(3), variable)),
+                3);
+            TestExpr(
+                new PyAssignExpression(variable, new PyBinaryOperatorExpression("+", new PyConstValue(3.7), variable)),
+                3.7);
+
+            TestExpr(
+                new PyAssignExpression(variable, new PyBinaryOperatorExpression("-", variable, new PyConstValue(3))),
+                -3);
+            TestExpr(
+                new PyAssignExpression(variable, new PyBinaryOperatorExpression("-", variable, new PyConstValue(3.7))),
+                -3.7);
+        }
+
+        [Fact]
+        public void T06_Should_convert_reversed_for_loop()
+        {
+            var cs       = @"
+using System;
+using Lang.Python;
+
+namespace Demo01
+{
+    [IgnoreNamespaceAttribute]
+    public class DemoClass
+    {
+        public static void Test()
+        {
+            for(int i=10; i> 0; i--)
+                Console.WriteLine(i);
+        }
+    }
+}
+";
+            var expected = @"
+class DemoClass:
+    @staticmethod
+    def Test(cls):
+        for i in range(10, 0, -1):
+            print(i)    
+";
+            CheckTranslation(cs, new Info(expected));
+        }
+
+        [Fact]
+        public void T07_Should_convert_reversed_for_loop_with_minus_2_step()
+        {
+            var cs       = @"
+using System;
+using Lang.Python;
+
+namespace Demo01
+{
+    [IgnoreNamespaceAttribute]
+    public class DemoClass
+    {
+        public static void Test()
+        {
+            for(int i=10; i> 0; i-=2)
+                Console.WriteLine(i);
+        }
+    }
+}
+";
+            var expected = @"
+class DemoClass:
+    @staticmethod
+    def Test(cls):
+        for i in range(10, 0, -2):
+            print(i)    
+";
+            CheckTranslation(cs, new Info(expected));
+        }
+        
+        [Fact]
+        public void T08_Should_convert_for_loop_to_while()
+        {
+            var cs       = @"
+using System;
+using Lang.Python;
+
+namespace Demo01
+{
+    [IgnoreNamespaceAttribute]
+    public class DemoClass
+    {
+        public static void Test()
+        {
+            for(int i=1; i<10; i*=2)
+                Console.WriteLine(i);
+        }
+    }
+}
+";
+            var expected = @"
+class DemoClass:
+    @staticmethod
+    def Test(cls):
+        i = 1
+        while(i < 10):
+            print(i)
+            i *= 2    
+";
+            CheckTranslation(cs, new Info(expected));
         }
     }
 }

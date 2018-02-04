@@ -67,6 +67,7 @@ namespace Cs2Py.Source
                         ? true
                         : Statements == null || !(Statements.Count == 1);
 
+            brack = false;
             if (Statements != null && Statements.Count == 1 &&
                 bracketStyle == ShowBracketsEnum.IfManyItems_OR_IfStatement)
                 if (Statements[0] is PyIfStatement)

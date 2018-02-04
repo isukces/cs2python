@@ -21,10 +21,9 @@ namespace Cs2Py.CodeVisitors
             }
         }
     }
-    public class CodeVisitor<T>:CodeVisitor
-    {
-    
 
+    public class CodeVisitor<T> : CodeVisitor
+    {
         public virtual T Visit(SyntaxNode node)
         {
             if (node == null)
@@ -385,17 +384,11 @@ namespace Cs2Py.CodeVisitors
                     return VisitUsingStatement(node as UsingStatementSyntax);
                 case SyntaxKind.ImplicitElementAccess:
                     return VisitImplicitElementAccess(node as ImplicitElementAccessSyntax);
+                case SyntaxKind.MultiplyAssignmentExpression:
+                    return VisitMultiplyAssignmentExpression(node as AssignmentExpressionSyntax);
                 default:
                     throw new NotSupportedException($"Add {GetType()} => {node.Kind()},{node.GetType().Name}");
             }
-        }
-
-        protected virtual T VisitImplicitElementAccess(ImplicitElementAccessSyntax implicitElementAccessSyntax)
-        {
-            if (throwNotImplementedException)
-                throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}",
-                    nameof(VisitImplicitElementAccess), GetType().FullName));
-            return default(T);
         }
 
         protected virtual T VisitAccessorList(AccessorListSyntax node)
@@ -1060,6 +1053,14 @@ namespace Cs2Py.CodeVisitors
             if (throwNotImplementedException)
                 throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}",
                     "VisitImplicitArrayCreationExpression", GetType().FullName));
+            return default(T);
+        }
+
+        protected virtual T VisitImplicitElementAccess(ImplicitElementAccessSyntax implicitElementAccessSyntax)
+        {
+            if (throwNotImplementedException)
+                throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}",
+                    nameof(VisitImplicitElementAccess), GetType().FullName));
             return default(T);
         }
 
@@ -1811,6 +1812,14 @@ namespace Cs2Py.CodeVisitors
             if (throwNotImplementedException)
                 throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}",
                     "VisitXmlText", GetType().FullName));
+            return default(T);
+        }
+
+        protected virtual T VisitMultiplyAssignmentExpression(AssignmentExpressionSyntax node)
+        {
+            if (throwNotImplementedException)
+                throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}",
+                    nameof(VisitMultiplyAssignmentExpression), GetType().FullName));
             return default(T);
         }
 

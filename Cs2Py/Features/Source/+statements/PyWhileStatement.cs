@@ -21,7 +21,7 @@ namespace Cs2Py.Source
         public override void Emit(PySourceCodeEmiter emiter, PySourceCodeWriter writer, PyEmitStyle style)
         {
             style      = style ?? new PyEmitStyle();
-            var header = string.Format("while({0})", Condition.GetPyCode(style));
+            var header = string.Format("while({0}):", Condition.GetPyCode(style));
             EmitHeaderStatement(emiter, writer, style, header, Statement);
         }
 
