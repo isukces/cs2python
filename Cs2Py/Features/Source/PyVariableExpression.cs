@@ -1,10 +1,44 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cs2Py.Emit;
 
 namespace Cs2Py.Source
 {
-    public class PyVariableExpression : PyValueBase
+    public class PyVariableExpression : PyValueBase, IEquatable<PyVariableExpression>
     {
+        public bool Equals(PyVariableExpression other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return string.Equals(_variableName, other._variableName) && Kind == other.Kind;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((PyVariableExpression)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_variableName != null ? _variableName.GetHashCode() : 0) * 397) ^ (int)Kind;
+            }
+        }
+
+        public static bool operator ==(PyVariableExpression left, PyVariableExpression right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(PyVariableExpression left, PyVariableExpression right)
+        {
+            return !Equals(left, right);
+        }
+
         /// <summary>
         ///     Tworzy instancję obiektu
         ///     <param name="variableName"></param>

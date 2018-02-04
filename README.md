@@ -26,6 +26,18 @@ class Demo:
         self._protectedField = 2
         self.__privateField = i
 ```
+## For loop support
+
+Cs2Python can automatically convert c# for loop into python for loop (similar to c# foreach loop).
+```csharp
+for(int i=0; i< 10; i++)
+    Console.WriteLine(i);
+```
+is converted into
+```python
+for i in range(10):
+    print(i)   
+```
 ## Numpy support
 
 In order to simulate Numpy module we can use C# classes from `Lang.Python.Numpy` namespace. I.e.

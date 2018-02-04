@@ -36,24 +36,16 @@ namespace Cs2Py.Source
             Statement    = statement;
         }
 
-        // Private Methods 
-
-        private static string Ad(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-                throw new NotSupportedException();
-            // return "";
-            return value.StartsWith("$") ? value : "$" + value;
-        }
-
-        // Public Methods 
+        
 
         //LangType ItemType, string VarName, IValue Collection, IStatement Statement
         public override void Emit(PySourceCodeEmiter emiter, PySourceCodeWriter writer, PyEmitStyle style)
         {
             style             = style ?? new PyEmitStyle();
             var arrayOperator = style.Compression == EmitStyleCompression.Beauty ? " => " : "=>";
-            var header        = OneVariable ? "foreach({0} as {3})" : "foreach({0} as {1}{2}{3})";
+            var header        = OneVariable 
+                ? "for {3} in {0}:" 
+                : "foreach({0} as {1}{2}{3}):";
             header            = string.Format(header,
                 Collection.GetPyCode(style),
                 _keyVarname, arrayOperator, _valueVarname);
@@ -97,12 +89,7 @@ namespace Cs2Py.Source
         public string KeyVarname
         {
             get => _keyVarname;
-            set
-            {
-                value       = (value ?? string.Empty).Trim();
-                value       = Ad(value);
-                _keyVarname = value;
-            }
+            set => _keyVarname = (value ?? string.Empty).Trim();
         }
 
         /// <summary>
@@ -110,12 +97,7 @@ namespace Cs2Py.Source
         public string ValueVarname
         {
             get => _valueVarname;
-            set
-            {
-                value         = (value ?? string.Empty).Trim();
-                value         = Ad(value);
-                _valueVarname = value;
-            }
+            set => _valueVarname = (value ?? string.Empty).Trim();
         }
 
         /// <summary>
