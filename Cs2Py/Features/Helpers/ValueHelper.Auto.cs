@@ -380,6 +380,156 @@ namespace Cs2Py.Helpers
             }
         }
 
+        public static bool? EqualsNumericZero(object value)
+        {
+            switch (value)
+            {
+                case int valueInt:
+                    return valueInt.Equals((int)0);
+                case long valueLong:
+                    return valueLong.Equals((long)0);
+                case short valueShort:
+                    return valueShort.Equals((short)0);
+                case sbyte valueSbyte:
+                    return valueSbyte.Equals((sbyte)0);
+                case uint valueUint:
+                    return valueUint.Equals((uint)0);
+                case ulong valueUlong:
+                    return valueUlong.Equals((ulong)0);
+                case ushort valueUshort:
+                    return valueUshort.Equals((ushort)0);
+                case byte valueByte:
+                    return valueByte.Equals((byte)0);
+                case double valueDouble:
+                    return valueDouble.Equals((double)0);
+                case float valueFloat:
+                    return valueFloat.Equals((float)0);
+                case decimal valueDecimal:
+                    return valueDecimal.Equals((decimal)0);
+            }
+            return null;
+        }
+
+        public static bool? IsGreaterThanZero(object value)
+        {
+            switch (value)
+            {
+                case int valueInt:
+                    return valueInt >(int)0;
+                case long valueLong:
+                    return valueLong >(long)0;
+                case short valueShort:
+                    return valueShort >(short)0;
+                case sbyte valueSbyte:
+                    return valueSbyte >(sbyte)0;
+                case uint valueUint:
+                    return valueUint >(uint)0;
+                case ulong valueUlong:
+                    return valueUlong >(ulong)0;
+                case ushort valueUshort:
+                    return valueUshort >(ushort)0;
+                case byte valueByte:
+                    return valueByte >(byte)0;
+                case double valueDouble:
+                    return valueDouble >(double)0;
+                case float valueFloat:
+                    return valueFloat >(float)0;
+                case decimal valueDecimal:
+                    return valueDecimal >(decimal)0;
+            }
+            return null;
+        }
+
+        public static bool? IsGreaterThanZeroOrEqual(object value)
+        {
+            switch (value)
+            {
+                case int valueInt:
+                    return valueInt >=(int)0;
+                case long valueLong:
+                    return valueLong >=(long)0;
+                case short valueShort:
+                    return valueShort >=(short)0;
+                case sbyte valueSbyte:
+                    return valueSbyte >=(sbyte)0;
+                case uint valueUint:
+                    return true;
+                case ulong valueUlong:
+                    return true;
+                case ushort valueUshort:
+                    return true;
+                case byte valueByte:
+                    return true;
+                case double valueDouble:
+                    return valueDouble >=(double)0;
+                case float valueFloat:
+                    return valueFloat >=(float)0;
+                case decimal valueDecimal:
+                    return valueDecimal >=(decimal)0;
+            }
+            return null;
+        }
+
+        public static bool? IsLowerThanZero(object value)
+        {
+            switch (value)
+            {
+                case int valueInt:
+                    return valueInt <(int)0;
+                case long valueLong:
+                    return valueLong <(long)0;
+                case short valueShort:
+                    return valueShort <(short)0;
+                case sbyte valueSbyte:
+                    return valueSbyte <(sbyte)0;
+                case uint valueUint:
+                    return false;
+                case ulong valueUlong:
+                    return false;
+                case ushort valueUshort:
+                    return false;
+                case byte valueByte:
+                    return false;
+                case double valueDouble:
+                    return valueDouble <(double)0;
+                case float valueFloat:
+                    return valueFloat <(float)0;
+                case decimal valueDecimal:
+                    return valueDecimal <(decimal)0;
+            }
+            return null;
+        }
+
+        public static bool? IsLowerThanZeroOrEqual(object value)
+        {
+            switch (value)
+            {
+                case int valueInt:
+                    return valueInt <=(int)0;
+                case long valueLong:
+                    return valueLong <=(long)0;
+                case short valueShort:
+                    return valueShort <=(short)0;
+                case sbyte valueSbyte:
+                    return valueSbyte <=(sbyte)0;
+                case uint valueUint:
+                    return valueUint <=(uint)0;
+                case ulong valueUlong:
+                    return valueUlong <=(ulong)0;
+                case ushort valueUshort:
+                    return valueUshort <=(ushort)0;
+                case byte valueByte:
+                    return valueByte <=(byte)0;
+                case double valueDouble:
+                    return valueDouble <=(double)0;
+                case float valueFloat:
+                    return valueFloat <=(float)0;
+                case decimal valueDecimal:
+                    return valueDecimal <=(decimal)0;
+            }
+            return null;
+        }
+
         public static object Mul(object left, object right)
         {
             switch (left)

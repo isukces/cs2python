@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using isukces.code;
 
 namespace CodeGenerator
@@ -46,23 +48,30 @@ namespace CodeGenerator
 
         public void GenerateAll()
         {
-            GenerateBinaryOperators();
+            GenerateValueHelper();
             new NumpyGenerator {BasePath = BasePath}.Generate();            
             // new NumpyGenerator {BasePath = BasePath}.Generate();
         }
 
-        private void GenerateBinaryOperators()
+        private void GenerateValueHelper()
         {
             var file    = CreateFile();
             var subDir  = "Helpers";
             var cl      = file.GetOrCreateClass(Namespace + "." + subDir, "ValueHelper");
             cl.IsStatic = true;
 
-            void Make(string name, string op)
+            List<string> GetTypes(bool withString)
             {
                 var types = "int,long,short,sbyte,uint,ulong,ushort,byte,double,float,decimal".Split(',').ToList();
-                if (op == "+")
+                if (withString)
                     types.Add("string");
+                return types;
+            }
+
+            void MakeBinaryOperator(string name, string op)
+            {
+                var types = GetTypes(op == "+");
+                 
                 var c = new CSCodeFormatter();
                 c.Open("switch (left)");
                 {
@@ -99,14 +108,60 @@ namespace CodeGenerator
                 m.AddParam("left",  "object");
                 m.AddParam("right", "object");
             }
+            void MakeIsNumericZero(string name, Func<string,string,string> f)
+            {                
+                    var types = GetTypes(false);
+                var c = new CSCodeFormatter();
+                c.Open("switch (value)");
+                {
+                    foreach (var type in types)
+                    {
+                        var ln = "value" + FirstUpper(type);
+                        c.Writeln($"case {type} {ln}:");
+                        c.IncIndent();
+                        var result = f(type, ln);
+                        c.Writeln($"return {result};");
+                        c.DecIndent();
+                    }                    
+                }
+                c.Close();
+                c.Writeln("return null;");
 
-            Make("Add", "+");
-            Make("Sub", "-");
-            Make("Mul", "*");
-            Make("Div", "/");
+                var m = cl.AddMethod(name, "bool?")
+                    .WithBody(c)
+                    .WithStatic();
+                m.AddParam("value",  "object");
+            }
+
+            MakeBinaryOperator("Add", "+");
+            MakeBinaryOperator("Sub", "-");
+            MakeBinaryOperator("Mul", "*");
+            MakeBinaryOperator("Div", "/");
+            MakeIsNumericZero("EqualsNumericZero", (type, ln) => $"{ln}.Equals(({type})0)");
+            
+            MakeIsNumericZero("IsLowerThanZero",        (type, ln) =>
+            {
+                if (isUnsigned(type))
+                    return "false";
+                return $"{ln} <({type})0";
+            });
+            MakeIsNumericZero("IsLowerThanZeroOrEqual", (type, ln) => $"{ln} <=({type})0");
+            MakeIsNumericZero("IsGreaterThanZero",        (type, ln) => $"{ln} >({type})0");
+            MakeIsNumericZero("IsGreaterThanZeroOrEqual", (type, ln) =>
+            {
+                if (isUnsigned(type))
+                    return "true";
+                return $"{ln} >=({type})0";
+            });
+            // is Zero
+            
             Save(file, cl, "Cs2Py", "Features", subDir);
         }
 
+        bool isUnsigned(string type)
+        {
+            return type == "uint" || type == "ushort" || type == "ulong" || type == "byte";
+        }
        
 
         public string Namespace { get; set; }
