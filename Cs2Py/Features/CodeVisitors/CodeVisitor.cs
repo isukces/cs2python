@@ -326,7 +326,7 @@ namespace Cs2Py.CodeVisitors
                 case SyntaxKind.LogicalAndExpression:
                     return VisitLogicalAndExpression(node as BinaryExpressionSyntax);
                 case SyntaxKind.AddAssignmentExpression:
-                    return VisitAddAssignmentExpression(node as BinaryExpressionSyntax);
+                    return VisitAddAssignmentExpression(node as AssignmentExpressionSyntax);
                 case SyntaxKind.AsExpression:
                     return VisitAsExpression(node as BinaryExpressionSyntax);
                 case SyntaxKind.LogicalNotExpression:
@@ -336,7 +336,7 @@ namespace Cs2Py.CodeVisitors
                 case SyntaxKind.UnaryMinusExpression:
                     return VisitUnaryMinusExpression(node as PrefixUnaryExpressionSyntax);
                 case SyntaxKind.SubtractAssignmentExpression:
-                    return VisitSubtractAssignmentExpression(node as BinaryExpressionSyntax);
+                    return VisitSubtractAssignmentExpression(node as AssignmentExpressionSyntax);
                 case SyntaxKind.GreaterThanOrEqualExpression:
                     return VisitGreaterThanOrEqualExpression(node as BinaryExpressionSyntax);
                 case SyntaxKind.LessThanOrEqualExpression:
@@ -406,7 +406,7 @@ namespace Cs2Py.CodeVisitors
             return default(T);
         }
 
-        protected virtual T VisitAddAssignmentExpression(BinaryExpressionSyntax node)
+        protected virtual T VisitAddAssignmentExpression(AssignmentExpressionSyntax node)
         {
             if (throwNotImplementedException)
                 throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}",
@@ -1566,7 +1566,7 @@ namespace Cs2Py.CodeVisitors
             return default(T);
         }
 
-        protected virtual T VisitSubtractAssignmentExpression(BinaryExpressionSyntax node)
+        protected virtual T VisitSubtractAssignmentExpression(AssignmentExpressionSyntax node)
         {
             if (throwNotImplementedException)
                 throw new NotImplementedException(string.Format("Method {0} is not supported in class {1}",

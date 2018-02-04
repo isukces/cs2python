@@ -117,11 +117,8 @@ namespace CodeGenerator
                     foreach (var type in types)
                     {
                         var ln = "value" + FirstUpper(type);
-                        c.Writeln($"case {type} {ln}:");
-                        c.IncIndent();
                         var result = f(type, ln);
-                        c.Writeln($"return {result};");
-                        c.DecIndent();
+                        c.Writeln($"case {type} {ln}: return {result};");
                     }                    
                 }
                 c.Close();
@@ -132,11 +129,34 @@ namespace CodeGenerator
                     .WithStatic();
                 m.AddParam("value",  "object");
             }
+            
+            void MakeIsNumericMinus()
+            {                
+                var types = GetTypes(false);
+                var c     = new CSCodeFormatter();
+                c.Open("switch (value)");
+                {
+                    foreach (var type in types)
+                    {
+                        var ln = "value" + FirstUpper(type);
+                        var result = IsUnsigned(type) ? "null" : $"-{ln}";
+                        c.Writeln($"case {type} {ln}: return {result};");
+                    }                    
+                }
+                c.Close();
+                c.Writeln("return null;");
+
+                var m = cl.AddMethod("Minus", "object")
+                    .WithBody(c)
+                    .WithStatic();
+                m.AddParam("value", "object");
+            }
 
             MakeBinaryOperator("Add", "+");
             MakeBinaryOperator("Sub", "-");
             MakeBinaryOperator("Mul", "*");
             MakeBinaryOperator("Div", "/");
+            MakeIsNumericMinus();
             MakeIsNumericZero("EqualsNumericZero", (type, ln) => $"{ln}.Equals({Zero(type)})");
             MakeIsNumericZero("EqualsNumericOne", (type, ln) => $"{ln}.Equals({Number(type, "1")})");
             MakeIsNumericZero("EqualsNumericMinusOne", (type, ln) =>

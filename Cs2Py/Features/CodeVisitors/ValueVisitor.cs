@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Cs2Py.Compilation;
 using Cs2Py.CSharp;
+using JetBrains.Annotations;
 using Lang.Python;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -166,7 +167,7 @@ namespace Cs2Py.CodeVisitors
         }
 
         
-        protected override IValue VisitAddAssignmentExpression(BinaryExpressionSyntax node)
+        protected override IValue VisitAddAssignmentExpression([NotNull] AssignmentExpressionSyntax node)
         {
             return internalVisit_AssignWithPrefix(node, "+");
         }
@@ -831,24 +832,9 @@ namespace Cs2Py.CodeVisitors
         protected override IValue VisitSimpleAssignmentExpression(AssignmentExpressionSyntax node)
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
-            {
-                var symbolInfo = ModelExtensions.GetSymbolInfo(_state.Context.RoslynModel, node);
-                // var typex = GetResultTypeForBinaryExpression(symbolInfo);
-                //TypeInfo ti = ModelExtensions.GetTypeInfo(state.Context.RoslynModel, node);
-
-                //TypeInfo eti = ModelExtensions.GetTypeInfo(state.Context.RoslynModel, node.Expression);
-                var eti2 = _state.Context.RoslynModel.GetTypeInfo2(node);
-
-                if (!eti2.Conversion1.HasValue || !eti2.Conversion1.Value.IsIdentity)
-                    throw new NotSupportedException();
-                //if (symbolInfo.Symbol.IsImplicitlyDeclared)
-                //    throw new Exception();
-                var l = Visit(node.Left);
-                var r = Visit(node.Right);
-                var a = new CsharpAssignExpression(l, r, string.Empty);
-                return Simplify(a);
-            }
+            return internalVisit_AssignWithPrefix(node, string.Empty);
         }
+ 
 
         protected override IValue VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
         {
@@ -1002,7 +988,7 @@ namespace Cs2Py.CodeVisitors
             return value;
         }
 
-        protected override IValue VisitSubtractAssignmentExpression(BinaryExpressionSyntax node)
+        protected override IValue VisitSubtractAssignmentExpression(AssignmentExpressionSyntax node)
         {
             return internalVisit_AssignWithPrefix(node, "-");
         }
@@ -1115,39 +1101,19 @@ namespace Cs2Py.CodeVisitors
             return a;
         }
 
-        private IValue internalVisit_AssignWithPrefix(BinaryExpressionSyntax node, string _operator)
+        private IValue internalVisit_AssignWithPrefix([NotNull]AssignmentExpressionSyntax node, string optionalOperator)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
-            var symbolInfo = ModelExtensions.GetSymbolInfo(_state.Context.RoslynModel, node);
-            // var typex = GetResultTypeForBinaryExpression(symbolInfo);
-            //TypeInfo ti = ModelExtensions.GetTypeInfo(state.Context.RoslynModel, node);
-
-            //TypeInfo eti = ModelExtensions.GetTypeInfo(state.Context.RoslynModel, node.Expression);
             var eti2 = _state.Context.RoslynModel.GetTypeInfo2(node);
-
             if (!eti2.Conversion1.HasValue || !eti2.Conversion1.Value.IsIdentity)
                 throw new NotSupportedException();
-            //if (symbolInfo.Symbol.IsImplicitlyDeclared)
-            //    throw new Exception();
             var l = Visit(node.Left);
             var r = Visit(node.Right);
-            var a = new CsharpAssignExpression(l, r, _operator);
+            var a = new CsharpAssignExpression(l, r, optionalOperator);
             return Simplify(a);
         }
-
-        //private IValue internalVisit_BoolBinaryExpression(BinaryExpressionSyntax node, string _operator)
-        //{
-        //    var symbolInfo = state.Context.RoslynModel.GetSymbolInfo(node);
-        //    if (symbolInfo.Symbol != null)
-        //        throw new NotSupportedException();
-
-        //    var tmp = internalVisit_BinaryExpressionSyntax(node, _operator);
-        //    var l = Visit(node.Left);
-        //    var r = Visit(node.Right);
-        //    var g = new BinaryOperatorExpression(l, r, _operator, typeof(bool), null);
-        //    return g;
-        //}
+ 
         private IValue InternalVisitTextIdentifier(string identifier)
         {
             var t = context.MatchTypes(identifier, 0);

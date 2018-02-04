@@ -7,25 +7,55 @@ using Cs2Py.Source;
 
 namespace Cs2Py.Translator
 {
-    internal class ForTranslator
+    public class ForTranslator
     {
         public ForTranslator(IStatementTranslator translator)
         {
             _translator = translator;
         }
 
-        private static IPyValue FindIncrement(IPyStatement increment, PyVariableExpression controlVariable1)
+        public static IPyValue FindIncrement(PyVariableExpression controlVariable, IPyStatement statement)
         {
-            if (!(increment is PyExpressionStatement expressionStatement)) return null;
-            var expression = expressionStatement.Expression;
+            if (statement is PyExpressionStatement expressionStatement)
+                return FindIncrement(controlVariable, expressionStatement.Expression);
+            return null;
+        }
+
+        public static IPyValue FindIncrement(PyVariableExpression controlVariable, IPyValue expression)
+        {
             switch (expression)
             {
                 case PyIncrementDecrementExpression incDecExpression:
                     if (incDecExpression.Operand is PyVariableExpression opv)
-                        if (controlVariable1.Equals(opv))
+                        if (controlVariable.Equals(opv))
                             return new PyConstValue(incDecExpression.Increment ? 1 : -1);
-
                     break;
+                case PyAssignExpression assignExpression:
+                    if (!controlVariable.Equals(assignExpression.Left))
+                        return null;
+                    switch (assignExpression.OptionalOperator)
+                    {
+                        case "+": return assignExpression.Right;
+                        case "-": return Minus(assignExpression.Right);
+                        case "":
+                        {
+                            if (assignExpression.Right is PyBinaryOperatorExpression b)
+                            {
+                                var isMinus = b.Operator == "-";
+                                if (b.Operator == "+" || isMinus)
+                                {
+                                    if (controlVariable.Equals(b.Left))
+                                        return isMinus ? Minus(b.Right) : b.Right;
+                                    if (controlVariable.Equals(b.Right))
+                                    {
+                                        if (!isMinus) return b.Left;
+                                    }
+                                }
+                            }
+                        }
+                            break;                                
+                    }
+                    break;                 
             }
 
             return null;
@@ -35,6 +65,20 @@ namespace Cs2Py.Translator
         {
             return expression is PyConstValue constValue
                    && (ValueHelper.EqualsNumericZero(constValue.Value) ?? false);
+        }
+
+        private static IPyValue Minus(IPyValue v)
+        {
+            switch (v)
+            {
+                case PyConstValue c:
+                    var minus = ValueHelper.Minus(c.Value);
+                    if (minus != null)
+                        return new PyConstValue(minus);
+                    break;
+            }
+
+            return new PyUnaryOperatorExpression(v, "-");
         }
 
         private static string OpositeOperator(string o)
@@ -114,7 +158,7 @@ namespace Cs2Py.Translator
             if (!(condition is PyBinaryOperatorExpression binCondition)) return null;
             binCondition = VariableOnLeft(binCondition, controlVariable.VariableName);
 
-            var loopIncrement = FindIncrement(incrementors[0], controlVariable);
+            var loopIncrement = FindIncrement(controlVariable, incrementors[0]);
             if (loopIncrement == null)
                 return null;
 
@@ -126,16 +170,17 @@ namespace Cs2Py.Translator
                 {
                     var range = new PyMethodCallExpression("range");
                     if (ValueHelper.IsGreaterThanZero(constLoopIncrement.Value) ?? false)
-                        if (ValueHelper.EqualsNumericOne(constLoopIncrement.Value) ?? false)
-                        {
-                            if (!IsConstZero(loopStart))
-                                range.Arguments.Add(new PyMethodInvokeValue(loopStart));
-                            // PyForEachStatement
-                            range.Arguments.Add(new PyMethodInvokeValue(binCondition.Right));
-                            var foreachStatement =
-                                new PyForEachStatement(controlVariable.VariableName, range, statement);
-                            return new IPyStatement[] {foreachStatement};
-                        }
+                    {
+                        var isOneIncrement = ValueHelper.EqualsNumericOne(constLoopIncrement.Value) ?? false;
+                        if (!IsConstZero(loopStart) || !isOneIncrement)
+                            range.Arguments.Add(new PyMethodInvokeValue(loopStart));
+                        range.Arguments.Add(new PyMethodInvokeValue(binCondition.Right));
+                        if (!isOneIncrement)
+                            range.Arguments.Add(
+                                new PyMethodInvokeValue(new PyConstValue(constLoopIncrement.Value)));
+                        var foreachStatement = new PyForEachStatement(controlVariable.VariableName, range, statement);
+                        return new IPyStatement[] {foreachStatement};
+                    }
                 }
 
             var result = new PyForStatement(pyDeclarations.ToArray(), condition, statement, incrementors);

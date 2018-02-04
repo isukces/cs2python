@@ -634,5 +634,44 @@ class ClassWithFieldsDemo:
             CheckTranslation(cs, info);
 
         }
+        [Fact]
+        public void T17_Should_convert_add_assignment()
+        {
+            var cs       = @"
+using System;
+using Lang.Python;
+
+namespace Demo01
+{
+    [IgnoreNamespaceAttribute]
+    public class Demo
+    {       
+        public static void PrintAll()
+        {
+            int i=2; i+=3; i -= 11;
+               
+        }
     }
+}
+";
+            var expected = @"
+class Demo:
+    @staticmethod
+    def PrintAll(cls):
+        i = 2
+        i += 3
+        i -= 11   
+";
+            var info     = new Info
+            {
+                Compare = expected,
+                Ref     = new[]
+                {
+                    typeof(Enumerable).Assembly
+                }
+            };
+            CheckTranslation(cs, info);
+
+        }
+    }    
 }

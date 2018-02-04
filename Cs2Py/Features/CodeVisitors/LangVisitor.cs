@@ -58,6 +58,13 @@ namespace Cs2Py.CodeVisitors
         }
         // Protected Methods 
 
+        protected override object VisitAddAssignmentExpression(AssignmentExpressionSyntax node)
+        {            
+            var a = _VisitExpression(node);
+            Debug.Assert(a is IStatement);
+            return a;           
+        }
+
         protected override object VisitAccessorList(AccessorListSyntax node)
         {
             throw new NotImplementedException();
@@ -121,9 +128,12 @@ namespace Cs2Py.CodeVisitors
             throw new Exception("Why am I here???");
             return node.Arguments.Select(i => Visit(i) as FunctionArgument).ToArray();
         }
+        
         protected override object VisitSimpleAssignmentExpression(AssignmentExpressionSyntax node)
         {
-            return base.VisitSimpleAssignmentExpression(node);
+            var a = _VisitExpression(node);
+            Debug.Assert(a is IStatement);
+            return a;                
         }
 
 

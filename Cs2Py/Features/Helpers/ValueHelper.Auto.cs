@@ -384,28 +384,17 @@ namespace Cs2Py.Helpers
         {
             switch (value)
             {
-                case int valueInt:
-                    return valueInt.Equals((int)-1);
-                case long valueLong:
-                    return valueLong.Equals((long)-1);
-                case short valueShort:
-                    return valueShort.Equals((short)-1);
-                case sbyte valueSbyte:
-                    return valueSbyte.Equals((sbyte)-1);
-                case uint valueUint:
-                    return false;
-                case ulong valueUlong:
-                    return false;
-                case ushort valueUshort:
-                    return false;
-                case byte valueByte:
-                    return false;
-                case double valueDouble:
-                    return valueDouble.Equals(-1d);
-                case float valueFloat:
-                    return valueFloat.Equals(-1f);
-                case decimal valueDecimal:
-                    return valueDecimal.Equals(-1m);
+                case int valueInt: return valueInt.Equals((int)-1);
+                case long valueLong: return valueLong.Equals((long)-1);
+                case short valueShort: return valueShort.Equals((short)-1);
+                case sbyte valueSbyte: return valueSbyte.Equals((sbyte)-1);
+                case uint valueUint: return false;
+                case ulong valueUlong: return false;
+                case ushort valueUshort: return false;
+                case byte valueByte: return false;
+                case double valueDouble: return valueDouble.Equals(-1d);
+                case float valueFloat: return valueFloat.Equals(-1f);
+                case decimal valueDecimal: return valueDecimal.Equals(-1m);
             }
             return null;
         }
@@ -414,28 +403,17 @@ namespace Cs2Py.Helpers
         {
             switch (value)
             {
-                case int valueInt:
-                    return valueInt.Equals((int)1);
-                case long valueLong:
-                    return valueLong.Equals((long)1);
-                case short valueShort:
-                    return valueShort.Equals((short)1);
-                case sbyte valueSbyte:
-                    return valueSbyte.Equals((sbyte)1);
-                case uint valueUint:
-                    return valueUint.Equals((uint)1);
-                case ulong valueUlong:
-                    return valueUlong.Equals((ulong)1);
-                case ushort valueUshort:
-                    return valueUshort.Equals((ushort)1);
-                case byte valueByte:
-                    return valueByte.Equals((byte)1);
-                case double valueDouble:
-                    return valueDouble.Equals(1d);
-                case float valueFloat:
-                    return valueFloat.Equals(1f);
-                case decimal valueDecimal:
-                    return valueDecimal.Equals(1m);
+                case int valueInt: return valueInt.Equals((int)1);
+                case long valueLong: return valueLong.Equals((long)1);
+                case short valueShort: return valueShort.Equals((short)1);
+                case sbyte valueSbyte: return valueSbyte.Equals((sbyte)1);
+                case uint valueUint: return valueUint.Equals((uint)1);
+                case ulong valueUlong: return valueUlong.Equals((ulong)1);
+                case ushort valueUshort: return valueUshort.Equals((ushort)1);
+                case byte valueByte: return valueByte.Equals((byte)1);
+                case double valueDouble: return valueDouble.Equals(1d);
+                case float valueFloat: return valueFloat.Equals(1f);
+                case decimal valueDecimal: return valueDecimal.Equals(1m);
             }
             return null;
         }
@@ -444,28 +422,17 @@ namespace Cs2Py.Helpers
         {
             switch (value)
             {
-                case int valueInt:
-                    return valueInt.Equals((int)0);
-                case long valueLong:
-                    return valueLong.Equals((long)0);
-                case short valueShort:
-                    return valueShort.Equals((short)0);
-                case sbyte valueSbyte:
-                    return valueSbyte.Equals((sbyte)0);
-                case uint valueUint:
-                    return valueUint.Equals((uint)0);
-                case ulong valueUlong:
-                    return valueUlong.Equals((ulong)0);
-                case ushort valueUshort:
-                    return valueUshort.Equals((ushort)0);
-                case byte valueByte:
-                    return valueByte.Equals((byte)0);
-                case double valueDouble:
-                    return valueDouble.Equals(0d);
-                case float valueFloat:
-                    return valueFloat.Equals(0f);
-                case decimal valueDecimal:
-                    return valueDecimal.Equals(0m);
+                case int valueInt: return valueInt.Equals((int)0);
+                case long valueLong: return valueLong.Equals((long)0);
+                case short valueShort: return valueShort.Equals((short)0);
+                case sbyte valueSbyte: return valueSbyte.Equals((sbyte)0);
+                case uint valueUint: return valueUint.Equals((uint)0);
+                case ulong valueUlong: return valueUlong.Equals((ulong)0);
+                case ushort valueUshort: return valueUshort.Equals((ushort)0);
+                case byte valueByte: return valueByte.Equals((byte)0);
+                case double valueDouble: return valueDouble.Equals(0d);
+                case float valueFloat: return valueFloat.Equals(0f);
+                case decimal valueDecimal: return valueDecimal.Equals(0m);
             }
             return null;
         }
@@ -474,28 +441,17 @@ namespace Cs2Py.Helpers
         {
             switch (value)
             {
-                case int valueInt:
-                    return valueInt >(int)0;
-                case long valueLong:
-                    return valueLong >(long)0;
-                case short valueShort:
-                    return valueShort >(short)0;
-                case sbyte valueSbyte:
-                    return valueSbyte >(sbyte)0;
-                case uint valueUint:
-                    return valueUint >(uint)0;
-                case ulong valueUlong:
-                    return valueUlong >(ulong)0;
-                case ushort valueUshort:
-                    return valueUshort >(ushort)0;
-                case byte valueByte:
-                    return valueByte >(byte)0;
-                case double valueDouble:
-                    return valueDouble >0d;
-                case float valueFloat:
-                    return valueFloat >0f;
-                case decimal valueDecimal:
-                    return valueDecimal >0m;
+                case int valueInt: return valueInt >(int)0;
+                case long valueLong: return valueLong >(long)0;
+                case short valueShort: return valueShort >(short)0;
+                case sbyte valueSbyte: return valueSbyte >(sbyte)0;
+                case uint valueUint: return valueUint >(uint)0;
+                case ulong valueUlong: return valueUlong >(ulong)0;
+                case ushort valueUshort: return valueUshort >(ushort)0;
+                case byte valueByte: return valueByte >(byte)0;
+                case double valueDouble: return valueDouble >0d;
+                case float valueFloat: return valueFloat >0f;
+                case decimal valueDecimal: return valueDecimal >0m;
             }
             return null;
         }
@@ -504,28 +460,17 @@ namespace Cs2Py.Helpers
         {
             switch (value)
             {
-                case int valueInt:
-                    return valueInt >= (int)0;
-                case long valueLong:
-                    return valueLong >= (long)0;
-                case short valueShort:
-                    return valueShort >= (short)0;
-                case sbyte valueSbyte:
-                    return valueSbyte >= (sbyte)0;
-                case uint valueUint:
-                    return true;
-                case ulong valueUlong:
-                    return true;
-                case ushort valueUshort:
-                    return true;
-                case byte valueByte:
-                    return true;
-                case double valueDouble:
-                    return valueDouble >= 0d;
-                case float valueFloat:
-                    return valueFloat >= 0f;
-                case decimal valueDecimal:
-                    return valueDecimal >= 0m;
+                case int valueInt: return valueInt >= (int)0;
+                case long valueLong: return valueLong >= (long)0;
+                case short valueShort: return valueShort >= (short)0;
+                case sbyte valueSbyte: return valueSbyte >= (sbyte)0;
+                case uint valueUint: return true;
+                case ulong valueUlong: return true;
+                case ushort valueUshort: return true;
+                case byte valueByte: return true;
+                case double valueDouble: return valueDouble >= 0d;
+                case float valueFloat: return valueFloat >= 0f;
+                case decimal valueDecimal: return valueDecimal >= 0m;
             }
             return null;
         }
@@ -534,28 +479,17 @@ namespace Cs2Py.Helpers
         {
             switch (value)
             {
-                case int valueInt:
-                    return valueInt < (int)0;
-                case long valueLong:
-                    return valueLong < (long)0;
-                case short valueShort:
-                    return valueShort < (short)0;
-                case sbyte valueSbyte:
-                    return valueSbyte < (sbyte)0;
-                case uint valueUint:
-                    return false;
-                case ulong valueUlong:
-                    return false;
-                case ushort valueUshort:
-                    return false;
-                case byte valueByte:
-                    return false;
-                case double valueDouble:
-                    return valueDouble < 0d;
-                case float valueFloat:
-                    return valueFloat < 0f;
-                case decimal valueDecimal:
-                    return valueDecimal < 0m;
+                case int valueInt: return valueInt < (int)0;
+                case long valueLong: return valueLong < (long)0;
+                case short valueShort: return valueShort < (short)0;
+                case sbyte valueSbyte: return valueSbyte < (sbyte)0;
+                case uint valueUint: return false;
+                case ulong valueUlong: return false;
+                case ushort valueUshort: return false;
+                case byte valueByte: return false;
+                case double valueDouble: return valueDouble < 0d;
+                case float valueFloat: return valueFloat < 0f;
+                case decimal valueDecimal: return valueDecimal < 0m;
             }
             return null;
         }
@@ -564,28 +498,36 @@ namespace Cs2Py.Helpers
         {
             switch (value)
             {
-                case int valueInt:
-                    return valueInt <=(int)0;
-                case long valueLong:
-                    return valueLong <=(long)0;
-                case short valueShort:
-                    return valueShort <=(short)0;
-                case sbyte valueSbyte:
-                    return valueSbyte <=(sbyte)0;
-                case uint valueUint:
-                    return valueUint <=(uint)0;
-                case ulong valueUlong:
-                    return valueUlong <=(ulong)0;
-                case ushort valueUshort:
-                    return valueUshort <=(ushort)0;
-                case byte valueByte:
-                    return valueByte <=(byte)0;
-                case double valueDouble:
-                    return valueDouble <=0d;
-                case float valueFloat:
-                    return valueFloat <=0f;
-                case decimal valueDecimal:
-                    return valueDecimal <=0m;
+                case int valueInt: return valueInt <=(int)0;
+                case long valueLong: return valueLong <=(long)0;
+                case short valueShort: return valueShort <=(short)0;
+                case sbyte valueSbyte: return valueSbyte <=(sbyte)0;
+                case uint valueUint: return valueUint <=(uint)0;
+                case ulong valueUlong: return valueUlong <=(ulong)0;
+                case ushort valueUshort: return valueUshort <=(ushort)0;
+                case byte valueByte: return valueByte <=(byte)0;
+                case double valueDouble: return valueDouble <=0d;
+                case float valueFloat: return valueFloat <=0f;
+                case decimal valueDecimal: return valueDecimal <=0m;
+            }
+            return null;
+        }
+
+        public static object Minus(object value)
+        {
+            switch (value)
+            {
+                case int valueInt: return -valueInt;
+                case long valueLong: return -valueLong;
+                case short valueShort: return -valueShort;
+                case sbyte valueSbyte: return -valueSbyte;
+                case uint valueUint: return null;
+                case ulong valueUlong: return null;
+                case ushort valueUshort: return null;
+                case byte valueByte: return null;
+                case double valueDouble: return -valueDouble;
+                case float valueFloat: return -valueFloat;
+                case decimal valueDecimal: return -valueDecimal;
             }
             return null;
         }
