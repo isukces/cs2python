@@ -137,30 +137,53 @@ namespace CodeGenerator
             MakeBinaryOperator("Sub", "-");
             MakeBinaryOperator("Mul", "*");
             MakeBinaryOperator("Div", "/");
-            MakeIsNumericZero("EqualsNumericZero", (type, ln) => $"{ln}.Equals(({type})0)");
+            MakeIsNumericZero("EqualsNumericZero", (type, ln) => $"{ln}.Equals({Zero(type)})");
+            MakeIsNumericZero("EqualsNumericOne", (type, ln) => $"{ln}.Equals({Number(type, "1")})");
+            MakeIsNumericZero("EqualsNumericMinusOne", (type, ln) =>
+            {
+                if (IsUnsigned(type))
+                    return "false";
+                return $"{ln}.Equals({Number(type, "-1")})";
+            });
             
             MakeIsNumericZero("IsLowerThanZero",        (type, ln) =>
             {
-                if (isUnsigned(type))
+                if (IsUnsigned(type))
                     return "false";
-                return $"{ln} <({type})0";
+                return $"{ln} < {Zero(type)}";
             });
-            MakeIsNumericZero("IsLowerThanZeroOrEqual", (type, ln) => $"{ln} <=({type})0");
-            MakeIsNumericZero("IsGreaterThanZero",        (type, ln) => $"{ln} >({type})0");
+            MakeIsNumericZero("IsLowerThanZeroOrEqual", (type, ln) => $"{ln} <={Zero(type)}");
+            MakeIsNumericZero("IsGreaterThanZero",        (type, ln) => $"{ln} >{Zero(type)}");
             MakeIsNumericZero("IsGreaterThanZeroOrEqual", (type, ln) =>
             {
-                if (isUnsigned(type))
+                if (IsUnsigned(type))
                     return "true";
-                return $"{ln} >=({type})0";
+                return $"{ln} >= {Zero(type)}";
             });
             // is Zero
             
             Save(file, cl, "Cs2Py", "Features", subDir);
         }
 
-        bool isUnsigned(string type)
+        static bool IsUnsigned(string type)
         {
             return type == "uint" || type == "ushort" || type == "ulong" || type == "byte";
+        }
+        
+        
+        static string Number(string type, string number)
+        {
+            switch (type)
+            {
+                case "decimal": return $"{number}m";
+                case "float":   return $"{number}f";
+                case "double":  return $"{number}d";
+            }
+            return $"({type}){number}";
+        }
+        static string Zero(string type)
+        {
+            return Number(type, "0");
         }
        
 
